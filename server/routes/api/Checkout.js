@@ -12,8 +12,17 @@ router.post("/:vehicleNumber", (req, res) => {
                 vehicle.currentUserId = req.body.userId;
                 vehicle.checkedOut = true;
             }
+            const newTrip = {
+                startTime: now,
+                endTime: null,
+                startMileage: vehicle.mileage,
+                endMileage: null,
+                destination: req.body.destination,
+                employee: req.body.userId,
+            };
+            tripsArray.push(newTrip);
 
-            console.log(vehicle);
+            console.log(tripsArray);
 
             vehicle.save().catch((err) => console.log(err));
         })

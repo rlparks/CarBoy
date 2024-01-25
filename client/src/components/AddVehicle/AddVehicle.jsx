@@ -62,6 +62,7 @@ export default function AddVehicle() {
                 lastOilChangeTime: lastOilChangeTime,
                 licensePlate: licensePlate,
                 pictureUrl: pictureUrl,
+                mileage: mileage,
             };
 
             console.log(newVehicle);

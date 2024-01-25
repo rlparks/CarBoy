@@ -28,3 +28,6 @@ app.use("/api/login", logins);
 
 const users = require("./routes/api/User");
 app.use("/api/users", users);
+
+const checkout = require("./routes/api/Checkout");
+app.use("/api/checkout", checkout);

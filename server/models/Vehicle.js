@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 const TripSchema = require("./Trip").schema;
 
 const VehicleSchema = new mongoose.Schema({
-    vehicleNumber: Number,
+    vehicleNumber: {
+        type: Number,
+        unique: true,
+        trim: true,
+    },
     make: String,
     model: String,
     year: Number,
@@ -12,6 +16,7 @@ const VehicleSchema = new mongoose.Schema({
     trips: [TripSchema],
     checkedOut: Boolean,
     mileage: Number,
+    currentUserId: String,
 });
 
 module.exports.model = Vehicle = mongoose.model("vehicle", VehicleSchema);

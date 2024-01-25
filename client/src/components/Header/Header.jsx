@@ -6,7 +6,7 @@ import UserContext from "../../context/UserContext";
 export default function Header({ setUserData, isAdmin }) {
     const { userData } = useContext(UserContext);
 
-    console.log(userData);
+    // console.log(userData);
 
     function handleLogout() {
         localStorage.clear();

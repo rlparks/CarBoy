@@ -9,6 +9,7 @@ import VehicleList from "./components/VehicleList/VehicleList";
 import UserContext from "./context/UserContext";
 import UsersPage from "./components/UsersPage/UsersPage";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
+import EditVehicle from "./components/EditVehicle/EditVehicle";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -77,6 +78,20 @@ export default function App() {
                             userData.user ? (
                                 isAdmin ? (
                                     <AddVehicle />
+                                ) : (
+                                    <ErrorPage type={403} />
+                                )
+                            ) : (
+                                <ErrorPage type={401} />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/editVehicle/:vehicleNumber"
+                        element={
+                            userData.user ? (
+                                isAdmin ? (
+                                    <EditVehicle />
                                 ) : (
                                     <ErrorPage type={403} />
                                 )

@@ -31,40 +31,54 @@ export default function VehicleList({ isAdmin }) {
                 <div>
                     <h2 className="text-center mb-3">Available</h2>
 
-                    <div
-                        className={
-                            "row row-cols-1 row-cols-md-" +
-                            numColumns +
-                            " g-4 card-deck"
-                        }
-                    >
-                        {availableVehicles.map((vehicle) => (
-                            <div className="col" key={vehicle._id}>
-                                <VehicleCard
-                                    isAdmin={isAdmin}
-                                    vehicle={vehicle}
-                                />
-                            </div>
-                        ))}
-                    </div>
+                    {availableVehicles.length > 0 ? (
+                        <div
+                            className={
+                                "row row-cols-1 row-cols-md-" +
+                                numColumns +
+                                " g-4 card-deck"
+                            }
+                        >
+                            {availableVehicles.map((vehicle) => (
+                                <div className="col" key={vehicle._id}>
+                                    <VehicleCard
+                                        isAdmin={isAdmin}
+                                        vehicle={vehicle}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-center">
+                            No vehicles are currently available.
+                        </p>
+                    )}
                 </div>
 
                 <div>
                     <h2 className="text-center m-3">In Use</h2>
-                    <div
-                        className={
-                            "row row-cols-1 row-cols-md-" + numColumns + " g-4"
-                        }
-                    >
-                        {checkedOutVehicles.map((vehicle) => (
-                            <div className="col" key={vehicle._id}>
-                                <VehicleCard
-                                    isAdmin={isAdmin}
-                                    vehicle={vehicle}
-                                />
-                            </div>
-                        ))}
-                    </div>
+                    {checkedOutVehicles.length > 0 ? (
+                        <div
+                            className={
+                                "row row-cols-1 row-cols-md-" +
+                                numColumns +
+                                " g-4"
+                            }
+                        >
+                            {checkedOutVehicles.map((vehicle) => (
+                                <div className="col" key={vehicle._id}>
+                                    <VehicleCard
+                                        isAdmin={isAdmin}
+                                        vehicle={vehicle}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-center">
+                            No vehicles are currently checked out.
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

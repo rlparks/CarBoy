@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getVehicleDetails } from "../../assets/helpers";
 
 export default function EditVehicle() {
     const params = useParams();
-    const currentVehicleNumber = params.vehicleNumber;
+    const vehicleNumber = params.vehicleNumber;
     const [vehicle, setVehicle] = useState({
-        vehicleNumber: currentVehicleNumber,
+        vehicleNumber: vehicleNumber,
         make: "",
         model: "",
         year: "",
@@ -16,24 +17,12 @@ export default function EditVehicle() {
     });
 
     useEffect(() => {
-        getVehicleDetails(currentVehicleNumber);
+        getVehicleDetails(vehicleNumber).then((vehicle) => setVehicle(vehicle));
+
+        // console.log(vehicle) here returns the intial state
+        // hopefully that is just due to React state execution order
+        // and won't affect anything if I don't worry about it :)
     }, []);
-
-    async function getVehicleDetails(vehicleNumber) {
-        // TODO
-        const url = "http://localhost:8081/api/vehicles/" + vehicleNumber;
-        try {
-            const vehicleRes = await axios.get(url);
-            const vehicleData = vehicleRes.data;
-            setVehicle(vehicleData);
-
-            // console.log(vehicle) here returns the intial state
-            // hopefully that is just due to React state execution order
-            // and won't affect anything if I don't worry about it :)
-        } catch (err) {
-            console.log(err);
-        }
-    }
 
     function vehicleNumberChangeHandler(event) {
         setVehicle({ ...vehicle, vehicleNumber: event.target.value });
@@ -92,9 +81,7 @@ export default function EditVehicle() {
     return (
         <div className="d-flex justify-content-center">
             <div className="w-25">
-                <h2 className="text-center mb-3">
-                    {"Edit: " + currentVehicleNumber}
-                </h2>
+                <h2 className="text-center mb-3">{"Edit: " + vehicleNumber}</h2>
                 <form onSubmit={submitHandler}>
                     <div className="mb-3">
                         <label className="form-label">Vehicle Number</label>

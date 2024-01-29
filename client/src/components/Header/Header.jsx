@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Title from "../Title/Title";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import UserContext from "../../context/UserContext";
 
 export default function Header({ setUserData, isAdmin }) {

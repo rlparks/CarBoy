@@ -24,6 +24,7 @@ export default function CheckoutPage() {
                 userId: userData.user.id,
             };
 
+            // TODO
             const url = "http://localhost:8081/api/checkout/" + vehicleNumber;
             try {
                 await axios.post(url, vehicleObj);
@@ -38,9 +39,10 @@ export default function CheckoutPage() {
     }, []);
 
     async function getVehicleDetails(vehicleNumber) {
+        // TODO
         const url = "http://localhost:8081/api/vehicles/" + vehicleNumber;
         try {
-            const vehicle = await axios.get({ vehicleNumber });
+            const vehicle = await axios.get(url);
             console.log(vehicle);
         } catch (err) {
             console.log("Vehicle not found");
@@ -57,6 +59,14 @@ export default function CheckoutPage() {
                         <input
                             disabled
                             value={vehicleNumber}
+                            className="form-control"
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Employee</label>
+                        <input
+                            disabled
+                            value={userData.user.username}
                             className="form-control"
                         />
                     </div>

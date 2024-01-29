@@ -12,8 +12,8 @@ router.get("/", (req, res) => {
             res.status(404).json({ noitemsfound: "No vehicles found" });
         });
 });
-router.get("/:id", (req, res) => {
-    Vehicle.findById(req.params.id)
+router.get("/:vehicleNumber", (req, res) => {
+    Vehicle.findOne({ vehicleNumber: req.params.vehicleNumber })
         .then((item) => res.json(item))
         .catch((err) =>
             res

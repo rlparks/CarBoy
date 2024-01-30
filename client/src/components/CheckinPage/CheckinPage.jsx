@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
 import { getVehicleDetails } from "../../assets/helpers";
@@ -10,6 +10,7 @@ export default function CheckinPage() {
     const vehicleNumber = params.vehicleNumber;
     const [vehicle, setVehicle] = useState({});
     const [currentTrip, setCurrentTrip] = useState({});
+    const navigate = useNavigate();
 
     const [endMileage, setEndMileage] = useState("");
     function endingMileageChangeHandler(event) {
@@ -31,8 +32,10 @@ export default function CheckinPage() {
             const url = "http://localhost:8081/api/checkin/" + vehicleNumber;
             try {
                 await axios.post(url, vehicleObj);
+                navigate("/success");
             } catch (err) {
                 console.log("POST error");
+                console.log(err);
             }
         }
     }

@@ -26,7 +26,12 @@ router.post("/:vehicleNumber", (req, res) => {
                 // console.log(tripsArray);
                 vehicle.trips = tripsArray;
 
-                vehicle.save().catch((err) => console.log(err));
+                vehicle
+                    .save()
+                    .then((item) =>
+                        res.json({ msg: "Successfully checked in" })
+                    )
+                    .catch((err) => console.log(err));
             }
         })
         .catch((err) => {

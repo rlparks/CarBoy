@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
 import { getVehicleDetails } from "../../assets/helpers";
@@ -9,6 +9,7 @@ export default function CheckoutPage() {
     const { userData } = useContext(UserContext);
     const vehicleNumber = params.vehicleNumber;
     const [vehicle, setVehicle] = useState({});
+    const navigate = useNavigate();
 
     const [destination, setDestination] = useState("");
 
@@ -29,7 +30,8 @@ export default function CheckoutPage() {
             // TODO
             const url = "http://localhost:8081/api/checkout/" + vehicleNumber;
             try {
-                await axios.post(url, vehicleObj);
+                const res = await axios.post(url, vehicleObj);
+                navigate("/success");
             } catch (err) {
                 console.log("POST error");
             }

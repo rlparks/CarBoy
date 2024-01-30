@@ -11,6 +11,7 @@ import UsersPage from "./components/UsersPage/UsersPage";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
 import EditVehicle from "./components/EditVehicle/EditVehicle";
 import CheckinPage from "./components/CheckinPage/CheckinPage";
+import SuccessPage from "./components/SuccessPage/SuccessPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -141,6 +142,7 @@ export default function App() {
                             )
                         }
                     />
+                    <Route path="/success" element={<SuccessPage />} />
                     <Route path="*" element={<ErrorPage type={404} />} />
                 </Routes>
             </BrowserRouter>

@@ -31,3 +31,6 @@ app.use("/api/users", users);
 
 const checkout = require("./routes/api/Checkout");
 app.use("/api/checkout", checkout);
+
+const checkin = require("./routes/api/Checkin");
+app.use("/api/checkin", checkin);

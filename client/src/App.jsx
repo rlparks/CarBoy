@@ -10,6 +10,7 @@ import UserContext from "./context/UserContext";
 import UsersPage from "./components/UsersPage/UsersPage";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
 import EditVehicle from "./components/EditVehicle/EditVehicle";
+import CheckinPage from "./components/CheckinPage/CheckinPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -125,6 +126,16 @@ export default function App() {
                         element={
                             userData.user ? (
                                 <CheckoutPage />
+                            ) : (
+                                <ErrorPage type={401} />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/checkin/:vehicleNumber"
+                        element={
+                            userData.user ? (
+                                <CheckinPage />
                             ) : (
                                 <ErrorPage type={401} />
                             )

@@ -66,7 +66,7 @@ export default function EditVehicle() {
             !vehicle.licensePlate ||
             !vehicle.mileage
         ) {
-            alert("Please enter a destination.");
+            alert("Please fill out all fields.");
         } else {
             // TODO
             const url = "http://localhost:8081/api/vehicles/" + vehicle._id;

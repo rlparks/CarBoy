@@ -33,7 +33,7 @@ export default function CheckoutPage() {
                 const res = await axios.post(url, vehicleObj);
                 navigate("/success");
             } catch (err) {
-                console.log("POST error");
+                console.log("POST error:\n" + err);
             }
         }
     }

@@ -34,8 +34,7 @@ export default function CheckinPage() {
                 await axios.post(url, vehicleObj);
                 navigate("/success");
             } catch (err) {
-                console.log("POST error");
-                console.log(err);
+                console.log("POST error:\n" + err);
             }
         }
     }

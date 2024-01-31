@@ -119,7 +119,7 @@ function TripButtons({ vehicle }) {
             <div className="btn-group">
                 <Link
                     className="btn btn-success"
-                    to={"/editvehicle/" + vehicle.vehicleNumber}
+                    to={"/trips/" + vehicle.vehicleNumber}
                 >
                     {/* https://icons.getbootstrap.com/icons/sign-turn-right/ */}
                     <svg

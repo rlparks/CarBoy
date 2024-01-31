@@ -12,6 +12,7 @@ import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
 import EditVehicle from "./components/EditVehicle/EditVehicle";
 import CheckinPage from "./components/CheckinPage/CheckinPage";
 import SuccessPage from "./components/SuccessPage/SuccessPage";
+import TripsPage from "./components/TripsPage/TripsPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -105,10 +106,11 @@ export default function App() {
                     <Route
                         path="/trips/:vehicleNumber"
                         element={
-                            <RequireAdmin
-                                userData={userData}
-                                isAdmin={isAdmin}
-                            ></RequireAdmin>
+                            userData.user ? (
+                                <TripsPage />
+                            ) : (
+                                <ErrorPage type={401} />
+                            )
                         }
                     />
                     <Route

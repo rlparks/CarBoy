@@ -10,7 +10,7 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
     useState(() => {
         if (vehicle.currentUserId != "") {
             getUser(vehicle.currentUserId).then((user) => {
-                console.log(user);
+                // console.log(user);
                 setCurrentUser(user);
             });
         }
@@ -30,13 +30,15 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
                     {vehicle.year} {vehicle.make} {vehicle.model}
                 </p>
                 {/* <p className="card-text text-body-secondary">{vehicle.year}</p> */}
-                {mode == "normal" && userData.user && (
+                {mode === "normal" && userData.user && (
                     <VehicleButton vehicle={vehicle} />
                 )}
 
-                {mode == "manage" && (
+                {mode === "manage" && (
                     <AdminButtons isAdmin={isAdmin} vehicle={vehicle} />
                 )}
+
+                {mode === "trips" && <TripButtons vehicle={vehicle} />}
             </div>
             {!userData.user && (
                 <div className="card-footer text-body-secondary">
@@ -94,7 +96,7 @@ function AdminButtons({ isAdmin, vehicle }) {
                             width="16"
                             height="16"
                             fill="currentColor"
-                            className="bi bi-pencil-square"
+                            className="bi bi-pencil-square me-1"
                             viewBox="0 0 16 16"
                         >
                             <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
@@ -103,8 +105,39 @@ function AdminButtons({ isAdmin, vehicle }) {
                                 d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"
                             />
                         </svg>
+                        Edit
                     </Link>
                 )}
+            </div>
+        </div>
+    );
+}
+
+function TripButtons({ vehicle }) {
+    return (
+        <div>
+            <div className="btn-group">
+                <Link
+                    className="btn btn-success"
+                    to={"/editvehicle/" + vehicle.vehicleNumber}
+                >
+                    {/* https://icons.getbootstrap.com/icons/sign-turn-right/ */}
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi bi-sign-turn-right me-1"
+                        viewBox="0 0 16 16"
+                    >
+                        <path d="M5 8.5A2.5 2.5 0 0 1 7.5 6H9V4.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L9.41 8.658A.25.25 0 0 1 9 8.466V7H7.5A1.5 1.5 0 0 0 6 8.5V11H5z" />
+                        <path
+                            fillRule="evenodd"
+                            d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134Z"
+                        />
+                    </svg>
+                    Trips
+                </Link>
             </div>
         </div>
     );

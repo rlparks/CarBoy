@@ -72,7 +72,9 @@ export default function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<VehicleList isAdmin={isAdmin} />}
+                        element={
+                            <VehicleList isAdmin={isAdmin} mode={"normal"} />
+                        }
                     />
                     <Route
                         path="/addvehicle"
@@ -88,6 +90,17 @@ export default function App() {
                             )
                         }
                     />
+                    <Route
+                        path="/managevehicles"
+                        element={
+                            <VehicleList isAdmin={isAdmin} mode="manage" />
+                        }
+                    />
+                    <Route
+                        path="/trips"
+                        element={<VehicleList isAdmin={isAdmin} mode="trips" />}
+                    />
+                    <Route path="/trips/:vehicleNumber" />
                     <Route
                         path="/editVehicle/:vehicleNumber"
                         element={

@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
         minLength: 6,
     },
     admin: Boolean,
+    fullName: String,
 });
 
 module.exports = User = mongoose.model("user", userSchema);

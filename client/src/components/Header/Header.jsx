@@ -29,8 +29,12 @@ export default function Header({ setUserData, isAdmin }) {
                         </Link>
                         {isAdmin && (
                             <>
-                                <Link className="nav-link" to="/addvehicle">
-                                    Add Vehicle
+                                <Link className="nav-link" to="/trips">
+                                    Trips
+                                </Link>
+
+                                <Link className="nav-link" to="/managevehicles">
+                                    Manage Vehicles
                                 </Link>
 
                                 <Link className="nav-link" to="/manageusers">

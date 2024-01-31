@@ -24,15 +24,19 @@ export default function Header({ setUserData, isAdmin }) {
                 </Link>
                 <div className="collapse navbar-collapse" id="navbarText">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <Link className="nav-link" to="/">
-                            Home
-                        </Link>
-                        {isAdmin && (
+                        {userData.user && (
                             <>
+                                <Link className="nav-link" to="/">
+                                    Home
+                                </Link>
+
                                 <Link className="nav-link" to="/trips">
                                     Trips
                                 </Link>
-
+                            </>
+                        )}
+                        {isAdmin && (
+                            <>
                                 <Link className="nav-link" to="/managevehicles">
                                     Manage Vehicles
                                 </Link>

@@ -21,7 +21,10 @@ export default function ErrorPage({ type }) {
                 {type === 403 && (
                     <div>
                         <h1 className="mb-3">Error 403: Forbidden</h1>
-                        <p>Please contact ESD IT to gain access.</p>
+                        <p>
+                            Only administrator accounts can access this
+                            resource.
+                        </p>
                         <Link className="btn btn-outline-primary" to="/">
                             Home
                         </Link>
@@ -31,9 +34,7 @@ export default function ErrorPage({ type }) {
                 {type === 401 && (
                     <div>
                         <h1 className="mb-3">Error 401: Not Authorized</h1>
-                        <p>
-                            Please login with an admin account to gain access.
-                        </p>
+                        <p>Please login to gain access.</p>
                         <Link className="btn btn-outline-primary" to="/">
                             Home
                         </Link>

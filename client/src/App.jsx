@@ -95,9 +95,11 @@ export default function App() {
                     <Route
                         path="/trips"
                         element={
-                            <RequireAdmin userData={userData} isAdmin={isAdmin}>
+                            userData.user ? (
                                 <VehicleList isAdmin={isAdmin} mode="trips" />
-                            </RequireAdmin>
+                            ) : (
+                                <ErrorPage type={401} />
+                            )
                         }
                     />
                     <Route

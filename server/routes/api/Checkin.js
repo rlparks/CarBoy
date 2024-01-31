@@ -5,7 +5,7 @@ const Vehicle = require("../../models/Vehicle").model;
 
 router.post("/:vehicleNumber", (req, res) => {
     console.log("CHECK IN: " + req.params.vehicleNumber);
-    console.log(req.body);
+    // console.log(req.body);
     Vehicle.findOne({ vehicleNumber: req.params.vehicleNumber })
         .then((vehicle) => {
             const tripsArray = vehicle.trips;

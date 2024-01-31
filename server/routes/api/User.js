@@ -13,10 +13,14 @@ router.get("/", (req, res) => {
         });
 });
 router.get("/:id", (req, res) => {
+    console.log("Get User ID: " + req);
+    console.log(req.params);
     User.findById(req.params.id)
         .then((item) => res.json(item))
         .catch((err) =>
-            res.status(404).json({ noitemfound: "No user found with that ID" })
+            res
+                .status(404)
+                .json({ noitemfound: "No user found with that ID: " + err })
         );
 });
 router.post("/", (req, res) => {

@@ -11,6 +11,8 @@ async function createDefaultAdmin() {
         // TODO
         const username = "ESD";
         const password = "pass";
+        const fullName = "Default Admin";
+
         const existingUserWithUsername = await User.findOne({ username });
         if (existingUserWithUsername) {
             // console.log("Default admin already exists, skipping");
@@ -22,6 +24,7 @@ async function createDefaultAdmin() {
             username,
             password: passwordHash,
             admin: true,
+            fullName,
         });
 
         await newUser.save();
@@ -65,6 +68,7 @@ userRouter.post("/signup", async (req, res) => {
 userRouter.post("/login", async (req, res) => {
     try {
         const { username, password } = req.body;
+        console.log("LOGIN ATTEMPT: " + username);
         if (!username || !password) {
             return res.status(400).json({ msg: "Please fill out all fields" });
         }
@@ -82,7 +86,7 @@ userRouter.post("/login", async (req, res) => {
 
         // TODO
         const token = jwt.sign({ id: user._id }, "passwordKey");
-        // console.log("Login: " + username);
+        console.log("LOGIN SUCCESS: " + username);
         res.json({
             token,
             user: { id: user._id, username: user.username, admin: user.admin },

@@ -4,7 +4,8 @@ const router = express.Router();
 const Vehicle = require("../../models/Vehicle").model;
 
 router.post("/:vehicleNumber", (req, res) => {
-    console.log(req.body);
+    console.log("CHECK OUT: " + req.params.vehicleNumber);
+    // console.log(req.body);
     Vehicle.findOne({ vehicleNumber: req.params.vehicleNumber })
         .then((vehicle) => {
             const tripsArray = vehicle.trips;

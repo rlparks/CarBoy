@@ -1,9 +1,21 @@
 import { Link } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { getUser } from "../../assets/helpers";
 
 export default function VehicleCard({ vehicle, isAdmin, mode }) {
     const { userData } = useContext(UserContext);
+    const [currentUser, setCurrentUser] = useState("");
+
+    useState(() => {
+        if (vehicle.currentUserId != "") {
+            getUser(vehicle.currentUserId).then((user) => {
+                console.log(user);
+                setCurrentUser(user);
+            });
+        }
+    }, []);
+
     return (
         <div className="card" key={vehicle._id}>
             <img
@@ -29,6 +41,12 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
             {!userData.user && (
                 <div className="card-footer text-body-secondary">
                     Login to use
+                </div>
+            )}
+
+            {userData.user && vehicle.checkedOut && (
+                <div className="card-footer text-body-secondary">
+                    {currentUser.fullName}
                 </div>
             )}
         </div>

@@ -12,3 +12,17 @@ export async function getVehicleDetails(vehicleNumber) {
         return;
     }
 }
+
+export async function getUser(userId) {
+    try {
+        const userDetails = await axios.get(
+            "http://localhost:8081/api/users/" + userId
+        );
+
+        return userDetails.data;
+    } catch (err) {
+        console.log(userId);
+        console.log(err);
+        return;
+    }
+}

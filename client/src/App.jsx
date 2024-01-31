@@ -79,40 +79,42 @@ export default function App() {
                     <Route
                         path="/addvehicle"
                         element={
-                            userData.user ? (
-                                isAdmin ? (
-                                    <AddVehicle />
-                                ) : (
-                                    <ErrorPage type={403} />
-                                )
-                            ) : (
-                                <ErrorPage type={401} />
-                            )
+                            <RequireAdmin userData={userData} isAdmin={isAdmin}>
+                                <AddVehicle />
+                            </RequireAdmin>
                         }
                     />
                     <Route
                         path="/managevehicles"
                         element={
-                            <VehicleList isAdmin={isAdmin} mode="manage" />
+                            <RequireAdmin userData={userData} isAdmin={isAdmin}>
+                                <VehicleList isAdmin={isAdmin} mode="manage" />
+                            </RequireAdmin>
                         }
                     />
                     <Route
                         path="/trips"
-                        element={<VehicleList isAdmin={isAdmin} mode="trips" />}
+                        element={
+                            <RequireAdmin userData={userData} isAdmin={isAdmin}>
+                                <VehicleList isAdmin={isAdmin} mode="trips" />
+                            </RequireAdmin>
+                        }
                     />
-                    <Route path="/trips/:vehicleNumber" />
+                    <Route
+                        path="/trips/:vehicleNumber"
+                        element={
+                            <RequireAdmin
+                                userData={userData}
+                                isAdmin={isAdmin}
+                            ></RequireAdmin>
+                        }
+                    />
                     <Route
                         path="/editVehicle/:vehicleNumber"
                         element={
-                            userData.user ? (
-                                isAdmin ? (
-                                    <EditVehicle />
-                                ) : (
-                                    <ErrorPage type={403} />
-                                )
-                            ) : (
-                                <ErrorPage type={401} />
-                            )
+                            <RequireAdmin userData={userData} isAdmin={isAdmin}>
+                                <EditVehicle />
+                            </RequireAdmin>
                         }
                     />
                     <Route
@@ -124,15 +126,9 @@ export default function App() {
                     <Route
                         path="/manageusers"
                         element={
-                            userData.user ? (
-                                isAdmin ? (
-                                    <UsersPage />
-                                ) : (
-                                    <ErrorPage type={403} />
-                                )
-                            ) : (
-                                <ErrorPage type={401} />
-                            )
+                            <RequireAdmin userData={userData} isAdmin={isAdmin}>
+                                <UsersPage />
+                            </RequireAdmin>
                         }
                     />
                     <Route
@@ -160,5 +156,17 @@ export default function App() {
                 </Routes>
             </BrowserRouter>
         </UserContext.Provider>
+    );
+}
+
+function RequireAdmin(props) {
+    return props.userData.user ? (
+        props.isAdmin ? (
+            props.children
+        ) : (
+            <ErrorPage type={403} />
+        )
+    ) : (
+        <ErrorPage type={401} />
     );
 }

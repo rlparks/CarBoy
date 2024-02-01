@@ -6,6 +6,7 @@ const cors = require("cors");
 
 app.use(cors());
 app.use(express.json({ extended: false }));
+mongoose.set("sanitizeFilter", true); // protects against bobby
 
 // TODO
 const conn_str = "mongodb://root:example@172.19.174.2:27017/";

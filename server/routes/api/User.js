@@ -13,8 +13,6 @@ router.get("/", (req, res) => {
         });
 });
 router.get("/:id", (req, res) => {
-    console.log("Get User ID: " + req);
-    console.log(req.params);
     User.findById(req.params.id)
         .then((item) => res.json(item))
         .catch((err) =>

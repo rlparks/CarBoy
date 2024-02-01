@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
-import { getVehicleDetails } from "../../assets/helpers";
+import { getDateTimeFormat, getVehicleDetails } from "../../assets/helpers";
 
 export default function CheckinPage() {
     const params = useParams();
@@ -66,6 +66,9 @@ export default function CheckinPage() {
     );
 
     function CheckinForm() {
+        let startTime = new Date(currentTrip.startTime);
+        startTime = getDateTimeFormat().format(startTime);
+
         return (
             <form onSubmit={submitHandler}>
                 <div className="mb-3">
@@ -89,6 +92,14 @@ export default function CheckinPage() {
                     <input
                         disabled
                         value={currentTrip.destination}
+                        className="form-control"
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Starting Time</label>
+                    <input
+                        disabled
+                        value={startTime}
                         className="form-control"
                     />
                 </div>

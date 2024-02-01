@@ -26,3 +26,10 @@ export async function getUser(userId) {
         return;
     }
 }
+
+export function getDateTimeFormat() {
+    return new Intl.DateTimeFormat("en-us", {
+        dateStyle: "medium",
+        timeStyle: "short",
+    });
+}

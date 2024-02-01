@@ -87,6 +87,14 @@ export default function CheckoutPage() {
                         placeholder="STEM I"
                     />
                 </div>
+                <div className="mb-3">
+                    <label className="form-label">Starting Mileage</label>
+                    <input
+                        disabled
+                        value={vehicle.mileage}
+                        className="form-control"
+                    />
+                </div>
 
                 <button className="btn btn-primary">Submit</button>
             </form>

@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getVehicleDetails } from "../../assets/helpers";
 
 export default function EditVehicle() {
     const params = useParams();
+    const navigate = useNavigate();
     const vehicleNumber = params.vehicleNumber;
     const [vehicle, setVehicle] = useState({
         vehicleNumber: vehicleNumber,
@@ -69,9 +70,11 @@ export default function EditVehicle() {
             alert("Please fill out all fields.");
         } else {
             // TODO
-            const url = "http://localhost:8081/" + "api/vehicles/" + vehicle._id;
+            const url =
+                "http://localhost:8081/" + "api/vehicles/" + vehicle._id;
             try {
                 await axios.put(url, vehicle);
+                navigate("/success");
             } catch (err) {
                 console.log("PUT error");
             }

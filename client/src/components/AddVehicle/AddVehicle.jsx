@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function AddVehicle() {
+    const navigate = useNavigate();
     const [vehicleNumber, setVehicleNumber] = useState("");
     const [make, setMake] = useState("");
     const [model, setModel] = useState("");
@@ -70,6 +72,7 @@ export default function AddVehicle() {
                 "http://localhost:8081/" + "api/vehicles/",
                 newVehicle
             );
+            navigate("/success");
         }
     }
     return (

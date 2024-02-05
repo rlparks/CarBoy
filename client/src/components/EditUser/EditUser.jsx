@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getUser } from "../../assets/helpers";
 
 export default function EditUser() {
     const params = useParams();
+    const navigate = useNavigate();
     const userId = params.userId;
     const [user, setUser] = useState({
         username: "",
@@ -43,6 +44,7 @@ export default function EditUser() {
             const url = "http://localhost:8081/" + "api/users/" + user._id;
             try {
                 await axios.put(url, user);
+                navigate("/success");
             } catch (err) {
                 console.log(err);
             }

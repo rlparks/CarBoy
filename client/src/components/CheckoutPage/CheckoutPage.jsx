@@ -29,7 +29,8 @@ export default function CheckoutPage() {
             };
 
             // TODO
-            const url = "http://localhost:8081/api/checkout/" + vehicleNumber;
+            const url =
+                "http://localhost:8081/" + "api/checkout/" + vehicleNumber;
             try {
                 const res = await axios.post(url, vehicleObj);
                 navigate("/success");

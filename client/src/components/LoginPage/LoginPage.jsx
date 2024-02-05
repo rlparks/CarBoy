@@ -24,7 +24,7 @@ export default function LoginPage() {
         try {
             const loginRes = await axios.post(
                 // TODO
-                "http://localhost:8081/api/login/login",
+                "http://localhost:8081/" + "api/login/login",
                 {
                     username,
                     password,

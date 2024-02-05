@@ -66,7 +66,10 @@ export default function AddVehicle() {
             };
 
             console.log(newVehicle);
-            await axios.post("http://localhost:8081/api/vehicles/", newVehicle);
+            await axios.post(
+                "http://localhost:8081/" + "api/vehicles/",
+                newVehicle
+            );
         }
     }
     return (

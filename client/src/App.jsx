@@ -30,14 +30,14 @@ export default function App() {
 
             const tokenResponse = await axios.post(
                 // TODO
-                "http://localhost:8081/api/login/tokenIsValid",
+                "http://localhost:8081/" + "api/login/tokenIsValid",
                 null,
                 { headers: { "x-auth-token": token } }
             );
 
             if (tokenResponse.data) {
                 const userRes = await axios.get(
-                    "http://localhost:8081/api/login",
+                    "http://localhost:8081/" + "api/login",
                     {
                         headers: { "x-auth-token": token },
                     }

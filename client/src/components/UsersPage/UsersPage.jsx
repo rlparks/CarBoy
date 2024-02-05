@@ -11,7 +11,7 @@ export default function UsersPage() {
     const refreshUsers = async () => {
         // TODO
         axios
-            .get("http://localhost:8081/api/users/")
+            .get("http://localhost:8081/" + "api/users/")
             .then((result) => setUsers(result.data))
             .catch((err) => console.log(err));
     };

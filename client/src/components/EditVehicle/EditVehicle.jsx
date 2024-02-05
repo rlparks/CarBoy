@@ -69,7 +69,7 @@ export default function EditVehicle() {
             alert("Please fill out all fields.");
         } else {
             // TODO
-            const url = "http://localhost:8081/api/vehicles/" + vehicle._id;
+            const url = "http://localhost:8081/" + "api/vehicles/" + vehicle._id;
             try {
                 await axios.put(url, vehicle);
             } catch (err) {

@@ -30,7 +30,7 @@ export default function CheckinPage() {
             };
 
             // TODO
-            const url = "http://localhost:8081/api/checkin/" + vehicleNumber;
+            const url = "http://localhost:8081/" + "api/checkin/" + vehicleNumber;
             try {
                 await axios.post(url, vehicleObj);
                 navigate("/success");

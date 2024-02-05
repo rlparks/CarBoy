@@ -13,7 +13,7 @@ export default function VehicleList({ isAdmin, mode }) {
     const refreshVehicles = async () => {
         // TODO
         axios
-            .get("http://localhost:8081/api/vehicles/")
+            .get("http://localhost:8081/" + "api/vehicles/")
             .then((result) => setVehicles(result.data));
     };
 

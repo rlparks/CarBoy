@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcryptjs = require("bcryptjs");
 
 const User = require("../../models/User");
 
@@ -25,16 +26,26 @@ router.get("/:id", (req, res) => {
                 .json({ noitemfound: "No user found with that ID: " + err })
         );
 });
-router.post("/", (req, res) => {
-    req.body.checkedOut = false;
-    User.create(req.body)
-        .then((item) => res.json({ msg: "User added successfully" }))
-        .catch((err) => {
-            res.status(400).json({ error: "Unable to add this user" });
-            console.log(err);
-        });
-});
-router.put("/:id", (req, res) => {
+// router.post("/", async (req, res) => {
+//     const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
+//     if (req.body.newPassword !== "") {
+//         req.body.password = passwordHash;
+//     } else {
+//         res.status(400).json({ error: "No password provided" });
+//         return;
+//     }
+//     User.create(req.body)
+//         .then((item) => res.json({ msg: "User added successfully" }))
+//         .catch((err) => {
+//             res.status(400).json({ error: "Unable to add this user" });
+//             console.log(err);
+//         });
+// });
+router.put("/:id", async (req, res) => {
+    if (req.body.newPassword && req.body.newPassword !== "") {
+        const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
+        req.body.password = passwordHash;
+    }
     User.findByIdAndUpdate(req.params.id, req.body)
         .then((item) => res.json({ msg: "Updated successfully" }))
         .catch((err) =>

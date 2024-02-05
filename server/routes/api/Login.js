@@ -37,7 +37,8 @@ createDefaultAdmin();
 
 userRouter.post("/signup", async (req, res) => {
     try {
-        const { username, password, confirmPassword, admin } = req.body;
+        const { username, password, confirmPassword, admin, fullName } =
+            req.body;
         if (!username || !password || !confirmPassword) {
             return res.status(400).json({ msg: "Please fill out all fields" });
         }
@@ -57,7 +58,12 @@ userRouter.post("/signup", async (req, res) => {
         }
 
         const passwordHash = await bcryptjs.hash(password, 8);
-        const newUser = new User({ username, password: passwordHash, admin });
+        const newUser = new User({
+            username,
+            password: passwordHash,
+            admin,
+            fullName,
+        });
         const savedUser = await newUser.save();
         res.json(savedUser);
     } catch (err) {

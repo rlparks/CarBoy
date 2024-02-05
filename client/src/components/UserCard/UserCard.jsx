@@ -5,7 +5,7 @@ export default function UserCard({ user }) {
         <div className="card" key={user._id}>
             <div className="card-body">
                 <h5 className="card-title">{user.username}</h5>
-                <h6 className="card-subtitle text-body-secondary">
+                <h6 className="card-subtitle text-body-secondary mb-3">
                     {user.fullName}
                 </h6>
                 {user.admin && <p className="card-text">Admin</p>}

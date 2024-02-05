@@ -18,14 +18,33 @@ export default function TripCard({ trip }) {
     }, []);
 
     const startTime = getDateTimeFormat().format(new Date(trip.startTime));
-    // console.log(employee);
+    const endTime =
+        trip.endTime !== null
+            ? getDateTimeFormat().format(new Date(trip.endTime))
+            : "Now";
 
     return (
         <div className="card" key={trip._id}>
             <div className="card-body">
-                <h5 className="card-title">{employee.fullName}</h5>
-                <p className="card-text"></p>
+                <h5 className="card-title">{startTime + " - " + endTime}</h5>
+                <h6 class="card-subtitle text-body-secondary">
+                    {employee.fullName}
+                </h6>
             </div>
+
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    {"Destination: " + trip.destination}
+                </li>
+                <li class="list-group-item">
+                    {"Starting Mileage: " + trip.startMileage}
+                </li>
+                {trip.endMileage !== null && (
+                    <li class="list-group-item">
+                        {"Ending Mileage: " + trip.endMileage}
+                    </li>
+                )}
+            </ul>
         </div>
     );
 }

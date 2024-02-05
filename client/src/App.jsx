@@ -13,6 +13,7 @@ import EditVehicle from "./components/EditVehicle/EditVehicle";
 import CheckinPage from "./components/CheckinPage/CheckinPage";
 import SuccessPage from "./components/SuccessPage/SuccessPage";
 import TripsPage from "./components/TripsPage/TripsPage";
+import EditUser from "./components/EditUser/EditUser";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -132,6 +133,14 @@ export default function App() {
                         element={
                             <RequireAdmin userData={userData} isAdmin={isAdmin}>
                                 <UsersPage />
+                            </RequireAdmin>
+                        }
+                    />
+                    <Route
+                        path="/manageusers/:userId"
+                        element={
+                            <RequireAdmin userData={userData} isAdmin={isAdmin}>
+                                <EditUser />
                             </RequireAdmin>
                         }
                     />

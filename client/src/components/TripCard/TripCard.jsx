@@ -32,7 +32,7 @@ export default function TripCard({ trip }) {
                 </h6>
             </div>
 
-            <ul class="list-group list-group-flush">
+            <ul className="list-group list-group-flush">
                 <li className="list-group-item">
                     {"Destination: " + trip.destination}
                 </li>

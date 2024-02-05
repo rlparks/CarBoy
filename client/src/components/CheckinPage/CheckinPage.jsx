@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
 import { getDateTimeFormat, getVehicleDetails } from "../../assets/helpers";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckinPage() {
     const params = useParams();
@@ -42,27 +43,42 @@ export default function CheckinPage() {
     useEffect(() => {
         getVehicleDetails(vehicleNumber).then((vehicle) => {
             setVehicle(vehicle);
-            if (vehicle.trips) {
-                setCurrentTrip(vehicle.trips[vehicle.trips.length - 1]);
-            } else {
-                alert("Error: vehicle has no trips.");
+            if (vehicle) {
+                if (vehicle.trips) {
+                    setCurrentTrip(vehicle.trips[vehicle.trips.length - 1]);
+                } else {
+                    alert("Error: vehicle has no trips.");
+                }
             }
         });
     }, []);
 
-    return (
-        <div className="d-flex justify-content-center">
-            <div className="w-25">
-                <h2 className="text-center mb-3">Check In</h2>
-                {!vehicle.checkedOut ? (
-                    <p className="text-center">
-                        Error: Vehicle is already checked in.
-                    </p>
-                ) : (
-                    <CheckinForm />
-                )}
+    return vehicle ? (
+        <div className="">
+            <h2 className="text-center mb-3">Check In</h2>
+            <div className="d-flex justify-content-center flex-column">
+                <div className="d-flex justify-content-evenly">
+                    <div className="">
+                        <img
+                            className="d-block mx-auto"
+                            src={vehicle.pictureUrl}
+                            alt={"Image of " + vehicleNumber}
+                        />
+                    </div>
+                    <div className="w-25">
+                        {!vehicle.checkedOut ? (
+                            <p className="text-center">
+                                Error: Vehicle is already checked in.
+                            </p>
+                        ) : (
+                            <CheckinForm />
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
+    ) : (
+        <ErrorPage type={404} />
     );
 
     function CheckinForm() {

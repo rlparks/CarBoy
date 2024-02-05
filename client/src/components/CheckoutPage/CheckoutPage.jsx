@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
 import { getVehicleDetails } from "../../assets/helpers";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckoutPage() {
     const params = useParams();
@@ -42,19 +43,32 @@ export default function CheckoutPage() {
         getVehicleDetails(vehicleNumber).then((vehicle) => setVehicle(vehicle));
     }, []);
 
-    return (
-        <div className="d-flex justify-content-center">
-            <div className="w-25">
-                <h2 className="text-center mb-3">Check Out</h2>
-                {vehicle.checkedOut ? (
-                    <p className="text-center">
-                        Error: Vehicle is already checked out.
-                    </p>
-                ) : (
-                    <CheckoutForm />
-                )}
+    return vehicle ? (
+        <div className="">
+            <h2 className="text-center mb-3">Check Out</h2>
+            <div className="d-flex justify-content-center flex-column">
+                <div className="d-flex justify-content-evenly">
+                    <div className="">
+                        <img
+                            className="d-block mx-auto"
+                            src={vehicle.pictureUrl}
+                            alt={"Image of " + vehicleNumber}
+                        />
+                    </div>
+                    <div className="w-25">
+                        {vehicle.checkedOut ? (
+                            <p className="text-center">
+                                Error: Vehicle is already checked out.
+                            </p>
+                        ) : (
+                            <CheckoutForm />
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
+    ) : (
+        <ErrorPage type={404} />
     );
 
     function CheckoutForm() {

@@ -9,7 +9,10 @@ app.use(express.json({ extended: false }));
 mongoose.set("sanitizeFilter", true); // protects against bobby
 
 // TODO
-const conn_str = "mongodb://root:example@172.19.174.2:27017/";
+const mongoUser = "root";
+const mongoPass = "example";
+const mongoUrl = "172.19.174.2:27017/";
+const conn_str = "mongodb://" + mongoUser + ":" + mongoPass + "@" + mongoUrl;
 
 mongoose
     .connect(conn_str, { dbName: "carlog" })

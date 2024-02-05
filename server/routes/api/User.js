@@ -5,6 +5,7 @@ const User = require("../../models/User");
 
 router.get("/", (req, res) => {
     User.find()
+        .select({ password: 0 })
         .then((items) => {
             res.json(items);
         })
@@ -14,7 +15,10 @@ router.get("/", (req, res) => {
 });
 router.get("/:id", (req, res) => {
     User.findById(req.params.id)
-        .then((item) => res.json(item))
+        .select({ password: 0 })
+        .then((item) => {
+            res.json(item);
+        })
         .catch((err) =>
             res
                 .status(404)

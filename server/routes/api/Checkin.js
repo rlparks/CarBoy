@@ -18,6 +18,12 @@ router.post("/:vehicleNumber", (req, res) => {
                 currentTrip.endTime = now;
                 const endMileage = req.body.endMileage;
                 if (endMileage) {
+                    if (endMileage < currentTrip.startMileage) {
+                        res.status(400).json({
+                            msg: "Error: Ending Mileage less than Starting Mileage",
+                        });
+                        return;
+                    }
                     currentTrip.endMileage = endMileage;
                     vehicle.mileage = endMileage;
                 }

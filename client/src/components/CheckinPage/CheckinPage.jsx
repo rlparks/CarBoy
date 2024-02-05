@@ -11,6 +11,7 @@ export default function CheckinPage() {
     const vehicleNumber = params.vehicleNumber;
     const [vehicle, setVehicle] = useState({});
     const [currentTrip, setCurrentTrip] = useState({});
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const [endMileage, setEndMileage] = useState("");
@@ -30,12 +31,14 @@ export default function CheckinPage() {
             };
 
             // TODO
-            const url = "http://localhost:8081/" + "api/checkin/" + vehicleNumber;
+            const url =
+                "http://localhost:8081/" + "api/checkin/" + vehicleNumber;
             try {
                 await axios.post(url, vehicleObj);
                 navigate("/success");
             } catch (err) {
-                console.log("POST error:\n" + err);
+                const msg = err.response.data.msg;
+                setError(msg);
             }
         }
     }
@@ -56,6 +59,7 @@ export default function CheckinPage() {
     return vehicle ? (
         <div className="">
             <h2 className="text-center mb-3">Check In</h2>
+            {error && <p className="text-center text-danger">{error}</p>}
             <div className="d-flex justify-content-center flex-column">
                 <div className="d-flex justify-content-evenly">
                     <div className="">

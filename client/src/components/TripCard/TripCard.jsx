@@ -27,20 +27,20 @@ export default function TripCard({ trip }) {
         <div className="card" key={trip._id}>
             <div className="card-body">
                 <h5 className="card-title">{startTime + " - " + endTime}</h5>
-                <h6 class="card-subtitle text-body-secondary">
+                <h6 className="card-subtitle text-body-secondary">
                     {employee.fullName}
                 </h6>
             </div>
 
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">
+                <li className="list-group-item">
                     {"Destination: " + trip.destination}
                 </li>
-                <li class="list-group-item">
+                <li className="list-group-item">
                     {"Starting Mileage: " + trip.startMileage}
                 </li>
                 {trip.endMileage !== null && (
-                    <li class="list-group-item">
+                    <li className="list-group-item">
                         {"Ending Mileage: " + trip.endMileage}
                     </li>
                 )}

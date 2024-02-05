@@ -7,7 +7,7 @@ export default function LoginPage() {
     const { setUserData } = useContext(UserContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     function usernameChangeHandler(event) {
@@ -39,13 +39,10 @@ export default function LoginPage() {
             localStorage.setItem("auth-token", loginRes.data.token);
             navigate("/");
         } catch (err) {
-            console.error("Login error:", err.response); // error message in console
+            // console.error("Login error:", err.response);
 
-            // for 404 error: usually wrong username or password
             if (err.response && err.response.status === 400) {
-                setError(
-                    "Invalid credentials. Please check your username and password."
-                );
+                setError("Invalid username or password.");
             }
         }
     }
@@ -54,6 +51,7 @@ export default function LoginPage() {
         <div className="d-flex justify-content-center">
             <div className="w-25">
                 <h2 className="text-center mb-3">Login</h2>
+                {error && <p className="text-center text-danger">{error}</p>}
                 <form onSubmit={handleLogin}>
                     <div className="mb-3">
                         <label className="form-label">Username</label>

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import { Link } from "react-router-dom";
-import { downloadJSONFile } from "../../assets/helpers";
+import { downloadJSONFile, readJSONFromFile } from "../../assets/helpers";
 
 export default function VehicleList({ isAdmin, mode }) {
     const numColumns = 4;
@@ -36,8 +36,11 @@ export default function VehicleList({ isAdmin, mode }) {
         downloadJSONFile(fileName, vehiclesString);
     }
 
-    function importVehiclesHandler(event) {
+    async function importVehiclesHandler(event) {
         event.preventDefault();
+        const jsonString = await readJSONFromFile();
+        const vehiclesArray = JSON.parse(jsonString);
+        console.log(vehiclesArray);
     }
 
     return (

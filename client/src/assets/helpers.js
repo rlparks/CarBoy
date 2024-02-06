@@ -47,3 +47,26 @@ export function downloadJSONFile(fileName, jsonString) {
     document.body.removeChild(tempA);
     window.URL.revokeObjectURL(downloadUrl);
 }
+
+export function readJSONFromFile() {
+    return new Promise((resolve, reject) => {
+        const tempInput = document.createElement("input");
+        tempInput.type = "file";
+        tempInput.accept = ".json"; // small measure to prevent garbage data
+
+        tempInput.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                reject("No file provided");
+            }
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            reader.readAsText(file);
+        });
+
+        tempInput.click();
+    });
+}

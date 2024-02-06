@@ -33,3 +33,17 @@ export function getDateTimeFormat() {
         timeStyle: "short",
     });
 }
+
+export function downloadJSONFile(fileName, jsonString) {
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const tempA = document.createElement("a");
+    tempA.href = downloadUrl;
+    tempA.download = fileName;
+
+    document.body.appendChild(tempA);
+    tempA.click();
+
+    document.body.removeChild(tempA);
+    window.URL.revokeObjectURL(downloadUrl);
+}

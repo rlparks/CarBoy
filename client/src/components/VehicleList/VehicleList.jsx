@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import { Link } from "react-router-dom";
+import { downloadJSONFile } from "../../assets/helpers";
 
 export default function VehicleList({ isAdmin, mode }) {
     const numColumns = 4;
@@ -25,6 +26,15 @@ export default function VehicleList({ isAdmin, mode }) {
         setAvailableVehicles(vehicles.filter((vehicle) => !vehicle.checkedOut));
         setCheckedOutVehicles(vehicles.filter((vehicle) => vehicle.checkedOut));
     }, [vehicles]);
+
+    function exportVehiclesHandler(event) {
+        event.preventDefault();
+        const vehiclesString = JSON.stringify(vehicles);
+        const now = new Date(Date.now()).toISOString();
+        const fileName = "CarBoy_Vehicles_" + now + ".json";
+
+        downloadJSONFile(fileName, vehiclesString);
+    }
 
     return (
         <div>
@@ -92,6 +102,9 @@ export default function VehicleList({ isAdmin, mode }) {
                     <Link className="btn btn-primary" to="/addvehicle">
                         Add Vehicle
                     </Link>
+                    <button className="btn" onClick={exportVehiclesHandler}>
+                        Export
+                    </button>
                 </div>
             )}
         </div>

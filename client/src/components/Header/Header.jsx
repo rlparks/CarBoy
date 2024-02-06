@@ -64,9 +64,9 @@ export default function Header({ setUserData, isAdmin }) {
                     <ul className="navbar-nav mb-2 mb-lg-0">
                         {userData.user ? (
                             <div className="d-flex">
-                                <button className="btn me-1">
+                                <Link className="nav-link me-1">
                                     {user.fullName}
-                                </button>
+                                </Link>
                                 <button
                                     className="btn btn-secondary"
                                     onClick={handleLogout}

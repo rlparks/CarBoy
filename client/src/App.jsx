@@ -15,6 +15,7 @@ import SuccessPage from "./components/SuccessPage/SuccessPage";
 import TripsPage from "./components/TripsPage/TripsPage";
 import EditUser from "./components/EditUser/EditUser";
 import AddUser from "./components/AddUser/AddUser";
+import DeleteUser from "./components/DeleteUser/DeleteUser";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -150,6 +151,14 @@ export default function App() {
                         element={
                             <RequireAdmin userData={userData} isAdmin={isAdmin}>
                                 <AddUser />
+                            </RequireAdmin>
+                        }
+                    />
+                    <Route
+                        path="/manageusers/delete/:userId"
+                        element={
+                            <RequireAdmin userData={userData} isAdmin={isAdmin}>
+                                <DeleteUser />
                             </RequireAdmin>
                         }
                     />

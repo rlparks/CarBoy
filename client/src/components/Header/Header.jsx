@@ -1,10 +1,23 @@
 import { Link } from "react-router-dom";
 import Title from "../Title/Title";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/UserContext";
+import { getUser } from "../../assets/helpers";
 
 export default function Header({ setUserData, isAdmin }) {
     const { userData } = useContext(UserContext);
+    const [user, setUser] = useState({ fullName: "" });
+
+    useEffect(() => {
+        if (userData.user) {
+            getUser(userData.user.id).then((user) => {
+                if (!user.fullName) {
+                    user.fullName = userData.user.username;
+                }
+                setUser(user);
+            });
+        }
+    }, [userData]);
 
     // console.log(userData);
 
@@ -50,12 +63,17 @@ export default function Header({ setUserData, isAdmin }) {
 
                     <ul className="navbar-nav mb-2 mb-lg-0">
                         {userData.user ? (
-                            <button
-                                className="btn btn-secondary"
-                                onClick={handleLogout}
-                            >
-                                Logout
-                            </button>
+                            <div className="d-flex">
+                                <button className="btn me-1">
+                                    {user.fullName}
+                                </button>
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </button>
+                            </div>
                         ) : (
                             <Link className="btn btn-secondary" to="/login">
                                 Login

@@ -55,8 +55,6 @@ router.put("/:id", async (req, res) => {
         // can't have that!
 
         const admins = await User.find({ admin: true });
-        console.log(admins);
-        console.log(admins.length);
         if (
             admins.length === 1 &&
             admins[0]._id.toString() === req.body._id &&
@@ -70,14 +68,31 @@ router.put("/:id", async (req, res) => {
         }
     }
 
-    console.log("Updating");
     await User.findByIdAndUpdate(req.params.id, req.body)
         .then((item) => res.json({ msg: "Updated successfully" }))
         .catch((err) =>
             res.status(400).json({ error: "Unable to update the database" })
         );
 });
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (user.admin) {
+        // deleting an admin
+
+        const admins = await User.find({ admin: true });
+        if (
+            admins.length === 1 &&
+            admins[0]._id.toString() === user._id.toString()
+        ) {
+            // trying to delete last admin
+            res.status(400).json({
+                error: "Error: Cannot delete final admin",
+            });
+            return;
+        }
+    }
+
     User.findByIdAndDelete(req.params.id, req.body)
         .then((item) => res.json({ msg: "User entry deleted successfully" }))
         .catch((err) => res.status(404).json({ error: "No such user" }));

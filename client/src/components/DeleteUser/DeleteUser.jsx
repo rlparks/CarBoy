@@ -7,6 +7,7 @@ export default function DeleteUser() {
     const params = useParams();
     const userId = params.userId;
     const navigate = useNavigate();
+    const [error, setError] = useState("");
     const [user, setUser] = useState({
         username: "",
         fullName: "",
@@ -31,7 +32,7 @@ export default function DeleteUser() {
             await axios.delete(url);
             navigate("/success");
         } catch (err) {
-            console.log(err);
+            setError(err.response.data.error);
         }
     }
 
@@ -46,6 +47,7 @@ export default function DeleteUser() {
                 <h2 className="text-center mb-3">
                     {"Delete: " + user.username}
                 </h2>
+                {error && <p className="text-center text-danger">{error}</p>}
                 <p className="text-center">
                     Are you sure you want to delete this user?
                 </p>

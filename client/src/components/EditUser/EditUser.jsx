@@ -7,6 +7,7 @@ export default function EditUser() {
     const params = useParams();
     const navigate = useNavigate();
     const userId = params.userId;
+    const [error, setError] = useState("");
     const [user, setUser] = useState({
         username: "",
         fullName: "",
@@ -61,7 +62,7 @@ export default function EditUser() {
                 await axios.put(url, userObj);
                 navigate("/success");
             } catch (err) {
-                console.log(err);
+                setError(err.response.data.error);
             }
         }
     }
@@ -70,6 +71,7 @@ export default function EditUser() {
         <div className="d-flex justify-content-center">
             <div className="w-25">
                 <h2 className="text-center mb-3">{"Edit: " + user.username}</h2>
+                {error && <p className="text-center text-danger">{error}</p>}
                 <form onSubmit={submitHandler}>
                     <div className="mb-3">
                         <label className="form-label">Username</label>

@@ -43,10 +43,35 @@ router.get("/:id", (req, res) => {
 // });
 router.put("/:id", async (req, res) => {
     if (req.body.newPassword && req.body.newPassword !== "") {
+        // password change
         const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
         req.body.password = passwordHash;
     }
-    User.findByIdAndUpdate(req.params.id, req.body)
+
+    // console.log(req.body);
+    if (!req.body.admin) {
+        // edit user submitted with admin == false
+        // potential of un-admining the last one
+        // can't have that!
+
+        const admins = await User.find({ admin: true });
+        console.log(admins);
+        console.log(admins.length);
+        if (
+            admins.length === 1 &&
+            admins[0]._id.toString() === req.body._id &&
+            !req.body.admin
+        ) {
+            // trying to revoke last admin
+            res.status(400).json({
+                error: "Error: Cannot revoke admin status of final admin",
+            });
+            return;
+        }
+    }
+
+    console.log("Updating");
+    await User.findByIdAndUpdate(req.params.id, req.body)
         .then((item) => res.json({ msg: "Updated successfully" }))
         .catch((err) =>
             res.status(400).json({ error: "Unable to update the database" })

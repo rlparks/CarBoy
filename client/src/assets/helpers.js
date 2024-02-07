@@ -70,3 +70,5 @@ export function readJSONFromFile() {
         tempInput.click();
     });
 }
+
+export const SERVER_URL = "http://localhost:8081/";

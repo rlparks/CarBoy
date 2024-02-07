@@ -68,7 +68,7 @@ export default function AddVehicle() {
                 mileage: mileage,
             };
 
-            console.log(newVehicle);
+            // console.log(newVehicle);
             await axios.post(SERVER_URL + "api/vehicles/", newVehicle);
             navigate("/success");
         }

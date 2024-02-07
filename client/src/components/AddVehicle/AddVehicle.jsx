@@ -12,7 +12,7 @@ export default function AddVehicle() {
     const [lastOilChangeTime, setLastOilChangeTime] = useState("");
     const [licensePlate, setLicensePlate] = useState("");
     const [pictureUrl, setPictureUrl] = useState("");
-    const [mileage, setMileage] = useState();
+    const [mileage, setMileage] = useState("");
     const [image, setImage] = useState();
 
     function vehicleNumberChangeHandler(event) {

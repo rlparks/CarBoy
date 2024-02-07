@@ -15,7 +15,7 @@ import SuccessPage from "./components/SuccessPage/SuccessPage";
 import TripsPage from "./components/TripsPage/TripsPage";
 import EditUser from "./components/EditUser/EditUser";
 import AddUser from "./components/AddUser/AddUser";
-import DeleteUser from "./components/DeleteUser/DeleteUser";
+import DeletePage from "./components/DeletePage/DeletePage";
 import { SERVER_URL } from "./assets/helpers";
 
 export default function App() {
@@ -94,6 +94,14 @@ export default function App() {
                         }
                     />
                     <Route
+                        path="/managevehicles/delete/:vehicleNumber"
+                        element={
+                            <RequireAdmin userData={userData} isAdmin={isAdmin}>
+                                <DeletePage mode="vehicle" />
+                            </RequireAdmin>
+                        }
+                    />
+                    <Route
                         path="/trips"
                         element={
                             userData.user ? (
@@ -155,7 +163,7 @@ export default function App() {
                         path="/manageusers/delete/:userId"
                         element={
                             <RequireAdmin userData={userData} isAdmin={isAdmin}>
-                                <DeleteUser />
+                                <DeletePage mode="user" />
                             </RequireAdmin>
                         }
                     />

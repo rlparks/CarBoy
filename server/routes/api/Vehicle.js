@@ -48,8 +48,8 @@ router.put("/:id", (req, res) => {
             res.status(400).json({ error: "Unable to update the database" })
         );
 });
-router.delete("/:id", (req, res) => {
-    Vehicle.findByIdAndDelete(req.params.id, req.body)
+router.delete("/:vehicleNumber", (req, res) => {
+    Vehicle.findOneAndDelete({ vehicleNumber: req.params.vehicleNumber })
         .then((item) => res.json({ msg: "Vehicle entry deleted successfully" }))
         .catch((err) => res.status(404).json({ error: "No such vehicle" }));
 });

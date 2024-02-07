@@ -2,7 +2,11 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
-import { getDateTimeFormat, getVehicleDetails } from "../../assets/helpers";
+import {
+    SERVER_URL,
+    getDateTimeFormat,
+    getVehicleDetails,
+} from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckinPage() {
@@ -30,9 +34,7 @@ export default function CheckinPage() {
                 endMileage,
             };
 
-            // TODO
-            const url =
-                "http://localhost:8081/" + "api/checkin/" + vehicleNumber;
+            const url = SERVER_URL + "api/checkin/" + vehicleNumber;
             try {
                 await axios.post(url, vehicleObj);
                 navigate("/success");

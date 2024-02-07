@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getVehicleDetails } from "../../assets/helpers";
+import { SERVER_URL, getVehicleDetails } from "../../assets/helpers";
 
 export default function EditVehicle() {
     const params = useParams();
@@ -69,9 +69,7 @@ export default function EditVehicle() {
         ) {
             alert("Please fill out all fields.");
         } else {
-            // TODO
-            const url =
-                "http://localhost:8081/" + "api/vehicles/" + vehicle._id;
+            const url = SERVER_URL + "api/vehicles/" + vehicle._id;
             try {
                 await axios.put(url, vehicle);
                 navigate("/success");

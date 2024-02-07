@@ -16,6 +16,7 @@ import TripsPage from "./components/TripsPage/TripsPage";
 import EditUser from "./components/EditUser/EditUser";
 import AddUser from "./components/AddUser/AddUser";
 import DeleteUser from "./components/DeleteUser/DeleteUser";
+import { SERVER_URL } from "./assets/helpers";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -32,19 +33,15 @@ export default function App() {
             }
 
             const tokenResponse = await axios.post(
-                // TODO
-                "http://localhost:8081/" + "api/login/tokenIsValid",
+                SERVER_URL + "api/login/tokenIsValid",
                 null,
                 { headers: { "x-auth-token": token } }
             );
 
             if (tokenResponse.data) {
-                const userRes = await axios.get(
-                    "http://localhost:8081/" + "api/login",
-                    {
-                        headers: { "x-auth-token": token },
-                    }
-                );
+                const userRes = await axios.get(SERVER_URL + "api/login", {
+                    headers: { "x-auth-token": token },
+                });
                 setUserData({
                     token,
                     user: userRes.data,

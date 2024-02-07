@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import UserCard from "../UserCard/UserCard";
 import { Link } from "react-router-dom";
+import { SERVER_URL } from "../../assets/helpers";
 
 export default function UsersPage() {
     const numColumns = 4;
@@ -9,9 +10,8 @@ export default function UsersPage() {
     const [users, setUsers] = useState([]);
 
     const refreshUsers = async () => {
-        // TODO
         axios
-            .get("http://localhost:8081/" + "api/users/")
+            .get(SERVER_URL + "api/users/")
             .then((result) => setUsers(result.data))
             .catch((err) => console.log(err));
     };

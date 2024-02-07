@@ -2,6 +2,7 @@ import axios from "axios";
 import UserContext from "../../context/UserContext";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { SERVER_URL } from "../../assets/helpers";
 
 export default function LoginPage() {
     const { setUserData } = useContext(UserContext);
@@ -22,14 +23,10 @@ export default function LoginPage() {
         event.preventDefault();
 
         try {
-            const loginRes = await axios.post(
-                // TODO
-                "http://localhost:8081/" + "api/login/login",
-                {
-                    username,
-                    password,
-                }
-            );
+            const loginRes = await axios.post(SERVER_URL + "api/login/login", {
+                username,
+                password,
+            });
 
             setUserData({
                 token: loginRes.data.token,

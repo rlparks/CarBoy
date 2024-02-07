@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SERVER_URL } from "../../assets/helpers";
 
 export default function AddUser() {
     const navigate = useNavigate();
@@ -46,8 +47,7 @@ export default function AddUser() {
         if (!user.username || !user.fullName) {
             alert("Please fill out all fields.");
         } else {
-            // TODO
-            const url = "http://localhost:8081/" + "api/login/signup/";
+            const url = SERVER_URL + "api/login/signup/";
             try {
                 await axios.post(url, user);
                 navigate("/success");

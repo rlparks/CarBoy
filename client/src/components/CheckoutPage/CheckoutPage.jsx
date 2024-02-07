@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
-import { getVehicleDetails } from "../../assets/helpers";
+import { SERVER_URL, getVehicleDetails } from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckoutPage() {
@@ -28,9 +28,7 @@ export default function CheckoutPage() {
                 userId: userData.user.id,
             };
 
-            // TODO
-            const url =
-                "http://localhost:8081/" + "api/checkout/" + vehicleNumber;
+            const url = SERVER_URL + "api/checkout/" + vehicleNumber;
             try {
                 const res = await axios.post(url, vehicleObj);
                 navigate("/success");

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUser } from "../../assets/helpers";
+import { SERVER_URL, getUser } from "../../assets/helpers";
 
 export default function EditUser() {
     const params = useParams();
@@ -56,8 +56,7 @@ export default function EditUser() {
                 newPassword,
             };
 
-            // TODO
-            const url = "http://localhost:8081/" + "api/users/" + user._id;
+            const url = SERVER_URL + "api/users/" + user._id;
             try {
                 await axios.put(url, userObj);
                 navigate("/success");

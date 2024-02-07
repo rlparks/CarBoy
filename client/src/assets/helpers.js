@@ -1,8 +1,7 @@
 import axios from "axios";
 
 export async function getVehicleDetails(vehicleNumber) {
-    // TODO
-    const url = "http://localhost:8081/" + "api/vehicles/" + vehicleNumber;
+    const url = SERVER_URL + "api/vehicles/" + vehicleNumber;
     try {
         const vehicleRes = await axios.get(url);
         const vehicleData = vehicleRes.data;
@@ -15,9 +14,7 @@ export async function getVehicleDetails(vehicleNumber) {
 
 export async function getUser(userId) {
     try {
-        const userDetails = await axios.get(
-            "http://localhost:8081/" + "api/users/" + userId
-        );
+        const userDetails = await axios.get(SERVER_URL + "api/users/" + userId);
 
         return userDetails.data;
     } catch (err) {

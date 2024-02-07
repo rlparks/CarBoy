@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUser } from "../../assets/helpers";
+import { SERVER_URL, getUser } from "../../assets/helpers";
 
 export default function DeleteUser() {
     const params = useParams();
@@ -26,8 +26,7 @@ export default function DeleteUser() {
     async function submitHandler(event) {
         event.preventDefault();
 
-        // TODO
-        const url = "http://localhost:8081/" + "api/users/" + user._id;
+        const url = SERVER_URL + "api/users/" + user._id;
         try {
             await axios.delete(url);
             navigate("/success");

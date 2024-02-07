@@ -30,6 +30,17 @@ router.post("/", (req, res) => {
             console.log(err);
         });
 });
+router.post("/import", (req, res) => {
+    Vehicle.insertMany(req.body)
+        .then((result) => {
+            res.json({ msg: "Vehicles successfully imported" });
+        })
+        .catch((err) => {
+            res.status(400).json({
+                error: "Error inserting vehicles. This is likely due to a duplicate vehicle ID in the imported data.",
+            });
+        });
+});
 router.put("/:id", (req, res) => {
     Vehicle.findByIdAndUpdate(req.params.id, req.body)
         .then((item) => res.json({ msg: "Updated successfully" }))

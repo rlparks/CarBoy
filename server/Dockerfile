@@ -6,8 +6,7 @@ COPY package.json yarn.lock ./
 RUN yarn install
 
 COPY . .
-RUN yarn build
 
-EXPOSE 80
+EXPOSE 8081
 
-CMD ["yarn", "serve", "-p", "80", "-s", "./dist"]
+CMD ["yarn", "start"]

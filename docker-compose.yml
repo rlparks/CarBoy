@@ -9,7 +9,7 @@ services:
         image: cb-server
         restart: unless-stopped
         ports:
-            - 8081:8081
+            - 127.0.0.1:8081:8081
         environment:
             MONGO_URL: mongo:27017
             MONGO_USER: root
@@ -26,7 +26,7 @@ services:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: example
         ports:
-            - 27017
+            - 127.0.0.1:27017:27017
         volumes:
             - ./data:/data/db
     mongo-express:

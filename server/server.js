@@ -9,9 +9,9 @@ app.use(express.json({ extended: false }));
 mongoose.set("sanitizeFilter", true); // protects against bobby
 
 // TODO
-const mongoUser = "root";
-const mongoPass = "example";
-const mongoUrl = "172.19.174.2:27017/";
+const mongoUser = process.env.MONGO_USER;
+const mongoPass = process.env.MONGO_PASS;
+const mongoUrl = process.env.MONGO_URL;
 const conn_str = "mongodb://" + mongoUser + ":" + mongoPass + "@" + mongoUrl;
 
 mongoose
@@ -19,22 +19,22 @@ mongoose
     .then(() => {
         app.listen(port, () => console.log(`Server running on port ${port}`));
         console.log("MongoDB Connection Succeeded");
+
+        const vehicles = require("./routes/api/Vehicle");
+        app.use("/api/vehicles", vehicles);
+
+        const logins = require("./routes/api/Login");
+        app.use("/api/login", logins);
+
+        const users = require("./routes/api/User");
+        app.use("/api/users", users);
+
+        const checkout = require("./routes/api/Checkout");
+        app.use("/api/checkout", checkout);
+
+        const checkin = require("./routes/api/Checkin");
+        app.use("/api/checkin", checkin);
     })
     .catch((err) => {
         console.log(`Error in DB Connection ${err}`);
     });
-
-const vehicles = require("./routes/api/Vehicle");
-app.use("/api/vehicles", vehicles);
-
-const logins = require("./routes/api/Login");
-app.use("/api/login", logins);
-
-const users = require("./routes/api/User");
-app.use("/api/users", users);
-
-const checkout = require("./routes/api/Checkout");
-app.use("/api/checkout", checkout);
-
-const checkin = require("./routes/api/Checkin");
-app.use("/api/checkin", checkin);

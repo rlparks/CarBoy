@@ -9,5 +9,5 @@ const TripSchema = new mongoose.Schema({
     employee: String,
 });
 
-module.exports.model = Trip = mongoose.model("trip", TripSchema);
+// module.exports.model = Trip = mongoose.model("trip", TripSchema);
 module.exports.schema = TripSchema;

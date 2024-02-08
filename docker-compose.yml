@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+    client:
+        image: cb-client
+        restart: unless-stopped
+        ports:
+            - 80:80
+    server:
+        image: cb-server
+        restart: unless-stopped
+        ports:
+            - 8081:8081
+        environment:
+            MONGO_URL: mongo:27017
+            MONGO_USER: root
+            MONGO_PASS: example
+            DEFAULT_ADMIN_USERNAME: admin
+            DEFAULT_ADMIN_PASSWORD: pass
+            DEFAULT_ADMIN_FULLNAME: Default Admin
+        depends_on:
+            - mongo
+    mongo:
+        image: mongo
+        restart: unless-stopped
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example
+        ports:
+            - 27017
+        volumes:
+            - ./data:/data/db
+    mongo-express:
+        image: mongo-express
+        restart: unless-stopped
+        ports:
+            - 27018:8081
+        environment:
+            ME_CONFIG_MONGODB_ADMINUSERNAME: root
+            ME_CONFIG_MONGODB_ADMINPASSWORD: example
+            ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+            ME_CONFIG_BASICAUTH_USERNAME: example
+            ME_CONFIG_BASICAUTH_PASSWORD: pass
+        depends_on:
+            - mongo

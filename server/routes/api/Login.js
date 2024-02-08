@@ -8,14 +8,13 @@ const User = require("../../models/User");
 
 async function createDefaultAdmin() {
     try {
-        // TODO
-        const username = "ESD";
-        const password = "pass";
-        const fullName = "Default Admin";
+        const username = process.env.DEFAULT_ADMIN_USERNAME;
+        const password = process.env.DEFAULT_ADMIN_PASSWORD;
+        const fullName = process.env.DEFAULT_ADMIN_FULLNAME;
 
         const existingUserWithUsername = await User.findOne({ username });
         if (existingUserWithUsername) {
-            // console.log("Default admin already exists, skipping");
+            console.log("Default admin already exists, skipping");
             return;
         }
 

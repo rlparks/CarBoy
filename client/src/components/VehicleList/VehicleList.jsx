@@ -17,7 +17,6 @@ export default function VehicleList({ isAdmin, mode }) {
     const [error, setError] = useState("");
 
     const refreshVehicles = async () => {
-        // TODO
         axios
             .get(SERVER_URL + "api/vehicles/")
             .then((result) => setVehicles(result.data));

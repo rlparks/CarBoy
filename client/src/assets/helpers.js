@@ -68,4 +68,4 @@ export function readJSONFromFile() {
     });
 }
 
-export const SERVER_URL = "http://localhost:8081/";
+export const SERVER_URL = "http://172.19.174.2:8081/";

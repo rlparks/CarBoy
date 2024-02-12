@@ -18,7 +18,9 @@ router.get("/:vehicleNumber", (req, res) => {
         .catch((err) =>
             res
                 .status(404)
-                .json({ noitemfound: "No vehicle found with that ID" })
+                .json({
+                    noitemfound: "No vehicle found with that vehicle number",
+                })
         );
 });
 router.post("/", (req, res) => {
@@ -26,8 +28,10 @@ router.post("/", (req, res) => {
     Vehicle.create(req.body)
         .then((item) => res.json({ msg: "Vehicle added successfully" }))
         .catch((err) => {
-            res.status(400).json({ error: "Unable to add this vehicle" });
-            console.log(err);
+            res.status(400).json({
+                error: "Error updating vehicle. This is likely due to a duplicate vehicle number.",
+            });
+            // console.log(err);
         });
 });
 router.post("/import", (req, res) => {
@@ -45,7 +49,9 @@ router.put("/:id", (req, res) => {
     Vehicle.findByIdAndUpdate(req.params.id, req.body)
         .then((item) => res.json({ msg: "Updated successfully" }))
         .catch((err) =>
-            res.status(400).json({ error: "Unable to update the database" })
+            res.status(400).json({
+                error: "Error updating vehicle. This is likely due to a duplicate vehicle number.",
+            })
         );
 });
 router.delete("/:vehicleNumber", (req, res) => {

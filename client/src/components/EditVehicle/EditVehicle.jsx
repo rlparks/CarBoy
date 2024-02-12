@@ -16,6 +16,7 @@ export default function EditVehicle() {
         mileage: "",
         pictureUrl: "",
     });
+    const [error, setError] = useState("");
 
     useEffect(() => {
         getVehicleDetails(vehicleNumber).then((vehicle) => setVehicle(vehicle));
@@ -74,7 +75,7 @@ export default function EditVehicle() {
                 await axios.put(url, vehicle);
                 navigate("/success");
             } catch (err) {
-                console.log("PUT error");
+                setError(err.response.data.error);
             }
         }
     }
@@ -83,6 +84,7 @@ export default function EditVehicle() {
         <div className="d-flex justify-content-center">
             <div className="w-25">
                 <h2 className="text-center mb-3">{"Edit: " + vehicleNumber}</h2>
+                {error && <p className="text-center text-danger">{error}</p>}
                 <form onSubmit={submitHandler}>
                     <div className="mb-3">
                         <label className="form-label">Vehicle Number</label>

@@ -13,6 +13,7 @@ export default function AddVehicle() {
     const [pictureUrl, setPictureUrl] = useState("");
     const [mileage, setMileage] = useState("");
     const [image, setImage] = useState();
+    const [error, setError] = useState("");
 
     function vehicleNumberChangeHandler(event) {
         setVehicleNumber(event.target.value);
@@ -67,15 +68,19 @@ export default function AddVehicle() {
                 mileage: mileage,
             };
 
-            // console.log(newVehicle);
-            await axios.post(SERVER_URL + "api/vehicles/", newVehicle);
-            navigate("/success");
+            try {
+                await axios.post(SERVER_URL + "api/vehicles/", newVehicle);
+                navigate("/success");
+            } catch (err) {
+                setError(err.response.data.error);
+            }
         }
     }
     return (
         <div className="d-flex justify-content-center">
             <div className="w-25">
                 <h2 className="text-center mb-3">Add Vehicle</h2>
+                {error && <p className="text-center text-danger">{error}</p>}
                 <form onSubmit={addVehicleHandler}>
                     <div className="mb-3">
                         <label className="form-label">Vehicle Number</label>

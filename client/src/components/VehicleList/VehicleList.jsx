@@ -114,7 +114,7 @@ export default function VehicleList({ isAdmin, mode }) {
 
             {mode == "manage" && (
                 <div>
-                    <div className="d-flex justify-content-center mb-2">
+                    <div className="d-flex justify-content-center mt-3">
                         <Link className="btn btn-primary me-1" to="/addvehicle">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

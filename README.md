@@ -12,3 +12,7 @@ From this directory run:
 docker build -t cb-client ./client/
 docker build -t cb-server ./server/
 ```
+
+If needed, copy the images to a server using `docker save` and `docker load`.
+
+The application can then be run using the included `docker-compose.yml` file.

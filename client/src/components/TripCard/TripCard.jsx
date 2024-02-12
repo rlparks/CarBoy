@@ -22,6 +22,7 @@ export default function TripCard({ trip }) {
         trip.endTime !== null
             ? getDateTimeFormat().format(new Date(trip.endTime))
             : "Now";
+    const distance = trip.endMileage ? trip.endMileage - trip.startMileage : -1;
 
     return (
         <div className="card" key={trip._id}>
@@ -42,6 +43,12 @@ export default function TripCard({ trip }) {
                 {trip.endMileage !== null && (
                     <li className="list-group-item">
                         {"Ending Mileage: " + trip.endMileage}
+                    </li>
+                )}
+                {/* duplicate for style reasons */}
+                {trip.endMileage !== null && (
+                    <li className="list-group-item">
+                        {"Distance: " + distance}
                     </li>
                 )}
             </ul>

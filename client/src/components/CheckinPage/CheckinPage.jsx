@@ -24,6 +24,16 @@ export default function CheckinPage() {
         if (!endMileage) {
             alert("Please enter an ending mileage.");
         } else {
+            if (endMileage - currentTrip.startMileage > 250) {
+                // check if user meant to enter a large distance
+                const userConfirmed = confirm(
+                    "Distance is greater than 250 miles. Are you sure this is correct?"
+                );
+                if (!userConfirmed) {
+                    return;
+                }
+            }
+
             const vehicleObj = {
                 vehicleNumber,
                 userId: userData.user.id,

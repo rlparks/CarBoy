@@ -16,11 +16,9 @@ router.get("/:vehicleNumber", (req, res) => {
     Vehicle.findOne({ vehicleNumber: req.params.vehicleNumber })
         .then((item) => res.json(item))
         .catch((err) =>
-            res
-                .status(404)
-                .json({
-                    noitemfound: "No vehicle found with that vehicle number",
-                })
+            res.status(404).json({
+                noitemfound: "No vehicle found with that vehicle number",
+            })
         );
 });
 router.post("/", (req, res) => {
@@ -29,7 +27,7 @@ router.post("/", (req, res) => {
         .then((item) => res.json({ msg: "Vehicle added successfully" }))
         .catch((err) => {
             res.status(400).json({
-                error: "Error updating vehicle. This is likely due to a duplicate vehicle number.",
+                error: "Error adding vehicle. This is likely due to a duplicate vehicle number.",
             });
             // console.log(err);
         });

@@ -68,7 +68,7 @@ export default function AddVehicle() {
             };
 
             // console.log(newVehicle);
-            await axios.post(window.SERVER_URL + "api/vehicles/", newVehicle);
+            await axios.post(SERVER_URL + "api/vehicles/", newVehicle);
             navigate("/success");
         }
     }

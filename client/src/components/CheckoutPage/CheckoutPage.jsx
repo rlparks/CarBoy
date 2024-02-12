@@ -11,6 +11,7 @@ export default function CheckoutPage() {
     const vehicleNumber = params.vehicleNumber;
     const [vehicle, setVehicle] = useState({});
     const navigate = useNavigate();
+    const [error, setError] = useState("");
 
     const [destination, setDestination] = useState("");
 
@@ -33,7 +34,7 @@ export default function CheckoutPage() {
                 const res = await axios.post(url, vehicleObj);
                 navigate("/success");
             } catch (err) {
-                console.log("POST error:\n" + err);
+                setError(err.response.data.error);
             }
         }
     }
@@ -45,6 +46,7 @@ export default function CheckoutPage() {
     return vehicle ? (
         <div className="">
             <h2 className="text-center mb-3">Check Out</h2>
+            {error && <p className="text-center text-danger">{error}</p>}
             <div className="d-flex justify-content-center flex-column">
                 <div className="d-flex justify-content-evenly">
                     <div className="">

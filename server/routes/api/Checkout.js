@@ -32,11 +32,17 @@ router.post("/:vehicleNumber", (req, res) => {
                     .then((item) =>
                         res.json({ msg: "Successfully checked out" })
                     )
-                    .catch((err) => console.log(err));
+                    .catch((err) => {
+                        res.status(500).json({
+                            error: "Error checking out vehicle.",
+                        });
+                    });
             }
         })
         .catch((err) => {
-            res.status(404).json({ err: "No vehicle found with that number" });
+            res.status(404).json({
+                error: "No vehicle found with that number",
+            });
             console.log(err);
         });
 });

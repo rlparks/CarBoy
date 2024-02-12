@@ -2,11 +2,8 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
-import {
-    SERVER_URL,
-    getDateTimeFormat,
-    getVehicleDetails,
-} from "../../assets/helpers";
+import { getDateTimeFormat, getVehicleDetails } from "../../assets/helpers";
+import { SERVER_URL } from "../../../public/SERVER_URL";
 import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckinPage() {

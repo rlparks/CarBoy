@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { SERVER_URL, getUser } from "../../assets/helpers";
+import { getUser } from "../../assets/helpers";
+import { SERVER_URL } from "../../../public/SERVER_URL";
 
 export default function DeletePage({ mode }) {
     const params = useParams();

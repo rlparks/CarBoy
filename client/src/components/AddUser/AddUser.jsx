@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SERVER_URL } from "../../assets/helpers";
+import { SERVER_URL } from "../../../public/SERVER_URL";
 
 export default function AddUser() {
     const navigate = useNavigate();

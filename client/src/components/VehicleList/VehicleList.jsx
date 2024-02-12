@@ -2,11 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import { Link } from "react-router-dom";
-import {
-    SERVER_URL,
-    downloadJSONFile,
-    readJSONFromFile,
-} from "../../assets/helpers";
+import { downloadJSONFile, readJSONFromFile } from "../../assets/helpers";
+import { SERVER_URL } from "../../../public/SERVER_URL";
 
 export default function VehicleList({ isAdmin, mode }) {
     const numColumns = 4;

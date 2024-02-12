@@ -2,7 +2,7 @@ import axios from "axios";
 import UserContext from "../../context/UserContext";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { SERVER_URL } from "../../assets/helpers";
+import { SERVER_URL } from "../../../public/SERVER_URL";
 
 export default function LoginPage() {
     const { setUserData } = useContext(UserContext);

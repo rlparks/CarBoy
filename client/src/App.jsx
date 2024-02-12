@@ -16,7 +16,7 @@ import TripsPage from "./components/TripsPage/TripsPage";
 import EditUser from "./components/EditUser/EditUser";
 import AddUser from "./components/AddUser/AddUser";
 import DeletePage from "./components/DeletePage/DeletePage";
-import { SERVER_URL } from "./assets/helpers";
+import { SERVER_URL } from "../public/SERVER_URL";
 
 export default function App() {
     const [userData, setUserData] = useState({

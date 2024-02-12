@@ -1,4 +1,5 @@
 import axios from "axios";
+import { SERVER_URL } from "../../public/SERVER_URL";
 
 export async function getVehicleDetails(vehicleNumber) {
     const url = SERVER_URL + "api/vehicles/" + vehicleNumber;
@@ -67,5 +68,3 @@ export function readJSONFromFile() {
         tempInput.click();
     });
 }
-
-export const SERVER_URL = "http://172.19.174.2:8081/";

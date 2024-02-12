@@ -3,6 +3,8 @@ services:
     client:
         image: cb-client
         restart: unless-stopped
+        volumes:
+            - ./SERVER_URL.js:/app/dist/SERVER_URL.js
         ports:
             - 80:80
     server:

@@ -1,6 +1,7 @@
 version: "3.9"
 services:
     client:
+        container_name: carboy-client
         image: cb-client
         restart: unless-stopped
         volumes:
@@ -23,6 +24,7 @@ services:
         depends_on:
             - mongo
     mongo:
+        container_name: carboy-mongo
         image: mongo
         restart: unless-stopped
         environment:
@@ -33,6 +35,7 @@ services:
         volumes:
             - ./data:/data/db
     mongo-express:
+        container_name: carboy-mongo-gui
         image: mongo-express
         restart: unless-stopped
         ports:

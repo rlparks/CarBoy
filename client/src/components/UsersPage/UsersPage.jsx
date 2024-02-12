@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import UserCard from "../UserCard/UserCard";
 import { Link } from "react-router-dom";
-import { SERVER_URL } from "../../../public/SERVER_URL";
 
 export default function UsersPage() {
     const numColumns = 4;

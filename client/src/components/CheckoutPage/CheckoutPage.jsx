@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
 import { getVehicleDetails } from "../../assets/helpers";
-import { SERVER_URL } from "../../../public/SERVER_URL";
 import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckoutPage() {

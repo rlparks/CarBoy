@@ -1,5 +1,4 @@
 import axios from "axios";
-import { SERVER_URL } from "../../public/SERVER_URL";
 
 export async function getVehicleDetails(vehicleNumber) {
     const url = SERVER_URL + "api/vehicles/" + vehicleNumber;

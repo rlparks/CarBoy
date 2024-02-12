@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SERVER_URL } from "../../../public/SERVER_URL";
 
 export default function AddVehicle() {
     const navigate = useNavigate();
@@ -69,7 +68,7 @@ export default function AddVehicle() {
             };
 
             // console.log(newVehicle);
-            await axios.post(SERVER_URL + "api/vehicles/", newVehicle);
+            await axios.post(window.SERVER_URL + "api/vehicles/", newVehicle);
             navigate("/success");
         }
     }

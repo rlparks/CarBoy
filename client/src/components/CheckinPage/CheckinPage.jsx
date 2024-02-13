@@ -16,6 +16,7 @@ export default function CheckinPage() {
 
     const [endMileage, setEndMileage] = useState("");
     function endingMileageChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 10);
         setEndMileage(event.target.value);
     }
 

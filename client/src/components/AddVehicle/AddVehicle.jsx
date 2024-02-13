@@ -16,18 +16,22 @@ export default function AddVehicle() {
     const [error, setError] = useState("");
 
     function vehicleNumberChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 5);
         setVehicleNumber(event.target.value);
     }
 
     function makeChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 15);
         setMake(event.target.value);
     }
 
     function modelChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 15);
         setModel(event.target.value);
     }
 
     function yearChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 4);
         setYear(event.target.value);
     }
 
@@ -36,6 +40,7 @@ export default function AddVehicle() {
     }
 
     function licensePlateChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 10);
         setLicensePlate(event.target.value);
     }
 
@@ -44,6 +49,7 @@ export default function AddVehicle() {
     }
 
     function mileageChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 10);
         setMileage(event.target.value);
     }
 

@@ -27,18 +27,22 @@ export default function EditVehicle() {
     }, []);
 
     function vehicleNumberChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 5);
         setVehicle({ ...vehicle, vehicleNumber: event.target.value });
     }
 
     function makeChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 15);
         setVehicle({ ...vehicle, make: event.target.value });
     }
 
     function modelChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 15);
         setVehicle({ ...vehicle, model: event.target.value });
     }
 
     function yearChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 4);
         setVehicle({ ...vehicle, year: event.target.value });
     }
 
@@ -47,6 +51,7 @@ export default function EditVehicle() {
     }
 
     function licensePlateChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 10);
         setVehicle({ ...vehicle, licensePlate: event.target.value });
     }
 
@@ -55,6 +60,7 @@ export default function EditVehicle() {
     }
 
     function mileageChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 10);
         setVehicle({ ...vehicle, mileage: event.target.value });
     }
 

@@ -53,7 +53,7 @@ export default function VehicleList({ isAdmin, mode }) {
 
     return (
         <div>
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center mb-3">
                 <div className="w-75">
                     <div>
                         <h2 className="text-center mb-3">Available</h2>
@@ -114,7 +114,7 @@ export default function VehicleList({ isAdmin, mode }) {
 
             {mode == "manage" && (
                 <div>
-                    <div className="d-flex justify-content-center mt-3">
+                    <div className="d-flex justify-content-center mb-3">
                         <Link className="btn btn-primary me-1" to="/addvehicle">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

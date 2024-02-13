@@ -9,7 +9,7 @@ export default function CheckoutPage() {
     const params = useParams();
     const { userData, user } = useContext(UserContext);
     const vehicleNumber = params.vehicleNumber;
-    const [vehicle, setVehicle] = useState({});
+    const [vehicle, setVehicle] = useState({ pictureUrl: "", mileage: "" });
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [destinationArray, setDestinationArray] = useState([]);
@@ -113,7 +113,10 @@ export default function CheckoutPage() {
                                     />
                                     <datalist id="destinationDatalist">
                                         {destinationArray.map((destination) => (
-                                            <option value={destination} />
+                                            <option
+                                                key={destination}
+                                                value={destination}
+                                            />
                                         ))}
                                     </datalist>
                                 </div>

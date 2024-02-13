@@ -2,7 +2,11 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
-import { getDateTimeFormat, getVehicleDetails } from "../../assets/helpers";
+import {
+    getDateTimeFormat,
+    getUser,
+    getVehicleDetails,
+} from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckinPage() {
@@ -12,6 +16,11 @@ export default function CheckinPage() {
     const [vehicle, setVehicle] = useState({});
     const [currentTrip, setCurrentTrip] = useState({});
     const [error, setError] = useState(null);
+    const [currentTripEmployeeUser, setCurrentTripEmployeeUser] = useState({
+        fullName: "",
+        admin: false,
+        username: null,
+    });
     const navigate = useNavigate();
 
     const [endMileage, setEndMileage] = useState("");
@@ -65,6 +74,16 @@ export default function CheckinPage() {
         });
     }, []);
 
+    useEffect(() => {
+        if (currentTrip.employee) {
+            getUser(currentTrip.employee)
+                .then((employeeObj) => {
+                    setCurrentTripEmployeeUser(employeeObj);
+                })
+                .catch((err) => console.log("Error in getUser"));
+        }
+    }, [currentTrip]);
+
     return vehicle ? (
         <div className="">
             <h2 className="text-center mb-3">Check In</h2>
@@ -112,7 +131,7 @@ export default function CheckinPage() {
                     <label className="form-label">Employee</label>
                     <input
                         disabled
-                        value={userData.user.username}
+                        value={currentTripEmployeeUser.fullName}
                         className="form-control"
                     />
                 </div>

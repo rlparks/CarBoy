@@ -5,21 +5,7 @@ import UserContext from "../../context/UserContext";
 import { getUser } from "../../assets/helpers";
 
 export default function Header({ setUserData, isAdmin, serverDown }) {
-    const { userData } = useContext(UserContext);
-    const [user, setUser] = useState({ fullName: "" });
-
-    useEffect(() => {
-        if (userData.user) {
-            getUser(userData.user.id).then((user) => {
-                if (!user.fullName) {
-                    user.fullName = userData.user.username;
-                }
-                setUser(user);
-            });
-        }
-    }, [userData]);
-
-    // console.log(userData);
+    const { userData, user } = useContext(UserContext);
 
     function handleLogout() {
         localStorage.clear();

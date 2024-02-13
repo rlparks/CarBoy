@@ -7,7 +7,7 @@ import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckoutPage() {
     const params = useParams();
-    const { userData } = useContext(UserContext);
+    const { userData, user } = useContext(UserContext);
     const vehicleNumber = params.vehicleNumber;
     const [vehicle, setVehicle] = useState({});
     const navigate = useNavigate();
@@ -94,7 +94,7 @@ export default function CheckoutPage() {
                                     </label>
                                     <input
                                         disabled
-                                        value={userData.user.username}
+                                        value={user.fullName}
                                         className="form-control"
                                     />
                                 </div>

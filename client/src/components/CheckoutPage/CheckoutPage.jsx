@@ -44,12 +44,17 @@ export default function CheckoutPage() {
         getVehicleDetails(vehicleNumber).then((vehicle) => setVehicle(vehicle));
 
         setDestinationArray([
-            "STEM I",
-            "STEM II",
-            "Food Science",
-            "Poultry Science",
-            "Sanford Stadium",
-            "Administration Building",
+            "1131 - STEM I",
+            "1132 - STEM II",
+            "1020 - Food Science",
+            "1025 - Poultry Science",
+            "0678 - Sanford Stadium",
+            "0631 - Administration Building",
+            "0023 - Terrell Hall",
+            "0043 - Law School",
+            "0040 - Jackson Street Building",
+            "0046 - Caldwell Hall",
+            "0031 - Candler Hall",
         ]);
     }, []);
 

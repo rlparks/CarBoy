@@ -28,9 +28,10 @@ export default function App() {
         .get(SERVER_URL)
         .then((response) => {
             setServerRunning(true);
-            console.log("SERVER RUNNING");
         })
         .catch((err) => setServerRunning(false));
+
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function checkLoggedIn() {
@@ -56,11 +57,13 @@ export default function App() {
                         user: userRes.data,
                     });
                 }
+
+                setLoading(false);
             }
         }
 
         checkLoggedIn();
-    }, []);
+    }, [serverRunning]);
 
     useEffect(() => {
         try {
@@ -77,7 +80,7 @@ export default function App() {
     return (
         <UserContext.Provider value={{ userData, setUserData }}>
             {serverRunning ? (
-                <NormalBrowserRouter />
+                !loading && <NormalBrowserRouter />
             ) : (
                 <NoServerBrowserRouter />
             )}

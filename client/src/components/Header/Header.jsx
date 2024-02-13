@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/UserContext";
 import { getUser } from "../../assets/helpers";
 
-export default function Header({ setUserData, isAdmin }) {
+export default function Header({ setUserData, isAdmin, serverDown }) {
     const { userData } = useContext(UserContext);
     const [user, setUser] = useState({ fullName: "" });
 
@@ -61,25 +61,27 @@ export default function Header({ setUserData, isAdmin }) {
                         )}
                     </ul>
 
-                    <ul className="navbar-nav mb-2 mb-lg-0">
-                        {userData.user ? (
-                            <div className="d-flex">
-                                <Link className="nav-link me-1">
-                                    {user.fullName}
+                    {!serverDown && (
+                        <ul className="navbar-nav mb-2 mb-lg-0">
+                            {userData.user ? (
+                                <div className="d-flex">
+                                    <Link className="nav-link me-1">
+                                        {user.fullName}
+                                    </Link>
+                                    <button
+                                        className="btn btn-secondary"
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            ) : (
+                                <Link className="btn btn-secondary" to="/login">
+                                    Login
                                 </Link>
-                                <button
-                                    className="btn btn-secondary"
-                                    onClick={handleLogout}
-                                >
-                                    Logout
-                                </button>
-                            </div>
-                        ) : (
-                            <Link className="btn btn-secondary" to="/login">
-                                Login
-                            </Link>
-                        )}
-                    </ul>
+                            )}
+                        </ul>
+                    )}
                 </div>
             </div>
         </nav>

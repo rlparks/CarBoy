@@ -20,6 +20,11 @@ mongoose
         app.listen(port, () => console.log(`Server running on port ${port}`));
         console.log("MongoDB Connection Succeeded");
 
+        // for checking if server alive
+        app.get("/", (req, res) =>
+            res.status(200).json({ message: "Server is running!" })
+        );
+
         const vehicles = require("./routes/api/Vehicle");
         app.use("/api/vehicles", vehicles);
 

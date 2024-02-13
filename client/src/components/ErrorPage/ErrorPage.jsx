@@ -40,6 +40,14 @@ export default function ErrorPage({ type }) {
                         </Link>
                     </div>
                 )}
+
+                {type === 503 && (
+                    <div>
+                        <h1 className="mb-3">Error 503: Service Unavailable</h1>
+                        <p>CarBoy is unable to access its server.</p>
+                        <p>Please alert ESD IT.</p>
+                    </div>
+                )}
             </div>
         </div>
     );

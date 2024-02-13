@@ -8,13 +8,13 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
     const [currentUser, setCurrentUser] = useState("");
 
     useState(() => {
-        if (vehicle.currentUserId != null) {
+        if (userData.user && vehicle.currentUserId != null) {
             getUser(vehicle.currentUserId).then((user) => {
                 // console.log(user);
                 setCurrentUser(user);
             });
         }
-    }, []);
+    }, [userData]);
 
     return (
         <div className="card" key={vehicle._id}>

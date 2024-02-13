@@ -16,13 +16,18 @@ import TripsPage from "./components/TripsPage/TripsPage";
 import UsersPage from "./components/UsersPage/UsersPage";
 import VehicleList from "./components/VehicleList/VehicleList";
 import UserContext from "./context/UserContext";
+import { getUser } from "./assets/helpers";
 
 export default function App() {
     const [userData, setUserData] = useState({
         token: undefined,
         user: undefined,
     });
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [user, setUser] = useState({
+        fullName: null,
+        admin: false,
+        username: null,
+    });
     const [serverRunning, setServerRunning] = useState(false);
     axios
         .get(SERVER_URL)
@@ -68,17 +73,26 @@ export default function App() {
     useEffect(() => {
         try {
             if (userData.user) {
-                setIsAdmin(userData.user.admin);
+                getUser(userData.user.id).then((userObj) => {
+                    if (!userObj.fullName) {
+                        userObj.fullName = userObj.username;
+                    }
+                    setUser(userObj);
+                });
             } else {
-                setIsAdmin(false);
+                setUser({
+                    fullName: null,
+                    admin: false,
+                    username: null,
+                });
             }
         } catch (err) {
-            console.log("ERROR IN SETISADMIN");
+            console.log("ERROR IN SETUSER");
         }
     }, [userData]);
 
     return (
-        <UserContext.Provider value={{ userData, setUserData }}>
+        <UserContext.Provider value={{ userData, setUserData, user }}>
             {serverRunning ? (
                 !loading && <NormalBrowserRouter />
             ) : (
@@ -90,11 +104,7 @@ export default function App() {
     function NoServerBrowserRouter() {
         return (
             <BrowserRouter>
-                <Header
-                    setUserData={setUserData}
-                    isAdmin={isAdmin}
-                    serverDown={true}
-                />
+                <Header serverDown={true} />
                 <Routes>
                     <Route path="*" element={<ErrorPage type={503} />} />
                 </Routes>
@@ -106,13 +116,13 @@ export default function App() {
         {
             return (
                 <BrowserRouter>
-                    <Header setUserData={setUserData} isAdmin={isAdmin} />
+                    <Header setUserData={setUserData} isAdmin={user.admin} />
                     <Routes>
                         <Route
                             path="/"
                             element={
                                 <VehicleList
-                                    isAdmin={isAdmin}
+                                    isAdmin={user.admin}
                                     mode={"normal"}
                                 />
                             }
@@ -122,7 +132,7 @@ export default function App() {
                             element={
                                 <RequireAdmin
                                     userData={userData}
-                                    isAdmin={isAdmin}
+                                    isAdmin={user.admin}
                                 >
                                     <AddVehicle />
                                 </RequireAdmin>
@@ -133,10 +143,10 @@ export default function App() {
                             element={
                                 <RequireAdmin
                                     userData={userData}
-                                    isAdmin={isAdmin}
+                                    isAdmin={user.admin}
                                 >
                                     <VehicleList
-                                        isAdmin={isAdmin}
+                                        isAdmin={user.admin}
                                         mode="manage"
                                     />
                                 </RequireAdmin>
@@ -147,7 +157,7 @@ export default function App() {
                             element={
                                 <RequireAdmin
                                     userData={userData}
-                                    isAdmin={isAdmin}
+                                    isAdmin={user.admin}
                                 >
                                     <DeletePage mode="vehicle" />
                                 </RequireAdmin>
@@ -158,7 +168,7 @@ export default function App() {
                             element={
                                 userData.user ? (
                                     <VehicleList
-                                        isAdmin={isAdmin}
+                                        isAdmin={user.admin}
                                         mode="trips"
                                     />
                                 ) : (
@@ -181,7 +191,7 @@ export default function App() {
                             element={
                                 <RequireAdmin
                                     userData={userData}
-                                    isAdmin={isAdmin}
+                                    isAdmin={user.admin}
                                 >
                                     <EditVehicle />
                                 </RequireAdmin>
@@ -202,7 +212,7 @@ export default function App() {
                             element={
                                 <RequireAdmin
                                     userData={userData}
-                                    isAdmin={isAdmin}
+                                    isAdmin={user.admin}
                                 >
                                     <UsersPage />
                                 </RequireAdmin>
@@ -213,7 +223,7 @@ export default function App() {
                             element={
                                 <RequireAdmin
                                     userData={userData}
-                                    isAdmin={isAdmin}
+                                    isAdmin={user.admin}
                                 >
                                     <EditUser />
                                 </RequireAdmin>
@@ -224,7 +234,7 @@ export default function App() {
                             element={
                                 <RequireAdmin
                                     userData={userData}
-                                    isAdmin={isAdmin}
+                                    isAdmin={user.admin}
                                 >
                                     <AddUser />
                                 </RequireAdmin>
@@ -235,7 +245,7 @@ export default function App() {
                             element={
                                 <RequireAdmin
                                     userData={userData}
-                                    isAdmin={isAdmin}
+                                    isAdmin={user.admin}
                                 >
                                     <DeletePage mode="user" />
                                 </RequireAdmin>

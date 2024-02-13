@@ -12,6 +12,7 @@ export default function CheckoutPage() {
     const [vehicle, setVehicle] = useState({});
     const navigate = useNavigate();
     const [error, setError] = useState("");
+    const [destinationArray, setDestinationArray] = useState([]);
 
     const [destination, setDestination] = useState("");
 
@@ -41,6 +42,15 @@ export default function CheckoutPage() {
 
     useEffect(() => {
         getVehicleDetails(vehicleNumber).then((vehicle) => setVehicle(vehicle));
+
+        setDestinationArray([
+            "STEM I",
+            "STEM II",
+            "Food Science",
+            "Poultry Science",
+            "Sanford Stadium",
+            "Administration Building",
+        ]);
     }, []);
 
     return vehicle ? (
@@ -62,7 +72,61 @@ export default function CheckoutPage() {
                                 Error: Vehicle is already checked out.
                             </p>
                         ) : (
-                            <CheckoutForm />
+                            <form onSubmit={submitHandler}>
+                                <div className="mb-3">
+                                    <label className="form-label">
+                                        Vehicle Number
+                                    </label>
+                                    <input
+                                        disabled
+                                        value={vehicleNumber}
+                                        className="form-control"
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">
+                                        Employee
+                                    </label>
+                                    <input
+                                        disabled
+                                        value={userData.user.username}
+                                        className="form-control"
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">
+                                        Destination
+                                    </label>
+                                    <input
+                                        autoFocus
+                                        value={destination}
+                                        onChange={destinationChangeHander}
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Type to search..."
+                                        list="destinationDatalist"
+                                    />
+                                    <datalist id="destinationDatalist">
+                                        {destinationArray.map((destination) => (
+                                            <option value={destination} />
+                                        ))}
+                                    </datalist>
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">
+                                        Starting Mileage
+                                    </label>
+                                    <input
+                                        disabled
+                                        value={vehicle.mileage}
+                                        className="form-control"
+                                    />
+                                </div>
+
+                                <button className="btn btn-primary">
+                                    Submit
+                                </button>
+                            </form>
                         )}
                     </div>
                 </div>
@@ -71,48 +135,4 @@ export default function CheckoutPage() {
     ) : (
         <ErrorPage type={404} />
     );
-
-    function CheckoutForm() {
-        return (
-            <form onSubmit={submitHandler}>
-                <div className="mb-3">
-                    <label className="form-label">Vehicle Number</label>
-                    <input
-                        disabled
-                        value={vehicleNumber}
-                        className="form-control"
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Employee</label>
-                    <input
-                        disabled
-                        value={userData.user.username}
-                        className="form-control"
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Destination</label>
-                    <input
-                        autoFocus
-                        value={destination}
-                        onChange={destinationChangeHander}
-                        type="text"
-                        className="form-control"
-                        placeholder="STEM I"
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Starting Mileage</label>
-                    <input
-                        disabled
-                        value={vehicle.mileage}
-                        className="form-control"
-                    />
-                </div>
-
-                <button className="btn btn-primary">Submit</button>
-            </form>
-        );
-    }
 }

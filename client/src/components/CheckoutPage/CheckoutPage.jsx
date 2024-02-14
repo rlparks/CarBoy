@@ -15,6 +15,7 @@ export default function CheckoutPage() {
     const [destinationArray, setDestinationArray] = useState([]);
 
     const [destination, setDestination] = useState("");
+    const [name, setName] = useState("");
 
     function destinationChangeHander(event) {
         setDestination(event.target.value);
@@ -58,6 +59,12 @@ export default function CheckoutPage() {
         ]);
     }, []);
 
+    useEffect(() => {
+        if (user && user.fullName) {
+            setName(user.fullName);
+        }
+    }, [user]);
+
     return vehicle ? (
         <div className="">
             <h2 className="text-center mb-3">Check Out</h2>
@@ -94,7 +101,7 @@ export default function CheckoutPage() {
                                     </label>
                                     <input
                                         disabled
-                                        value={user.fullName}
+                                        value={name}
                                         className="form-control"
                                     />
                                 </div>

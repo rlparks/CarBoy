@@ -76,6 +76,7 @@ export default function CheckoutPage() {
                             className="d-block mx-auto"
                             src={vehicle.pictureUrl}
                             alt={"Image of " + vehicleNumber}
+                            style={{ width: "500px" }}
                         />
                     </div>
                     <div className="w-25">

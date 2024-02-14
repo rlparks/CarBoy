@@ -165,7 +165,7 @@ export default function CheckinPage() {
                         autoFocus
                         value={endMileage}
                         onChange={endingMileageChangeHandler}
-                        type="text"
+                        type="number"
                         className="form-control"
                         placeholder="1000001"
                     />

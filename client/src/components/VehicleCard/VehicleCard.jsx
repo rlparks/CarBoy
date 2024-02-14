@@ -5,14 +5,19 @@ import { getUser } from "../../assets/helpers";
 
 export default function VehicleCard({ vehicle, isAdmin, mode }) {
     const { userData } = useContext(UserContext);
-    const [currentUser, setCurrentUser] = useState("");
+    const [currentUser, setCurrentUser] = useState({ fullName: "" });
 
     useState(() => {
         if (userData.user && vehicle.currentUserId != null) {
-            getUser(vehicle.currentUserId).then((user) => {
-                // console.log(user);
-                setCurrentUser(user);
-            });
+            getUser(vehicle.currentUserId)
+                .then((user) => {
+                    // console.log(user);
+                    setCurrentUser(user);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setCurrentUser({ fullName: "Unknown User" });
+                });
         }
     }, [userData]);
 
@@ -46,11 +51,16 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
                 </div>
             )}
 
-            {userData.user && vehicle.checkedOut && (
-                <div className="card-footer text-body-secondary">
-                    {currentUser.fullName}
-                </div>
-            )}
+            {userData.user &&
+                vehicle.checkedOut &&
+                currentUser &&
+                currentUser.fullName && (
+                    <div className="card-footer text-body-secondary">
+                        {currentUser.fullName
+                            ? currentUser.fullName
+                            : "Invalid User"}
+                    </div>
+                )}
         </div>
     );
 }

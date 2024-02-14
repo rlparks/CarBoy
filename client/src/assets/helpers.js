@@ -15,7 +15,14 @@ export async function getVehicleDetails(vehicleNumber) {
 export async function getUser(userId) {
     try {
         const userDetails = await axios.get(SERVER_URL + "api/users/" + userId);
-
+        if (!userDetails.data) {
+            userDetails.data = {
+                _id: "0",
+                username: "unknown",
+                admin: false,
+                fullName: "Unknown User",
+            };
+        }
         return userDetails.data;
     } catch (err) {
         console.log(userId);

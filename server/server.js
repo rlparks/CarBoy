@@ -21,7 +21,7 @@ mongoose
         console.log("MongoDB Connection Succeeded");
 
         // for checking if server alive
-        app.get("/", (req, res) =>
+        app.get("/api", (req, res) =>
             res.status(200).json({ message: "Server is running!" })
         );
 

@@ -8,6 +8,6 @@ RUN yarn install
 COPY . .
 RUN yarn build
 
-EXPOSE 80
+EXPOSE 3009
 
-CMD ["yarn", "serve", "-p", "80", "-s", "./dist"]
+CMD ["yarn", "serve", "-p", "3009", "-s", "./dist"]

@@ -30,7 +30,7 @@ export default function App() {
     });
     const [serverRunning, setServerRunning] = useState(false);
     axios
-        .get(SERVER_URL)
+        .get(SERVER_URL + "api/")
         .then((response) => {
             setServerRunning(true);
         })

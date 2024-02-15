@@ -2,18 +2,16 @@ version: "3.9"
 services:
     client:
         container_name: carboy-client
+        build: ./client
         image: cb-client
         restart: unless-stopped
         volumes:
             - ./SERVER_URL.js:/app/dist/SERVER_URL.js
-        ports:
-            - 80:80
     server:
         container_name: carboy-server
+        build: ./server
         image: cb-server
         restart: unless-stopped
-        ports:
-            - 8081:8081
         environment:
             MONGO_URL: mongo:27017
             MONGO_USER: root
@@ -48,3 +46,14 @@ services:
             ME_CONFIG_BASICAUTH_PASSWORD: pass
         depends_on:
             - mongo
+    nginx:
+        container_name: carboy-web
+        image: nginx
+        restart: unless-stopped
+        ports:
+            - 80:80
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro
+        depends_on:
+            - client
+            - server

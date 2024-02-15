@@ -19,6 +19,7 @@ services:
             DEFAULT_ADMIN_USERNAME: admin
             DEFAULT_ADMIN_PASSWORD: pass
             DEFAULT_ADMIN_FULLNAME: Default Admin
+            CREATE_DEFAULT_ADMIN: true
         depends_on:
             - mongo
     mongo:

@@ -6,33 +6,35 @@ const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
 
-async function createDefaultAdmin() {
-    try {
-        const username = process.env.DEFAULT_ADMIN_USERNAME;
-        const password = process.env.DEFAULT_ADMIN_PASSWORD;
-        const fullName = process.env.DEFAULT_ADMIN_FULLNAME;
+if (process.env.CREATE_DEFAULT_ADMIN) {
+    async function createDefaultAdmin() {
+        try {
+            const username = process.env.DEFAULT_ADMIN_USERNAME;
+            const password = process.env.DEFAULT_ADMIN_PASSWORD;
+            const fullName = process.env.DEFAULT_ADMIN_FULLNAME;
 
-        const existingUserWithUsername = await User.findOne({ username });
-        if (existingUserWithUsername) {
-            console.log("Default admin already exists, skipping");
-            return;
+            const existingUserWithUsername = await User.findOne({ username });
+            if (existingUserWithUsername) {
+                console.log("Default admin already exists, skipping");
+                return;
+            }
+
+            const passwordHash = await bcryptjs.hash(password, 8);
+            const newUser = new User({
+                username,
+                password: passwordHash,
+                admin: true,
+                fullName,
+            });
+
+            await newUser.save();
+        } catch (err) {
+            console.log(err);
         }
-
-        const passwordHash = await bcryptjs.hash(password, 8);
-        const newUser = new User({
-            username,
-            password: passwordHash,
-            admin: true,
-            fullName,
-        });
-
-        await newUser.save();
-    } catch (err) {
-        console.log(err);
     }
-}
 
-createDefaultAdmin();
+    createDefaultAdmin();
+}
 
 userRouter.post("/signup", async (req, res) => {
     try {

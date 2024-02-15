@@ -90,15 +90,15 @@ export default function CheckinPage() {
             {error && <p className="text-center text-danger">{error}</p>}
             <div className="d-flex justify-content-center flex-column">
                 <div className="d-flex justify-content-evenly">
-                    <div className="">
+                    <div className="w-25">
                         <img
-                            className="d-block mx-auto"
+                            className="img-fluid"
                             src={vehicle.pictureUrl}
                             alt={"Image of " + vehicleNumber}
                             style={{ width: "500px" }}
                         />
                     </div>
-                    <div className="w-25">
+                    <div className="w-50">
                         {!vehicle.checkedOut ? (
                             <p className="text-center">
                                 Error: Vehicle is already checked in.

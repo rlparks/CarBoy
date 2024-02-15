@@ -29,14 +29,17 @@ export default function App() {
         username: null,
     });
     const [serverRunning, setServerRunning] = useState(false);
-    axios
-        .get(SERVER_URL + "api/")
-        .then((response) => {
-            setServerRunning(true);
-        })
-        .catch((err) => setServerRunning(false));
 
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        axios
+            .get(SERVER_URL + "api/")
+            .then((response) => {
+                setServerRunning(true);
+            })
+            .catch((err) => setServerRunning(false));
+    }, []);
 
     useEffect(() => {
         async function checkLoggedIn() {

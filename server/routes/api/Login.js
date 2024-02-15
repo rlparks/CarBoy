@@ -94,7 +94,7 @@ userRouter.post("/login", async (req, res) => {
         console.log("LOGIN SUCCESS: " + username);
         res.json({
             token,
-            user: { id: user._id, username: user.username, admin: user.admin },
+            user: { id: user._id, username: user.username },
         });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -124,7 +124,6 @@ userRouter.get("/", auth, async (req, res) => {
     res.json({
         username: user.username,
         id: user._id,
-        admin: user.admin,
     });
 });
 

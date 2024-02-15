@@ -19,7 +19,14 @@ export default function EditVehicle() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        getVehicleDetails(vehicleNumber).then((vehicle) => setVehicle(vehicle));
+        getVehicleDetails(vehicleNumber).then((vehicle) => {
+            if (vehicle.make === "Departmental") {
+                vehicle.mileage = "";
+                vehicle.licensePlate = "";
+                vehicle.year = "";
+            }
+            setVehicle(vehicle);
+        });
 
         // console.log(vehicle) here returns the intial state
         // hopefully that is just due to React state execution order
@@ -67,12 +74,13 @@ export default function EditVehicle() {
     async function submitHandler(event) {
         event.preventDefault();
         if (
-            !vehicle.vehicleNumber ||
-            !vehicle.make ||
-            !vehicle.model ||
-            !vehicle.year ||
-            !vehicle.licensePlate ||
-            !vehicle.mileage
+            (!vehicle.vehicleNumber ||
+                !vehicle.make ||
+                !vehicle.model ||
+                !vehicle.year ||
+                !vehicle.licensePlate ||
+                !vehicle.mileage) &&
+            vehicle.make !== "Departmental"
         ) {
             alert("Please fill out all fields.");
         } else {

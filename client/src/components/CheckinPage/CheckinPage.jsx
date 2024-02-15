@@ -31,7 +31,7 @@ export default function CheckinPage() {
 
     async function submitHandler(event) {
         event.preventDefault();
-        if (!endMileage) {
+        if (!endMileage && vehicle.make !== "Departmental") {
             alert("Please enter an ending mileage.");
         } else {
             if (endMileage - currentTrip.startMileage > 250) {
@@ -152,25 +152,31 @@ export default function CheckinPage() {
                         className="form-control"
                     />
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Starting Mileage</label>
-                    <input
-                        disabled
-                        value={currentTrip.startMileage}
-                        className="form-control"
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Ending Mileage</label>
-                    <input
-                        autoFocus
-                        value={endMileage}
-                        onChange={endingMileageChangeHandler}
-                        type="number"
-                        className="form-control"
-                        placeholder="1000001"
-                    />
-                </div>
+                {vehicle.make !== "Departmental" && (
+                    <div>
+                        <div className="mb-3">
+                            <label className="form-label">
+                                Starting Mileage
+                            </label>
+                            <input
+                                disabled
+                                value={currentTrip.startMileage}
+                                className="form-control"
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Ending Mileage</label>
+                            <input
+                                autoFocus
+                                value={endMileage}
+                                onChange={endingMileageChangeHandler}
+                                type="number"
+                                className="form-control"
+                                placeholder="1000001"
+                            />
+                        </div>
+                    </div>
+                )}
 
                 <button className="btn btn-primary">Submit</button>
             </form>

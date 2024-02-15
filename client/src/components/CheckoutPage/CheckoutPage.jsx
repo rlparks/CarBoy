@@ -128,16 +128,18 @@ export default function CheckoutPage() {
                                         ))}
                                     </datalist>
                                 </div>
-                                <div className="mb-3">
-                                    <label className="form-label">
-                                        Starting Mileage
-                                    </label>
-                                    <input
-                                        disabled
-                                        value={vehicle.mileage}
-                                        className="form-control"
-                                    />
-                                </div>
+                                {vehicle.make !== "Departmental" && (
+                                    <div className="mb-3">
+                                        <label className="form-label">
+                                            Starting Mileage
+                                        </label>
+                                        <input
+                                            disabled
+                                            value={vehicle.mileage}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                )}
 
                                 <button className="btn btn-primary">
                                     Submit

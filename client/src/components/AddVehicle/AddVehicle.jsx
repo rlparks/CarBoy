@@ -14,9 +14,14 @@ export default function AddVehicle() {
     const [mileage, setMileage] = useState("");
     const [image, setImage] = useState();
     const [error, setError] = useState("");
+    const [isDP, setIsDP] = useState(false);
 
     function vehicleNumberChangeHandler(event) {
-        event.target.value = event.target.value.slice(0, 5);
+        if (isDP) {
+            event.target.value = event.target.value.slice(0, 8);
+        } else {
+            event.target.value = event.target.value.slice(0, 5);
+        }
         setVehicleNumber(event.target.value);
     }
 
@@ -57,10 +62,18 @@ export default function AddVehicle() {
         setImage(event.target.files[0]);
     }
 
+    function isDPChangeHandler(event) {
+        setIsDP(event.target.checked);
+    }
+
     async function addVehicleHandler(event) {
         event.preventDefault();
+        if (isDP) {
+            setMake("Departmental");
+            setModel("Permit");
+        }
 
-        if (!vehicleNumber || !make || !model || !year || !licensePlate) {
+        if (!vehicleNumber || !make || !model) {
             alert("Please fill out all fields");
         } else {
             const newVehicle = {
@@ -88,67 +101,95 @@ export default function AddVehicle() {
                 <h2 className="text-center mb-3">Add Vehicle</h2>
                 {error && <p className="text-center text-danger">{error}</p>}
                 <form onSubmit={addVehicleHandler}>
-                    <div className="mb-3">
-                        <label className="form-label">Vehicle Number</label>
-                        <input
-                            autoFocus
-                            value={vehicleNumber}
-                            onChange={vehicleNumberChangeHandler}
-                            type="number"
-                            className="form-control"
-                            placeholder="94250"
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Make</label>
-                        <input
-                            value={make}
-                            onChange={makeChangeHandler}
-                            type="text"
-                            className="form-control"
-                            placeholder="Ford"
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Model</label>
-                        <input
-                            value={model}
-                            onChange={modelChangeHandler}
-                            type="text"
-                            className="form-control"
-                            placeholder="Explorer"
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Year</label>
-                        <input
-                            value={year}
-                            onChange={yearChangeHandler}
-                            type="number"
-                            className="form-control"
-                            placeholder="2002"
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">License Plate</label>
-                        <input
-                            value={licensePlate}
-                            onChange={licensePlateChangeHandler}
-                            type="text"
-                            className="form-control"
-                            placeholder="ABC1234"
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Current Mileage</label>
-                        <input
-                            value={mileage}
-                            onChange={mileageChangeHandler}
-                            type="number"
-                            className="form-control"
-                            placeholder="1000000"
-                        />
-                    </div>
+                    {!isDP && (
+                        <div>
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    Vehicle Number
+                                </label>
+                                <input
+                                    autoFocus
+                                    value={vehicleNumber}
+                                    onChange={vehicleNumberChangeHandler}
+                                    type="number"
+                                    className="form-control"
+                                    placeholder="94250"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Make</label>
+                                <input
+                                    value={make}
+                                    onChange={makeChangeHandler}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Ford"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Model</label>
+                                <input
+                                    value={model}
+                                    onChange={modelChangeHandler}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Explorer"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Year</label>
+                                <input
+                                    value={year}
+                                    onChange={yearChangeHandler}
+                                    type="number"
+                                    className="form-control"
+                                    placeholder="2002"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    License Plate
+                                </label>
+                                <input
+                                    value={licensePlate}
+                                    onChange={licensePlateChangeHandler}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="ABC1234"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    Current Mileage
+                                </label>
+                                <input
+                                    value={mileage}
+                                    onChange={mileageChangeHandler}
+                                    type="number"
+                                    className="form-control"
+                                    placeholder="1000000"
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {isDP && (
+                        <div>
+                            <div className="mb-3">
+                                <label className="form-label">
+                                    Permit Number
+                                </label>
+                                <input
+                                    autoFocus
+                                    value={vehicleNumber}
+                                    onChange={vehicleNumberChangeHandler}
+                                    type="number"
+                                    className="form-control"
+                                    placeholder="24445042"
+                                />
+                            </div>
+                        </div>
+                    )}
                     <div className="mb-3">
                         <label className="form-label">Picture URL</label>
                         <input
@@ -167,6 +208,19 @@ export default function AddVehicle() {
                             className="form-control"
                         />
                     </div> */}
+                    <div className="mb-3">
+                        <div className="form-check">
+                            <input
+                                checked={isDP}
+                                onChange={isDPChangeHandler}
+                                type="checkbox"
+                                className="form-check-input"
+                            />
+                            <label className="form-check-label">
+                                Departmental Permit
+                            </label>
+                        </div>
+                    </div>
                     <button className="btn btn-primary">Submit</button>
                 </form>
             </div>

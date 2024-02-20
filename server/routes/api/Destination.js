@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
             res.json(items);
         })
         .catch((err) => {
-            res.status(404).json({ noitemsfound: "No destinations found" });
+            res.status(404).json({ error: "No destinations found" });
         });
 });
 router.get("/:id", (req, res) => {
@@ -17,7 +17,7 @@ router.get("/:id", (req, res) => {
         .then((item) => res.json(item))
         .catch((err) =>
             res.status(404).json({
-                noitemfound: "No destination found with that building number",
+                error: "No destination found with that ID",
             })
         );
 });

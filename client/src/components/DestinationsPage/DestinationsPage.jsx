@@ -59,8 +59,8 @@ export default function DestinationsPage({ isAdmin, mode }) {
                                     " g-4 card-deck"
                                 }
                             >
-                                {destinations.map((vehicle) => (
-                                    <div className="col" key={vehicle._id}>
+                                {destinations.map((destination) => (
+                                    <div className="col" key={destination._id}>
                                         e
                                     </div>
                                 ))}

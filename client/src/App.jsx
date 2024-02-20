@@ -18,6 +18,7 @@ import VehicleList from "./components/VehicleList/VehicleList";
 import UserContext from "./context/UserContext";
 import { getUser } from "./assets/helpers";
 import DestinationsPage from "./components/DestinationsPage/DestinationsPage";
+import AddDestination from "./components/AddDestination/AddDestination";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -273,6 +274,17 @@ export default function App() {
                                 ) : (
                                     <ErrorPage type={401} />
                                 )
+                            }
+                        />
+                        <Route
+                            path="/adddestination"
+                            element={
+                                <RequireAdmin
+                                    userData={userData}
+                                    isAdmin={user.admin}
+                                >
+                                    <AddDestination />
+                                </RequireAdmin>
                             }
                         />
                         <Route

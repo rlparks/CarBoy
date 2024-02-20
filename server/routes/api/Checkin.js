@@ -8,6 +8,11 @@ router.post("/:vehicleNumber", (req, res) => {
     // console.log(req.body);
     Vehicle.findOne({ vehicleNumber: req.params.vehicleNumber })
         .then((vehicle) => {
+            if (!vehicle.checkedOut) {
+                // checkin POST sent to already checked in vehicle
+                res.status(400).json({ error: "Vehicle already checked in." });
+                return;
+            }
             const tripsArray = vehicle.trips;
             const now = new Date(Date.now());
             if (vehicle.currentUserId != "") {
@@ -20,7 +25,7 @@ router.post("/:vehicleNumber", (req, res) => {
                 if (endMileage) {
                     if (endMileage < currentTrip.startMileage) {
                         res.status(400).json({
-                            msg: "Error: Ending Mileage less than Starting Mileage",
+                            error: "Error: Ending Mileage less than Starting Mileage",
                         });
                         return;
                     }

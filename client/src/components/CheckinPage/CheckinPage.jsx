@@ -55,8 +55,7 @@ export default function CheckinPage() {
                 await axios.post(url, vehicleObj);
                 navigate("/success");
             } catch (err) {
-                const msg = err.response.data.msg;
-                setError(msg);
+                setError(err.response.data.error);
             }
         }
     }

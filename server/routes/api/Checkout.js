@@ -8,6 +8,12 @@ router.post("/:vehicleNumber", (req, res) => {
     // console.log(req.body);
     Vehicle.findOne({ vehicleNumber: req.params.vehicleNumber })
         .then((vehicle) => {
+            if (vehicle.checkedOut) {
+                // checkout POST sent to already checked out vehicle
+                res.status(400).json({ error: "Vehicle already checked out." });
+                return;
+            }
+
             const tripsArray = vehicle.trips;
             const now = new Date(Date.now());
             if (vehicle.currentUserId == null) {

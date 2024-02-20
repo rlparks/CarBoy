@@ -10,7 +10,9 @@ router.post("/:vehicleNumber", (req, res) => {
         .then((vehicle) => {
             if (!vehicle.checkedOut) {
                 // checkin POST sent to already checked in vehicle
-                res.status(400).json({ error: "Vehicle already checked in." });
+                res.status(400).json({
+                    error: "Error: Vehicle already checked in.",
+                });
                 return;
             }
             const tripsArray = vehicle.trips;

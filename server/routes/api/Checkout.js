@@ -10,7 +10,9 @@ router.post("/:vehicleNumber", (req, res) => {
         .then((vehicle) => {
             if (vehicle.checkedOut) {
                 // checkout POST sent to already checked out vehicle
-                res.status(400).json({ error: "Vehicle already checked out." });
+                res.status(400).json({
+                    error: "Error: Vehicle already checked out.",
+                });
                 return;
             }
 

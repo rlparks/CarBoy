@@ -44,19 +44,23 @@ export default function CheckoutPage() {
     useEffect(() => {
         getVehicleDetails(vehicleNumber).then((vehicle) => setVehicle(vehicle));
 
-        setDestinationArray([
-            "1131 - STEM I",
-            "1132 - STEM II",
-            "1020 - Food Science",
-            "1025 - Poultry Science",
-            "0678 - Sanford Stadium",
-            "0631 - Administration Building",
-            "0023 - Terrell Hall",
-            "0043 - Law School",
-            "0040 - Jackson Street Building",
-            "0046 - Caldwell Hall",
-            "0031 - Candler Hall",
-        ]);
+        // setDestinationArray([
+        //     "1131 - STEM I",
+        //     "1132 - STEM II",
+        //     "1020 - Food Science",
+        //     "1025 - Poultry Science",
+        //     "0678 - Sanford Stadium",
+        //     "0631 - Administration Building",
+        //     "0023 - Terrell Hall",
+        //     "0043 - Law School",
+        //     "0040 - Jackson Street Building",
+        //     "0046 - Caldwell Hall",
+        //     "0031 - Candler Hall",
+        // ]);
+
+        axios.get(SERVER_URL + "api/destinations/").then((res) => {
+            setDestinationArray(res.data);
+        });
     }, []);
 
     useEffect(() => {
@@ -120,12 +124,20 @@ export default function CheckoutPage() {
                                         list="destinationDatalist"
                                     />
                                     <datalist id="destinationDatalist">
-                                        {destinationArray.map((destination) => (
-                                            <option
-                                                key={destination}
-                                                value={destination}
-                                            />
-                                        ))}
+                                        {destinationArray.map((destination) => {
+                                            const destDisplay =
+                                                destination.buildingNumber
+                                                    ? destination.buildingNumber +
+                                                      " - " +
+                                                      destination.destinationName
+                                                    : destination.destinationName;
+                                            return (
+                                                <option
+                                                    key={destination._id}
+                                                    value={destDisplay}
+                                                />
+                                            );
+                                        })}
                                     </datalist>
                                 </div>
                                 {vehicle.make !== "Departmental" && (

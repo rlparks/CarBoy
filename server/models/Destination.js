@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const DestinationSchema = new mongoose.Schema({
     buildingNumber: {
-        type: Number,
+        type: String,
         unique: true,
         trim: true,
     },

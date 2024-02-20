@@ -11,6 +11,7 @@ export default function AddDestination() {
     });
 
     function buildingNumberChangeHandler(event) {
+        event.target.value = event.target.value.slice(0, 4);
         setDestination((prevDestination) => {
             return { ...prevDestination, buildingNumber: event.target.value };
         });
@@ -23,6 +24,13 @@ export default function AddDestination() {
 
     async function submitHandler(event) {
         event.preventDefault();
+        if (destination.buildingNumber) {
+            destination.buildingNumber = destination.buildingNumber.padStart(
+                4,
+                "0"
+            );
+        }
+
         if (!destination.destinationName) {
             alert("Please fill out all fields.");
         } else {

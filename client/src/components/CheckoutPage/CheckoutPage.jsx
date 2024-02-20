@@ -59,7 +59,30 @@ export default function CheckoutPage() {
         // ]);
 
         axios.get(SERVER_URL + "api/destinations/").then((res) => {
-            setDestinationArray(res.data);
+            // Sort by building number, if applicable
+            setDestinationArray(
+                res.data.sort((a, b) => {
+                    // if (!a.buildingNumber) {
+                    //     return 1;
+                    // }
+
+                    // if (a.buildingNumber < b.buildingNumber) {
+                    //     console.log("a BUILDING NUMBER: " + a.buildingNumber);
+                    //     return -1;
+                    // } else {
+                    //     console.log(
+                    //         a.buildingNumber + " > " + b.buildingNumber
+                    //     );
+                    //     return 1;
+                    // }
+
+                    if (!a.buildingNumber) {
+                        return -1;
+                    }
+
+                    return a.buildingNumber - b.buildingNumber;
+                })
+            );
         });
     }, []);
 

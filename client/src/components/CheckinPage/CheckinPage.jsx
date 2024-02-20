@@ -81,6 +81,10 @@ export default function CheckinPage() {
                 })
                 .catch((err) => console.log("Error in getUser"));
         }
+
+        if (currentTrip.startMileage) {
+            setEndMileage(currentTrip.startMileage);
+        }
     }, [currentTrip]);
 
     return vehicle ? (

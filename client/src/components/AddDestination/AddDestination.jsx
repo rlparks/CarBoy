@@ -31,7 +31,7 @@ export default function AddDestination() {
                 await axios.post(url, destination);
                 navigate("/success");
             } catch (err) {
-                setError(err.response.data.msg);
+                setError(err.response.data.error);
             }
         }
     }
@@ -39,7 +39,7 @@ export default function AddDestination() {
     return (
         <div className="d-flex justify-content-center">
             <div className="w-25">
-                <h2 className="text-center mb-3">{"Add User"}</h2>
+                <h2 className="text-center mb-3">{"Add Destination"}</h2>
                 {error && <p className="text-center text-danger">{error}</p>}
                 <form onSubmit={submitHandler}>
                     <div className="mb-3">

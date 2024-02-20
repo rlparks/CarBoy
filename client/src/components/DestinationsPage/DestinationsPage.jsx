@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import { Link } from "react-router-dom";
 import { downloadJSONFile, readJSONFromFile } from "../../assets/helpers";
+import DestinationCard from "../DestinationCard/DestinationCard";
 
 export default function DestinationsPage({ isAdmin, mode }) {
     const numColumns = 5;
@@ -61,7 +62,9 @@ export default function DestinationsPage({ isAdmin, mode }) {
                             >
                                 {destinations.map((destination) => (
                                     <div className="col" key={destination._id}>
-                                        e
+                                        <DestinationCard
+                                            destination={destination}
+                                        />
                                     </div>
                                 ))}
                             </div>

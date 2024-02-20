@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
 
-export default function UserCard({ user }) {
+export default function DestinationCard({ destination }) {
     return (
-        <div className="card" key={user._id}>
+        <div className="card" key={destination._id}>
             <div className="card-body">
-                <h5 className="card-title">{user.username}</h5>
-                <h6 className="card-subtitle text-body-secondary mb-3">
-                    {user.fullName}
-                </h6>
-                {user.admin && <p className="card-text">Admin</p>}
+                <h5 className="card-title">{destination.destinationName}</h5>
+                {destination.buildingNumber && (
+                    <h6 className="card-subtitle text-body-secondary mb-3">
+                        {destination.buildingNumber}
+                    </h6>
+                )}
                 <div className="btn-group me-1">
                     <Link
                         className="btn btn-warning"
-                        to={"/manageusers/" + user._id}
+                        to={"/managedestinations/" + destination._id}
                     >
                         {/* https://icons.getbootstrap.com/icons/pencil-square/ */}
                         <svg
@@ -36,7 +37,7 @@ export default function UserCard({ user }) {
                 <div className="btn-group">
                     <Link
                         className="btn btn-danger"
-                        to={"/manageusers/delete/" + user._id}
+                        to={"/managedestinations/delete/" + destination._id}
                     >
                         {/* https://icons.getbootstrap.com/icons/trash/ */}
                         <svg
@@ -54,7 +55,6 @@ export default function UserCard({ user }) {
                     </Link>
                 </div>
             </div>
-            {true && <div className="card-footer">Current vehicles</div>}
         </div>
     );
 }

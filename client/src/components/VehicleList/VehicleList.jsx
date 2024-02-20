@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { downloadJSONFile, readJSONFromFile } from "../../assets/helpers";
 
 export default function VehicleList({ isAdmin, mode }) {
-    const numColumns = 4;
+    const numColumns = 5;
 
     const [vehicles, setVehicles] = useState([]);
     const [availableVehicles, setAvailableVehicles] = useState([]);

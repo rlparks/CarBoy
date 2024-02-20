@@ -27,7 +27,7 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
                 className="card-img-top"
                 src={vehicle.pictureUrl}
                 alt={"Image of " + vehicle.vehicleNumber}
-                style={({ width: "100%" }, { height: "150px" })}
+                style={({ width: "75%" }, { height: "75%" })}
             />
             <div className="card-body">
                 <h5 className="card-title">{vehicle.vehicleNumber}</h5>

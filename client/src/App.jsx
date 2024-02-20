@@ -17,6 +17,7 @@ import UsersPage from "./components/UsersPage/UsersPage";
 import VehicleList from "./components/VehicleList/VehicleList";
 import UserContext from "./context/UserContext";
 import { getUser } from "./assets/helpers";
+import DestinationsPage from "./components/DestinationsPage/DestinationsPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -272,6 +273,17 @@ export default function App() {
                                 ) : (
                                     <ErrorPage type={401} />
                                 )
+                            }
+                        />
+                        <Route
+                            path="/managedestinations"
+                            element={
+                                <RequireAdmin
+                                    userData={userData}
+                                    isAdmin={user.admin}
+                                >
+                                    <DestinationsPage />
+                                </RequireAdmin>
                             }
                         />
                         <Route path="/success" element={<SuccessPage />} />

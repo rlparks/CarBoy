@@ -54,6 +54,13 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                 <Link className="nav-link" to="/manageusers">
                                     Manage Users
                                 </Link>
+
+                                <Link
+                                    className="nav-link"
+                                    to="/managedestinations"
+                                >
+                                    Manage Destinations
+                                </Link>
                             </>
                         )}
                     </ul>

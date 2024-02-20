@@ -40,6 +40,9 @@ mongoose
 
         const checkin = require("./routes/api/Checkin");
         app.use("/api/checkin", checkin);
+
+        const destinations = require("./routes/api/Destination");
+        app.use("/api/destinations", destinations);
     })
     .catch((err) => {
         console.log(`Error in DB Connection ${err}`);

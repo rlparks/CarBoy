@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
 
-const VehicleSchema = new mongoose.Schema({
+const DestinationSchema = new mongoose.Schema({
     buildingNumber: {
         type: Number,
         unique: true,
         trim: true,
     },
-    buildingName: String,
+    destinationName: String,
 });
 
-module.exports.model = Vehicle = mongoose.model("vehicle", VehicleSchema);
+module.exports.model = Destination = mongoose.model(
+    "destination",
+    DestinationSchema
+);

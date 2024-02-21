@@ -49,7 +49,7 @@ export default function AddUser() {
             const url = SERVER_URL + "api/login/signup/";
             try {
                 await axios.post(url, user);
-                navigate("/success");
+                navigate("/success/manageusers");
             } catch (err) {
                 setError(err.response.data.msg);
             }

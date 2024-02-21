@@ -50,7 +50,7 @@ export default function EditDestination() {
             const url = SERVER_URL + "api/destinations/" + destination._id;
             try {
                 await axios.put(url, destination);
-                navigate("/success");
+                navigate("/success/managedestinations");
             } catch (err) {
                 setError(err.response.data.error);
             }

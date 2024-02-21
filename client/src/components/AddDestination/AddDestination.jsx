@@ -37,7 +37,7 @@ export default function AddDestination() {
             const url = SERVER_URL + "api/destinations/";
             try {
                 await axios.post(url, destination);
-                navigate("/success");
+                navigate("/success/managedestinations");
             } catch (err) {
                 setError(err.response.data.error);
             }

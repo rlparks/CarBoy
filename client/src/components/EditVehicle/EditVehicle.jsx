@@ -93,7 +93,7 @@ export default function EditVehicle() {
             const url = SERVER_URL + "api/vehicles/" + vehicle._id;
             try {
                 await axios.put(url, vehicle);
-                navigate("/success");
+                navigate("/success/managevehicles");
             } catch (err) {
                 setError(err.response.data.error);
             }

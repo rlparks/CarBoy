@@ -322,6 +322,10 @@ export default function App() {
                             }
                         />
                         <Route path="/success" element={<SuccessPage />} />
+                        <Route
+                            path="/success/:redirectUrl"
+                            element={<SuccessPage />}
+                        />
                         <Route path="*" element={<ErrorPage type={404} />} />
                     </Routes>
                 </BrowserRouter>

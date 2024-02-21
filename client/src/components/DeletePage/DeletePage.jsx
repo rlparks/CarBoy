@@ -67,7 +67,7 @@ export default function DeletePage({ mode }) {
 
         try {
             await axios.delete(url);
-            navigate("/success");
+            navigate("/success/manage" + mode + "s");
         } catch (err) {
             setError(err.response.data.error);
         }

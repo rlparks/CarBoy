@@ -89,7 +89,7 @@ export default function AddVehicle() {
 
             try {
                 await axios.post(SERVER_URL + "api/vehicles/", newVehicle);
-                navigate("/success");
+                navigate("/success/managevehicles");
             } catch (err) {
                 setError(err.response.data.error);
             }

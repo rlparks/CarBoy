@@ -65,7 +65,7 @@ export default function EditUser() {
             const url = SERVER_URL + "api/users/" + user._id;
             try {
                 await axios.put(url, userObj);
-                navigate("/success");
+                navigate("/success/manageusers");
             } catch (err) {
                 setError(err.response.data.error);
             }

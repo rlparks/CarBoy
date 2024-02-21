@@ -12,8 +12,8 @@ mongoose.set("sanitizeFilter", true); // protects against bobby
 const mongoUser = process.env.MONGO_USER;
 const mongoPass = process.env.MONGO_PASS;
 const mongoUrl = process.env.MONGO_URL;
-// const conn_str = "mongodb://" + mongoUser + ":" + mongoPass + "@" + mongoUrl;
-const conn_str = "mongodb://root:example@172.19.174.2:27016/";
+const conn_str = "mongodb://" + mongoUser + ":" + mongoPass + "@" + mongoUrl;
+// const conn_str = "mongodb://root:example@172.19.174.2:27016/";
 
 mongoose
     .connect(conn_str, { dbName: "carlog" })

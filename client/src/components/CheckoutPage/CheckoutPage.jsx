@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../../context/UserContext";
-import { getVehicleDetails } from "../../assets/helpers";
+import { getVehicleDetails, sortDestinations } from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckoutPage() {
@@ -59,35 +59,7 @@ export default function CheckoutPage() {
         // ]);
 
         axios.get(SERVER_URL + "api/destinations/").then((res) => {
-            // Sort by building number, if applicable
-            setDestinationArray(
-                res.data.sort((a, b) => {
-                    // if (!a.buildingNumber) {
-                    //     return 1;
-                    // }
-
-                    // if (a.buildingNumber < b.buildingNumber) {
-                    //     console.log("a BUILDING NUMBER: " + a.buildingNumber);
-                    //     return -1;
-                    // } else {
-                    //     console.log(
-                    //         a.buildingNumber + " > " + b.buildingNumber
-                    //     );
-                    //     return 1;
-                    // }
-
-                    if (!a.buildingNumber && b.buildingNumber) {
-                        return 1;
-                    } else if (a.buildingNumber && !b.buildingNumber) {
-                        return -1;
-                    } else if (!a.buildingNumber && !b.buildingNumber) {
-                        // sort destinations without numbers by name, alphabetically
-                        return a.destinationName < b.destinationName ? -1 : 1;
-                    }
-
-                    return a.buildingNumber - b.buildingNumber;
-                })
-            );
+            setDestinationArray(res.data.sort(sortDestinations));
         });
     }, []);
 
@@ -162,8 +134,10 @@ export default function CheckoutPage() {
                                             return (
                                                 <option
                                                     key={destination._id}
-                                                    value={destDisplay}
-                                                />
+                                                    value={destination._id}
+                                                >
+                                                    {destDisplay}
+                                                </option>
                                             );
                                         })}
                                     </datalist>

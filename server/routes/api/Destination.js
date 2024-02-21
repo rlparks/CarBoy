@@ -22,10 +22,6 @@ router.get("/:id", (req, res) => {
         );
 });
 router.post("/", (req, res) => {
-    if (!req.body.buildingNumber) {
-        // prevents duplicate building number ""
-        req.body.buildingNumber = null;
-    }
     Destination.create(req.body)
         .then((item) => res.json({ msg: "Destination added successfully" }))
         .catch((err) => {

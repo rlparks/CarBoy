@@ -134,10 +134,8 @@ export default function CheckoutPage() {
                                             return (
                                                 <option
                                                     key={destination._id}
-                                                    value={destination._id}
-                                                >
-                                                    {destDisplay}
-                                                </option>
+                                                    value={destDisplay}
+                                                />
                                             );
                                         })}
                                     </datalist>

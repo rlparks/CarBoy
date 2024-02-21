@@ -26,11 +26,23 @@ export default function TripCard({ trip }) {
 
     return (
         <div className="card" key={trip._id}>
-            <div className="card-body">
-                <h5 className="card-title">{startTime + " - " + endTime}</h5>
-                <h6 className="card-subtitle text-body-secondary">
-                    {employee.fullName}
-                </h6>
+            <div className="card-body d-flex flex-row justify-content-between">
+                <div>
+                    <h5 className="card-title">
+                        {startTime + " - " + endTime}
+                    </h5>
+                    <h6 className="card-subtitle text-body-secondary">
+                        {employee.fullName}
+                    </h6>
+                </div>
+                {employee.pictureUrl && (
+                    <img
+                        className="img-fluid rounded-circle"
+                        src={employee.pictureUrl}
+                        alt={"Image of " + employee.username}
+                        style={{ height: "75px" }}
+                    />
+                )}
             </div>
 
             <ul className="list-group list-group-flush">

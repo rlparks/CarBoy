@@ -44,6 +44,10 @@ export default function DeletePage({ mode }) {
             } else if (mode === "destination") {
                 getDestination(itemId).then((destination) => {
                     setItem(destination);
+
+                    if (destination) {
+                        setIdentifier(destination.destinationName);
+                    }
                 });
             }
         }
@@ -57,6 +61,8 @@ export default function DeletePage({ mode }) {
             url += "api/users/" + item._id;
         } else if (mode === "vehicle") {
             url += "api/vehicles/" + params.vehicleNumber;
+        } else if (mode === "destination") {
+            url += "api/destinations/" + item._id;
         }
 
         try {

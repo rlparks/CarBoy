@@ -1,7 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getUser } from "../../assets/helpers";
+import {
+    getDestination,
+    getUser,
+    getVehicleDetails,
+} from "../../assets/helpers";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function DeletePage({ mode }) {
     const params = useParams();
@@ -10,36 +15,46 @@ export default function DeletePage({ mode }) {
         itemId = params.userId;
     } else if (mode === "vehicle") {
         itemId = params.vehicleNumber;
+    } else if (mode === "destination") {
+        itemId = params.destinationId;
     }
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [identifier, setIdentifier] = useState("");
-    const [user, setUser] = useState({
-        username: "",
-        fullName: "",
-        admin: false,
-    });
+    const [item, setItem] = useState({});
 
     useEffect(() => {
-        if (mode === "user") {
-            getUser(itemId).then((user) => {
-                if (!user.fullName) {
-                    user.fullName = user.username;
-                }
-                setUser(user);
-                setIdentifier(user.fullName);
-            });
-        } else if (mode === "vehicle") {
-            setIdentifier(params.vehicleNumber);
+        if (itemId) {
+            if (mode === "user") {
+                getUser(itemId).then((user) => {
+                    if (user) {
+                        if (!user.fullName) {
+                            user.fullName = user.username;
+                        }
+
+                        setIdentifier(user.fullName);
+                    }
+                    setItem(user);
+                });
+            } else if (mode === "vehicle") {
+                getVehicleDetails(itemId).then((vehicle) => {
+                    setItem(vehicle);
+                });
+                setIdentifier(params.vehicleNumber);
+            } else if (mode === "destination") {
+                getDestination(itemId).then((destination) => {
+                    setItem(destination);
+                });
+            }
         }
-    }, []);
+    }, [itemId]);
 
     async function submitHandler(event) {
         event.preventDefault();
 
         let url = SERVER_URL;
         if (mode === "user") {
-            url += "api/users/" + user._id;
+            url += "api/users/" + item._id;
         } else if (mode === "vehicle") {
             url += "api/vehicles/" + params.vehicleNumber;
         }
@@ -57,7 +72,7 @@ export default function DeletePage({ mode }) {
         navigate(-1);
     }
 
-    return (
+    return item ? (
         <div className="d-flex justify-content-center">
             <div className="w-25">
                 <h2 className="text-center mb-3">{"Delete: " + identifier}</h2>
@@ -78,5 +93,7 @@ export default function DeletePage({ mode }) {
                 </div>
             </div>
         </div>
+    ) : (
+        <ErrorPage type={404} />
     );
 }

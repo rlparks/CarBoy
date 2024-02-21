@@ -54,8 +54,17 @@ router.put("/:id", (req, res) => {
 });
 router.delete("/:vehicleNumber", (req, res) => {
     Vehicle.findOneAndDelete({ vehicleNumber: req.params.vehicleNumber })
-        .then((item) => res.json({ msg: "Vehicle entry deleted successfully" }))
-        .catch((err) => res.status(404).json({ error: "No such vehicle" }));
+        .then((item) => {
+            if (!item) {
+                return res
+                    .status(404)
+                    .json({ error: "Error: No such vehicle." });
+            }
+            res.json({ msg: "Vehicle entry deleted successfully" });
+        })
+        .catch((err) =>
+            res.status(404).json({ error: "Error: No such vehicle." })
+        );
 });
 
 module.exports = router;

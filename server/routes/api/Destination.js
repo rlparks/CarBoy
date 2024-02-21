@@ -57,10 +57,17 @@ router.put("/:id", (req, res) => {
 });
 router.delete("/:id", (req, res) => {
     Destination.findByIdAndDelete(req.params.id)
-        .then((item) =>
-            res.json({ msg: "Destination entry deleted successfully" })
-        )
-        .catch((err) => res.status(404).json({ error: "No such destination" }));
+        .then((item) => {
+            if (!item) {
+                return res
+                    .status(404)
+                    .json({ error: "Error: No such destination." });
+            }
+            res.json({ msg: "Destination entry deleted successfully" });
+        })
+        .catch((err) =>
+            res.status(404).json({ error: "Error: No such destination." })
+        );
 });
 
 module.exports = router;

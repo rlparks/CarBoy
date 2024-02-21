@@ -75,27 +75,33 @@ router.put("/:id", async (req, res) => {
         );
 });
 router.delete("/:id", async (req, res) => {
-    const user = await User.findById(req.params.id);
+    try {
+        const user = await User.findById(req.params.id);
+        if (user && user.admin) {
+            // deleting an admin
 
-    if (user.admin) {
-        // deleting an admin
-
-        const admins = await User.find({ admin: true });
-        if (
-            admins.length === 1 &&
-            admins[0]._id.toString() === user._id.toString()
-        ) {
-            // trying to delete last admin
-            res.status(400).json({
-                error: "Error: Cannot delete final admin",
-            });
-            return;
+            const admins = await User.find({ admin: true });
+            if (
+                admins.length === 1 &&
+                admins[0]._id.toString() === user._id.toString()
+            ) {
+                // trying to delete last admin
+                res.status(400).json({
+                    error: "Error: Cannot delete final admin.",
+                });
+                return;
+            }
         }
+    } catch (err) {
+        res.status(404).json({ error: "Error: No such user." });
+        return;
     }
 
     User.findByIdAndDelete(req.params.id, req.body)
-        .then((item) => res.json({ msg: "User entry deleted successfully" }))
-        .catch((err) => res.status(404).json({ error: "No such user" }));
+        .then((item) => res.json({ msg: "User entry deleted successfully." }))
+        .catch((err) =>
+            res.status(404).json({ error: "Error: No such user." })
+        );
 });
 
 module.exports = router;

@@ -25,9 +25,9 @@ export async function getUser(userId) {
         }
         return userDetails.data;
     } catch (err) {
-        console.log(userId);
-        console.log(err);
-        return;
+        // console.log(userId);
+        // console.log(err);
+        return null;
     }
 }
 
@@ -44,9 +44,9 @@ export async function getDestination(destinationId) {
         }
         return destinationResponse.data;
     } catch (err) {
-        console.log(destinationId);
-        console.log(err);
-        return;
+        // console.log(destinationId);
+        // console.log(err);
+        return null;
     }
 }
 

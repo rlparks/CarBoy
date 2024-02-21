@@ -317,7 +317,7 @@ export default function App() {
                                     userData={userData}
                                     isAdmin={user.admin}
                                 >
-                                    <EditDestination />
+                                    <DeletePage mode="destination" />
                                 </RequireAdmin>
                             }
                         />

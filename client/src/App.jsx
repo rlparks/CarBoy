@@ -19,6 +19,7 @@ import UserContext from "./context/UserContext";
 import { getUser } from "./assets/helpers";
 import DestinationsPage from "./components/DestinationsPage/DestinationsPage";
 import AddDestination from "./components/AddDestination/AddDestination";
+import EditDestination from "./components/EditDestination/EditDestination";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -192,7 +193,7 @@ export default function App() {
                             }
                         />
                         <Route
-                            path="/editVehicle/:vehicleNumber"
+                            path="/managevehicles/:vehicleNumber"
                             element={
                                 <RequireAdmin
                                     userData={userData}
@@ -295,6 +296,28 @@ export default function App() {
                                     isAdmin={user.admin}
                                 >
                                     <DestinationsPage />
+                                </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="/managedestinations/:destinationId"
+                            element={
+                                <RequireAdmin
+                                    userData={userData}
+                                    isAdmin={user.admin}
+                                >
+                                    <EditDestination />
+                                </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="/managedestinations/delete/:destinationId"
+                            element={
+                                <RequireAdmin
+                                    userData={userData}
+                                    isAdmin={user.admin}
+                                >
+                                    <EditDestination />
                                 </RequireAdmin>
                             }
                         />

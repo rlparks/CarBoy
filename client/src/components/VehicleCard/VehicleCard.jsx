@@ -98,7 +98,7 @@ function AdminButtons({ isAdmin, vehicle }) {
                 {isAdmin && (
                     <Link
                         className="btn btn-warning"
-                        to={"/editvehicle/" + vehicle.vehicleNumber}
+                        to={"/managevehicles/" + vehicle.vehicleNumber}
                     >
                         {/* https://icons.getbootstrap.com/icons/pencil-square/ */}
                         <svg

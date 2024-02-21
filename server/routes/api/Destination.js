@@ -22,9 +22,14 @@ router.get("/:id", (req, res) => {
         );
 });
 router.post("/", (req, res) => {
+    if (!req.body.buildingNumber) {
+        // prevents duplicate building number ""
+        req.body.buildingNumber = null;
+    }
     Destination.create(req.body)
         .then((item) => res.json({ msg: "Destination added successfully" }))
         .catch((err) => {
+            console.log(err);
             res.status(400).json({
                 error: "Error adding destination. This is likely due to a duplicate building number.",
             });

@@ -76,8 +76,13 @@ export default function CheckoutPage() {
                     //     return 1;
                     // }
 
-                    if (!a.buildingNumber) {
+                    if (!a.buildingNumber && b.buildingNumber) {
+                        return 1;
+                    } else if (a.buildingNumber && !b.buildingNumber) {
                         return -1;
+                    } else if (!a.buildingNumber && !b.buildingNumber) {
+                        // sort destinations without numbers by name, alphabetically
+                        return a.destinationName < b.destinationName ? -1 : 1;
                     }
 
                     return a.buildingNumber - b.buildingNumber;

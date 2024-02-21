@@ -61,7 +61,7 @@ export default function VehicleList({ isAdmin, mode }) {
                         {availableVehicles.length > 0 ? (
                             <div
                                 className={
-                                    "row row-cols-1 row-cols-md-" +
+                                    "row row-cols-lg-" +
                                     numColumns +
                                     " g-4 card-deck"
                                 }
@@ -88,9 +88,7 @@ export default function VehicleList({ isAdmin, mode }) {
                         {checkedOutVehicles.length > 0 ? (
                             <div
                                 className={
-                                    "row row-cols-1 row-cols-md-" +
-                                    numColumns +
-                                    " g-4"
+                                    "row row-cols-lg-" + numColumns + " g-4"
                                 }
                             >
                                 {checkedOutVehicles.map((vehicle) => (

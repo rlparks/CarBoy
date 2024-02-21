@@ -26,9 +26,7 @@ export default function UsersPage() {
                     <h2 className="text-center mb-3">Users</h2>
                     <div
                         className={
-                            "row row-cols-1 row-cols-md-" +
-                            numColumns +
-                            " g-4 card-deck"
+                            "row row-cols-lg-" + numColumns + " g-4 card-deck"
                         }
                     >
                         {users.map((user) => (

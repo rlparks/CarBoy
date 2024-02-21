@@ -2,7 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import { Link } from "react-router-dom";
-import { downloadJSONFile, readJSONFromFile } from "../../assets/helpers";
+import {
+    downloadJSONFile,
+    readJSONFromFile,
+    sortDestinations,
+} from "../../assets/helpers";
 import DestinationCard from "../DestinationCard/DestinationCard";
 
 export default function DestinationsPage({ isAdmin, mode }) {
@@ -14,7 +18,9 @@ export default function DestinationsPage({ isAdmin, mode }) {
     const refreshDestinations = async () => {
         axios
             .get(SERVER_URL + "api/destinations/")
-            .then((result) => setDestinations(result.data));
+            .then((result) =>
+                setDestinations(result.data.sort(sortDestinations))
+            );
     };
 
     useEffect(() => {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import UserCard from "../UserCard/UserCard";
 import { Link } from "react-router-dom";
+import { sortUsers } from "../../assets/helpers";
 
 export default function UsersPage() {
     const numColumns = 4;
@@ -11,7 +12,7 @@ export default function UsersPage() {
     const refreshUsers = async () => {
         axios
             .get(SERVER_URL + "api/users/")
-            .then((result) => setUsers(result.data))
+            .then((result) => setUsers(result.data.sort(sortUsers)))
             .catch((err) => console.log(err));
     };
 

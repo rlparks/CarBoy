@@ -2,7 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import { Link } from "react-router-dom";
-import { downloadJSONFile, readJSONFromFile } from "../../assets/helpers";
+import {
+    downloadJSONFile,
+    readJSONFromFile,
+    sortVehicles,
+} from "../../assets/helpers";
 
 export default function VehicleList({ isAdmin, mode }) {
     const numColumns = 5;
@@ -15,7 +19,7 @@ export default function VehicleList({ isAdmin, mode }) {
     const refreshVehicles = async () => {
         axios
             .get(SERVER_URL + "api/vehicles/")
-            .then((result) => setVehicles(result.data));
+            .then((result) => setVehicles(result.data.sort(sortVehicles)));
     };
 
     useEffect(() => {

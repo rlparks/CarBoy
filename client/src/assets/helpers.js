@@ -102,8 +102,20 @@ export function sortDestinations(a, b) {
         return -1;
     } else if (!a.buildingNumber && !b.buildingNumber) {
         // sort destinations without numbers by name, alphabetically
-        return a.destinationName < b.destinationName ? -1 : 1;
+        const aName = a.destinationName.toUpperCase();
+        const bName = b.destinationName.toUpperCase();
+        return aName < bName ? -1 : 1;
     }
 
     return a.buildingNumber - b.buildingNumber;
+}
+
+export function sortVehicles(a, b) {
+    return a.vehicleNumber - b.vehicleNumber;
+}
+
+export function sortUsers(a, b) {
+    const aName = a.username.toUpperCase();
+    const bName = b.username.toUpperCase();
+    return aName < bName ? -1 : 1;
 }

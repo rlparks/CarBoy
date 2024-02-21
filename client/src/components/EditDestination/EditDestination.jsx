@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getDestination } from "../../assets/helpers";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function EditDestination() {
     const params = useParams();
@@ -13,14 +14,19 @@ export default function EditDestination() {
         buildingNumber: "",
     });
     const [newPassword, setNewPassword] = useState("");
+    const [destinationExists, setDestinationExists] = useState(true);
 
     useEffect(() => {
         getDestination(destinationId).then((destination) => {
-            if (!destination.buildingNumber) {
-                // force not-null to make React happy
-                destination.buildingNumber = "";
+            if (destination) {
+                if (!destination.buildingNumber) {
+                    // force not-null to make React happy
+                    destination.buildingNumber = "";
+                }
+                setDestination(destination);
+            } else {
+                setDestinationExists(false);
             }
-            setDestination(destination);
         });
     }, []);
 
@@ -51,7 +57,7 @@ export default function EditDestination() {
         }
     }
 
-    return (
+    return destinationExists ? (
         <div className="d-flex justify-content-center">
             <div className="w-25">
                 <h2 className="text-center mb-3">
@@ -84,5 +90,7 @@ export default function EditDestination() {
                 </form>
             </div>
         </div>
+    ) : (
+        <ErrorPage type={404} />
     );
 }

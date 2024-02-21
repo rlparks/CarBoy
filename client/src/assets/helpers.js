@@ -7,7 +7,7 @@ export async function getVehicleDetails(vehicleNumber) {
         const vehicleData = vehicleRes.data;
         return vehicleData;
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return;
     }
 }

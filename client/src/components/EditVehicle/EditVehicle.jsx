@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getVehicleDetails } from "../../assets/helpers";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function EditVehicle() {
     const params = useParams();
@@ -17,15 +18,20 @@ export default function EditVehicle() {
         pictureUrl: "",
     });
     const [error, setError] = useState("");
+    const [vehicleExists, setVehicleExists] = useState(true);
 
     useEffect(() => {
         getVehicleDetails(vehicleNumber).then((vehicle) => {
-            if (vehicle.make === "Departmental") {
-                vehicle.mileage = "";
-                vehicle.licensePlate = "";
-                vehicle.year = "";
+            if (vehicle) {
+                if (vehicle.make === "Departmental") {
+                    vehicle.mileage = "";
+                    vehicle.licensePlate = "";
+                    vehicle.year = "";
+                }
+                setVehicle(vehicle);
+            } else {
+                setVehicleExists(false);
             }
-            setVehicle(vehicle);
         });
 
         // console.log(vehicle) here returns the intial state
@@ -94,7 +100,7 @@ export default function EditVehicle() {
         }
     }
 
-    return (
+    return vehicleExists ? (
         <div className="d-flex justify-content-center">
             <div className="w-25">
                 <h2 className="text-center mb-3">{"Edit: " + vehicleNumber}</h2>
@@ -175,5 +181,7 @@ export default function EditVehicle() {
                 </form>
             </div>
         </div>
+    ) : (
+        <ErrorPage type={404} />
     );
 }

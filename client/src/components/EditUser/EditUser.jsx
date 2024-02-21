@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUser } from "../../assets/helpers";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function EditUser() {
     const params = useParams();
@@ -13,14 +14,19 @@ export default function EditUser() {
         fullName: "",
         admin: false,
     });
+    const [userExists, setUserExists] = useState(true);
     const [newPassword, setNewPassword] = useState("");
 
     useEffect(() => {
         getUser(userId).then((user) => {
-            if (!user.fullName) {
-                user.fullName = "";
+            if (user) {
+                if (!user.fullName) {
+                    user.fullName = "";
+                }
+                setUser(user);
+            } else {
+                setUserExists(false);
             }
-            setUser(user);
         });
     }, []);
 
@@ -66,7 +72,7 @@ export default function EditUser() {
         }
     }
 
-    return (
+    return userExists ? (
         <div className="d-flex justify-content-center">
             <div className="w-25">
                 <h2 className="text-center mb-3">{"Edit: " + user.username}</h2>
@@ -118,5 +124,7 @@ export default function EditUser() {
                 </form>
             </div>
         </div>
+    ) : (
+        <ErrorPage type={404} />
     );
 }

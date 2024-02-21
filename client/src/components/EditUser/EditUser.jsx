@@ -13,6 +13,7 @@ export default function EditUser() {
         username: "",
         fullName: "",
         admin: false,
+        pictureUrl: "",
     });
     const [userExists, setUserExists] = useState(true);
     const [newPassword, setNewPassword] = useState("");
@@ -49,6 +50,12 @@ export default function EditUser() {
     function adminChangeHandler(event) {
         setUser((prevUser) => {
             return { ...prevUser, admin: event.target.checked };
+        });
+    }
+
+    function pictureUrlChangeHandler(event) {
+        setUser((prevUser) => {
+            return { ...prevUser, pictureUrl: event.target.value };
         });
     }
 
@@ -107,6 +114,16 @@ export default function EditUser() {
                             type="text"
                             className="form-control"
                             placeholder="Example User"
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Picture URL</label>
+                        <input
+                            value={user.pictureUrl}
+                            onChange={pictureUrlChangeHandler}
+                            type="text"
+                            className="form-control"
+                            placeholder="https://www.example.com/image.png"
                         />
                     </div>
                     <div className="mb-3">

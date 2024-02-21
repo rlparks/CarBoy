@@ -3,6 +3,14 @@ import { Link } from "react-router-dom";
 export default function UserCard({ user }) {
     return (
         <div className="card" key={user._id}>
+            {user.pictureUrl && (
+                <img
+                    className="card-img-top"
+                    src={user.pictureUrl}
+                    alt={"Image of " + user.username}
+                    style={({ width: "75%" }, { height: "25%" })}
+                />
+            )}
             <div className="card-body">
                 <h5 className="card-title">{user.username}</h5>
                 <h6 className="card-subtitle text-body-secondary mb-3">
@@ -54,7 +62,7 @@ export default function UserCard({ user }) {
                     </Link>
                 </div>
             </div>
-            {true && <div className="card-footer">Current vehicles</div>}
+            {/* {true && <div className="card-footer">Current vehicles</div>} */}
         </div>
     );
 }

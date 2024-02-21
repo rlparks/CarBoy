@@ -11,6 +11,7 @@ export default function AddUser() {
         confirmPassword: "",
         fullName: "",
         admin: false,
+        pictureUrl: "",
     });
 
     function usernameChangeHandler(event) {
@@ -38,6 +39,12 @@ export default function AddUser() {
     function adminChangeHandler(event) {
         setUser((prevUser) => {
             return { ...prevUser, admin: event.target.checked };
+        });
+    }
+
+    function pictureUrlChangeHandler(event) {
+        setUser((prevUser) => {
+            return { ...prevUser, pictureUrl: event.target.value };
         });
     }
 
@@ -101,6 +108,16 @@ export default function AddUser() {
                             type="text"
                             className="form-control"
                             placeholder="Example User"
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Picture URL</label>
+                        <input
+                            value={user.pictureUrl}
+                            onChange={pictureUrlChangeHandler}
+                            type="text"
+                            className="form-control"
+                            placeholder="https://www.example.com/image.png"
                         />
                     </div>
                     <div className="mb-3">

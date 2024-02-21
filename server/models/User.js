@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
     },
     admin: Boolean,
     fullName: String,
+    pictureUrl: String,
 });
 
 module.exports = User = mongoose.model("user", userSchema);

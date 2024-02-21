@@ -31,6 +31,25 @@ export async function getUser(userId) {
     }
 }
 
+export async function getDestination(destinationId) {
+    try {
+        const destinationResponse = await axios.get(
+            SERVER_URL + "api/destinations/" + destinationId
+        );
+        if (!destinationResponse.data) {
+            destinationResponse.data = {
+                _id: "0",
+                destinationName: "Unknown Destination",
+            };
+        }
+        return destinationResponse.data;
+    } catch (err) {
+        console.log(destinationId);
+        console.log(err);
+        return;
+    }
+}
+
 export function getDateTimeFormat() {
     return new Intl.DateTimeFormat("en-us", {
         dateStyle: "medium",

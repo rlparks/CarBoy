@@ -1,14 +1,28 @@
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getDestination } from "../../assets/helpers";
 
-export default function AddDestination() {
+export default function EditDestination() {
+    const params = useParams();
     const navigate = useNavigate();
+    const destinationId = params.destinationId;
     const [error, setError] = useState("");
     const [destination, setDestination] = useState({
-        buildingNumber: "",
         destinationName: "",
+        buildingNumber: "",
     });
+    const [newPassword, setNewPassword] = useState("");
+
+    useEffect(() => {
+        getDestination(destinationId).then((destination) => {
+            if (!destination.buildingNumber) {
+                // force not-null to make React happy
+                destination.buildingNumber = "";
+            }
+            setDestination(destination);
+        });
+    }, []);
 
     function buildingNumberChangeHandler(event) {
         event.target.value = event.target.value.slice(0, 4);
@@ -24,19 +38,12 @@ export default function AddDestination() {
 
     async function submitHandler(event) {
         event.preventDefault();
-        if (destination.buildingNumber) {
-            destination.buildingNumber = destination.buildingNumber.padStart(
-                4,
-                "0"
-            );
-        }
-
         if (!destination.destinationName) {
             alert("Please add a name.");
         } else {
-            const url = SERVER_URL + "api/destinations/";
+            const url = SERVER_URL + "api/destinations/" + destination._id;
             try {
-                await axios.post(url, destination);
+                await axios.put(url, destination);
                 navigate("/success");
             } catch (err) {
                 setError(err.response.data.error);
@@ -47,7 +54,9 @@ export default function AddDestination() {
     return (
         <div className="d-flex justify-content-center">
             <div className="w-25">
-                <h2 className="text-center mb-3">{"Add Destination"}</h2>
+                <h2 className="text-center mb-3">
+                    {"Edit: " + destination.destinationName}
+                </h2>
                 {error && <p className="text-center text-danger">{error}</p>}
                 <form onSubmit={submitHandler}>
                     <div className="mb-3">

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { sortUsers } from "../../assets/helpers";
 
 export default function UsersPage() {
-    const numColumns = 5;
+    const numColumns = 4;
 
     const [users, setUsers] = useState([]);
 

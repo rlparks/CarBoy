@@ -3,8 +3,9 @@ const router = express.Router();
 const bcryptjs = require("bcryptjs");
 
 const User = require("../../models/User");
+const auth = require("../../middleware/auth");
 
-router.get("/", (req, res) => {
+router.get("/", auth, (req, res) => {
     User.find()
         .select({ password: 0 })
         .then((items) => {
@@ -14,7 +15,7 @@ router.get("/", (req, res) => {
             res.status(404).json({ noitemsfound: "No users found" });
         });
 });
-router.get("/:id", (req, res) => {
+router.get("/:id", auth, (req, res) => {
     User.findById(req.params.id)
         .select({ password: 0 })
         .then((item) => {
@@ -41,7 +42,7 @@ router.get("/:id", (req, res) => {
 //             console.log(err);
 //         });
 // });
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
     if (req.body.newPassword && req.body.newPassword !== "") {
         // password change
         const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
@@ -74,7 +75,7 @@ router.put("/:id", async (req, res) => {
             res.status(400).json({ error: "Unable to update the database" })
         );
 });
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (user && user.admin) {

@@ -1,9 +1,10 @@
 const express = require("express");
+const auth = require("../../middleware/auth");
 const router = express.Router();
 
 const Vehicle = require("../../models/Vehicle").model;
 
-router.post("/:vehicleNumber", (req, res) => {
+router.post("/:vehicleNumber", auth, (req, res) => {
     console.log("CHECK IN: " + req.params.vehicleNumber);
     // console.log(req.body);
     Vehicle.findOne({ vehicleNumber: req.params.vehicleNumber })

@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../../middleware/auth");
 const router = express.Router();
 
 const Vehicle = require("../../models/Vehicle").model;
@@ -21,7 +22,7 @@ router.get("/:vehicleNumber", (req, res) => {
             })
         );
 });
-router.post("/", (req, res) => {
+router.post("/", auth, (req, res) => {
     req.body.checkedOut = false;
     Vehicle.create(req.body)
         .then((item) => res.json({ msg: "Vehicle added successfully" }))
@@ -32,7 +33,7 @@ router.post("/", (req, res) => {
             // console.log(err);
         });
 });
-router.post("/import", (req, res) => {
+router.post("/import", auth, (req, res) => {
     Vehicle.insertMany(req.body)
         .then((result) => {
             res.json({ msg: "Vehicles successfully imported" });
@@ -43,7 +44,7 @@ router.post("/import", (req, res) => {
             });
         });
 });
-router.put("/:id", (req, res) => {
+router.put("/:id", auth, (req, res) => {
     Vehicle.findByIdAndUpdate(req.params.id, req.body)
         .then((item) => res.json({ msg: "Updated successfully" }))
         .catch((err) =>
@@ -52,7 +53,7 @@ router.put("/:id", (req, res) => {
             })
         );
 });
-router.delete("/:vehicleNumber", (req, res) => {
+router.delete("/:vehicleNumber", auth, (req, res) => {
     Vehicle.findOneAndDelete({ vehicleNumber: req.params.vehicleNumber })
         .then((item) => {
             if (!item) {

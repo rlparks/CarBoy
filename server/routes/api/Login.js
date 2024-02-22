@@ -92,7 +92,7 @@ userRouter.post("/login", async (req, res) => {
         }
 
         // TODO
-        const token = jwt.sign({ id: user._id }, "passwordKey");
+        const token = jwt.sign({ id: user._id }, process.env.JWT_PRIVATE_KEY);
         console.log("LOGIN SUCCESS: " + username);
         res.json({
             token,
@@ -109,7 +109,7 @@ userRouter.post("/tokenIsValid", async (req, res) => {
         if (!token) return res.json(false);
 
         // TODO
-        const verified = jwt.verify(token, "passwordKey");
+        const verified = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
         if (!verified) return res.json(false);
 
         const user = await User.findById(verified.id);

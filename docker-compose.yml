@@ -18,6 +18,7 @@ services:
             DEFAULT_ADMIN_PASSWORD: pass
             DEFAULT_ADMIN_FULLNAME: Default Admin
             CREATE_DEFAULT_ADMIN: true
+            JWT_PRIVATE_KEY: securePrivateKey
         depends_on:
             - mongo
     mongo:

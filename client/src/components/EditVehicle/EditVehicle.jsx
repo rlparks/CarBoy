@@ -59,9 +59,9 @@ export default function EditVehicle() {
         setVehicle({ ...vehicle, year: event.target.value });
     }
 
-    function lastOilChangeTimeChangeHandler(event) {
-        setVehicle({ ...vehicle, lastOilChangeTime: event.target.value });
-    }
+    // function lastOilChangeTimeChangeHandler(event) {
+    //     setVehicle({ ...vehicle, lastOilChangeTime: event.target.value });
+    // }
 
     function licensePlateChangeHandler(event) {
         event.target.value = event.target.value.slice(0, 10);

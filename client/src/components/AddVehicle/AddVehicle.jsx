@@ -8,7 +8,7 @@ export default function AddVehicle() {
     const [make, setMake] = useState("");
     const [model, setModel] = useState("");
     const [year, setYear] = useState("");
-    const [lastOilChangeTime, setLastOilChangeTime] = useState("");
+    // const [lastOilChangeTime, setLastOilChangeTime] = useState("");
     const [licensePlate, setLicensePlate] = useState("");
     const [pictureUrl, setPictureUrl] = useState("");
     const [mileage, setMileage] = useState("");
@@ -40,9 +40,9 @@ export default function AddVehicle() {
         setYear(event.target.value);
     }
 
-    function lastOilChangeTimeChangeHandler(event) {
-        setLastOilChangeTime(event.target.value);
-    }
+    // function lastOilChangeTimeChangeHandler(event) {
+    //     setLastOilChangeTime(event.target.value);
+    // }
 
     function licensePlateChangeHandler(event) {
         event.target.value = event.target.value.slice(0, 10);
@@ -81,7 +81,7 @@ export default function AddVehicle() {
                 make: make,
                 model: model,
                 year: year,
-                lastOilChangeTime: lastOilChangeTime,
+                // lastOilChangeTime: lastOilChangeTime,
                 licensePlate: licensePlate,
                 pictureUrl: pictureUrl,
                 mileage: mileage,

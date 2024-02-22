@@ -10,7 +10,7 @@ const VehicleSchema = new mongoose.Schema({
     make: String,
     model: String,
     year: Number,
-    lastOilChangeTime: Date,
+    // lastOilChangeTime: Date,
     licensePlate: String,
     pictureUrl: String,
     trips: [TripSchema],

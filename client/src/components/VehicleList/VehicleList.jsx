@@ -122,26 +122,27 @@ export default function VehicleList({ isAdmin, mode }) {
                         )}
                     </div>
 
-                    {mode === "manage" && disabledVehicles.length > 0 && (
-                        <div>
-                            <h2 className="text-center m-3">Disabled</h2>
-                            <div
-                                className={
-                                    "row row-cols-lg-" + numColumns + " g-4"
-                                }
-                            >
-                                {disabledVehicles.map((vehicle) => (
-                                    <div className="col" key={vehicle._id}>
-                                        <VehicleCard
-                                            isAdmin={isAdmin}
-                                            vehicle={vehicle}
-                                            mode={mode}
-                                        />
-                                    </div>
-                                ))}
+                    {(mode === "manage" || mode === "trips") &&
+                        disabledVehicles.length > 0 && (
+                            <div>
+                                <h2 className="text-center m-3">Disabled</h2>
+                                <div
+                                    className={
+                                        "row row-cols-lg-" + numColumns + " g-4"
+                                    }
+                                >
+                                    {disabledVehicles.map((vehicle) => (
+                                        <div className="col" key={vehicle._id}>
+                                            <VehicleCard
+                                                isAdmin={isAdmin}
+                                                vehicle={vehicle}
+                                                mode={mode}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
                 </div>
             </div>
 

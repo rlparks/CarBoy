@@ -2,15 +2,13 @@ version: "3.9"
 services:
     client:
         container_name: carboy-client
-        build: ./client
-        image: cb-client
+        image: rparks/cb-client
         restart: unless-stopped
         volumes:
             - ./SERVER_URL.js:/app/dist/SERVER_URL.js
     server:
         container_name: carboy-server
-        build: ./server
-        image: cb-server
+        image: rparks/cb-server
         restart: unless-stopped
         environment:
             MONGO_URL: mongo:27017

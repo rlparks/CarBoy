@@ -18,7 +18,7 @@ data
 *.sw?
 
 # build remnants 
-buildandcopy.sh
+build.sh
 cb-client-img
 cb-server-img
 client/public/SERVER_URL.js

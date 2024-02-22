@@ -14,6 +14,7 @@ export default function VehicleList({ isAdmin, mode }) {
     const [vehicles, setVehicles] = useState([]);
     const [availableVehicles, setAvailableVehicles] = useState([]);
     const [checkedOutVehicles, setCheckedOutVehicles] = useState([]);
+    const [disabledVehicles, setDisabledVehicles] = useState([]);
     const [error, setError] = useState("");
 
     const refreshVehicles = async () => {
@@ -27,8 +28,17 @@ export default function VehicleList({ isAdmin, mode }) {
     }, []);
 
     useEffect(() => {
-        setAvailableVehicles(vehicles.filter((vehicle) => !vehicle.checkedOut));
-        setCheckedOutVehicles(vehicles.filter((vehicle) => vehicle.checkedOut));
+        setAvailableVehicles(
+            vehicles.filter(
+                (vehicle) => !vehicle.checkedOut && !vehicle.disabled
+            )
+        );
+        setCheckedOutVehicles(
+            vehicles.filter(
+                (vehicle) => vehicle.checkedOut && !vehicle.disabled
+            )
+        );
+        setDisabledVehicles(vehicles.filter((vehicle) => vehicle.disabled));
     }, [vehicles]);
 
     function exportVehiclesHandler(event) {
@@ -111,10 +121,31 @@ export default function VehicleList({ isAdmin, mode }) {
                             </p>
                         )}
                     </div>
+
+                    {mode === "manage" && disabledVehicles.length > 0 && (
+                        <div>
+                            <h2 className="text-center m-3">Disabled</h2>
+                            <div
+                                className={
+                                    "row row-cols-lg-" + numColumns + " g-4"
+                                }
+                            >
+                                {disabledVehicles.map((vehicle) => (
+                                    <div className="col" key={vehicle._id}>
+                                        <VehicleCard
+                                            isAdmin={isAdmin}
+                                            vehicle={vehicle}
+                                            mode={mode}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 
-            {mode == "manage" && (
+            {mode === "manage" && (
                 <div>
                     <div className="d-flex justify-content-center mb-3">
                         <Link className="btn btn-primary me-1" to="/addvehicle">

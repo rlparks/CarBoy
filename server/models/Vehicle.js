@@ -17,6 +17,7 @@ const VehicleSchema = new mongoose.Schema({
     checkedOut: Boolean,
     mileage: Number,
     currentUserId: String,
+    disabled: Boolean,
 });
 
 module.exports.model = Vehicle = mongoose.model("vehicle", VehicleSchema);

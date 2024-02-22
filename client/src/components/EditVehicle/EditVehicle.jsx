@@ -16,6 +16,7 @@ export default function EditVehicle() {
         licensePlate: "",
         mileage: "",
         pictureUrl: "",
+        disabled: false,
     });
     const [error, setError] = useState("");
     const [vehicleExists, setVehicleExists] = useState(true);
@@ -75,6 +76,10 @@ export default function EditVehicle() {
     function mileageChangeHandler(event) {
         event.target.value = event.target.value.slice(0, 10);
         setVehicle({ ...vehicle, mileage: event.target.value });
+    }
+
+    function disabledChangeHandler(event) {
+        setVehicle({ ...vehicle, disabled: event.target.checked });
     }
 
     async function submitHandler(event) {
@@ -176,6 +181,17 @@ export default function EditVehicle() {
                             className="form-control"
                             placeholder="https://www.example.com/image.png"
                         />
+                    </div>
+                    <div className="mb-3">
+                        <div className="form-check">
+                            <input
+                                checked={vehicle.disabled}
+                                onChange={disabledChangeHandler}
+                                type="checkbox"
+                                className="form-check-input"
+                            />
+                            <label className="form-check-label">Disabled</label>
+                        </div>
                     </div>
                     <button className="btn btn-primary">Submit</button>
                 </form>

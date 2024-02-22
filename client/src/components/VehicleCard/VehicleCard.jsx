@@ -9,7 +9,7 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
 
     useState(() => {
         if (userData.user && vehicle.currentUserId != null) {
-            getUser(vehicle.currentUserId)
+            getUser(vehicle.currentUserId, userData.token)
                 .then((user) => {
                     // console.log(user);
                     setCurrentUser(user);

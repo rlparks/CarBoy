@@ -1,21 +1,27 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { getDateTimeFormat, getUser } from "../../assets/helpers";
+import UserContext from "../../context/UserContext";
 
 export default function TripCard({ trip }) {
-    const [employee, setEmployee] = useState({ fullName: "Deleted User" });
+    const [employee, setEmployee] = useState({
+        fullName: "Error retrieving user",
+    });
+    const { userData } = useContext(UserContext);
 
     useState(() => {
         if (trip.employee != null) {
-            getUser(trip.employee)
+            getUser(trip.employee, userData.token)
                 .then((user) => {
                     // console.log(user);
                     if (user !== null) {
                         setEmployee(user);
                     }
                 })
-                .catch((err) => setEmployee({ fullName: "Deleted User" }));
+                .catch((err) =>
+                    setEmployee({ fullName: "Error retrieving user" })
+                );
         }
-    }, []);
+    }, [userData]);
 
     const startTime = getDateTimeFormat().format(new Date(trip.startTime));
     const endTime =

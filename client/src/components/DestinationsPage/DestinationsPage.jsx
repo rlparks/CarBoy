@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import { Link } from "react-router-dom";
 import {
@@ -8,16 +8,20 @@ import {
     sortDestinations,
 } from "../../assets/helpers";
 import DestinationCard from "../DestinationCard/DestinationCard";
+import UserContext from "../../context/UserContext";
 
 export default function DestinationsPage({ isAdmin, mode }) {
     const numColumns = 5;
 
     const [destinations, setDestinations] = useState([]);
     const [error, setError] = useState("");
+    const { userData } = useContext(UserContext);
 
     const refreshDestinations = async () => {
         axios
-            .get(SERVER_URL + "api/destinations/")
+            .get(SERVER_URL + "api/destinations/", {
+                headers: { "x-auth-token": userData.token },
+            })
             .then((result) =>
                 setDestinations(result.data.sort(sortDestinations))
             );
@@ -43,7 +47,9 @@ export default function DestinationsPage({ isAdmin, mode }) {
 
         try {
             const url = SERVER_URL + "api/destinations/import/";
-            await axios.post(url, vehiclesArray);
+            await axios.post(url, vehiclesArray, {
+                headers: { "x-auth-token": userData.token },
+            });
             setError("");
             await refreshDestinations();
         } catch (err) {

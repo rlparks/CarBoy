@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getDestination } from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import UserContext from "../../context/UserContext";
 
 export default function EditDestination() {
     const params = useParams();
@@ -13,11 +14,11 @@ export default function EditDestination() {
         destinationName: "",
         buildingNumber: "",
     });
-    const [newPassword, setNewPassword] = useState("");
+    const { userData } = useContext(UserContext);
     const [destinationExists, setDestinationExists] = useState(true);
 
     useEffect(() => {
-        getDestination(destinationId).then((destination) => {
+        getDestination(destinationId, userData.token).then((destination) => {
             if (destination) {
                 if (!destination.buildingNumber) {
                     // force not-null to make React happy
@@ -49,7 +50,9 @@ export default function EditDestination() {
         } else {
             const url = SERVER_URL + "api/destinations/" + destination._id;
             try {
-                await axios.put(url, destination);
+                await axios.put(url, destination, {
+                    headers: { "x-auth-token": userData.token },
+                });
                 navigate("/success/managedestinations");
             } catch (err) {
                 setError(err.response.data.error);

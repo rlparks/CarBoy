@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import UserCard from "../UserCard/UserCard";
 import { Link } from "react-router-dom";
 import { sortUsers } from "../../assets/helpers";
+import UserContext from "../../context/UserContext";
 
 export default function UsersPage() {
     const numColumns = 4;
+    const { userData } = useContext(UserContext);
 
     const [users, setUsers] = useState([]);
 
     const refreshUsers = async () => {
         axios
-            .get(SERVER_URL + "api/users/")
+            .get(SERVER_URL + "api/users/", {
+                headers: { "x-auth-token": userData.token },
+            })
             .then((result) => setUsers(result.data.sort(sortUsers)))
             .catch((err) => console.log(err));
     };

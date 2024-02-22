@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { getVehicleDetails } from "../../assets/helpers";
 import TripCard from "../TripCard/TripCard";
+import UserContext from "../../context/UserContext";
 
 export default function TripsPage() {
     const numColumns = 1;
@@ -19,9 +20,10 @@ export default function TripsPage() {
         trips: [],
     });
     const [trips, setTrips] = useState([]);
+    const { userData } = useContext(UserContext);
 
     useEffect(() => {
-        getVehicleDetails(vehicleNumber).then((vehicle) => {
+        getVehicleDetails(vehicleNumber, userData.token).then((vehicle) => {
             setVehicle(vehicle);
             setTrips(vehicle.trips.reverse());
         });

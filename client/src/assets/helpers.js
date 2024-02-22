@@ -1,9 +1,11 @@
 import axios from "axios";
 
-export async function getVehicleDetails(vehicleNumber) {
+export async function getVehicleDetails(vehicleNumber, token) {
     const url = SERVER_URL + "api/vehicles/" + vehicleNumber;
     try {
-        const vehicleRes = await axios.get(url);
+        const vehicleRes = await axios.get(url, {
+            headers: { "x-auth-token": token },
+        });
         const vehicleData = vehicleRes.data;
         return vehicleData;
     } catch (err) {
@@ -12,9 +14,12 @@ export async function getVehicleDetails(vehicleNumber) {
     }
 }
 
-export async function getUser(userId) {
+export async function getUser(userId, token) {
     try {
-        const userDetails = await axios.get(SERVER_URL + "api/users/" + userId);
+        const userDetails = await axios.get(
+            SERVER_URL + "api/users/" + userId,
+            { headers: { "x-auth-token": token } }
+        );
         if (!userDetails.data) {
             userDetails.data = {
                 _id: "0",
@@ -31,10 +36,11 @@ export async function getUser(userId) {
     }
 }
 
-export async function getDestination(destinationId) {
+export async function getDestination(destinationId, token) {
     try {
         const destinationResponse = await axios.get(
-            SERVER_URL + "api/destinations/" + destinationId
+            SERVER_URL + "api/destinations/" + destinationId,
+            { headers: { "x-auth-token": token } }
         );
         if (!destinationResponse.data) {
             destinationResponse.data = {

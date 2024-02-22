@@ -79,7 +79,7 @@ export default function App() {
     useEffect(() => {
         try {
             if (userData.user) {
-                getUser(userData.user.id).then((userObj) => {
+                getUser(userData.user.id, userData.token).then((userObj) => {
                     if (!userObj.fullName) {
                         userObj.fullName = userObj.username;
                     }

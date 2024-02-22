@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getVehicleDetails } from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import UserContext from "../../context/UserContext";
 
 export default function EditVehicle() {
     const params = useParams();
@@ -20,14 +21,18 @@ export default function EditVehicle() {
     });
     const [error, setError] = useState("");
     const [vehicleExists, setVehicleExists] = useState(true);
+    const { userData } = useContext(UserContext);
 
     useEffect(() => {
-        getVehicleDetails(vehicleNumber).then((vehicle) => {
+        getVehicleDetails(vehicleNumber, userData.token).then((vehicle) => {
             if (vehicle) {
                 if (vehicle.make === "Departmental") {
                     vehicle.mileage = "";
                     vehicle.licensePlate = "";
                     vehicle.year = "";
+                }
+                if (!vehicle.disabled) {
+                    vehicle.disabled = false;
                 }
                 setVehicle(vehicle);
             } else {
@@ -97,7 +102,9 @@ export default function EditVehicle() {
         } else {
             const url = SERVER_URL + "api/vehicles/" + vehicle._id;
             try {
-                await axios.put(url, vehicle);
+                await axios.put(url, vehicle, {
+                    headers: { "x-auth-token": userData.token },
+                });
                 navigate("/success/managevehicles");
             } catch (err) {
                 setError(err.response.data.error);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import { Link } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
     readJSONFromFile,
     sortVehicles,
 } from "../../assets/helpers";
+import UserContext from "../../context/UserContext";
 
 export default function VehicleList({ isAdmin, mode }) {
     const numColumns = 5;
@@ -16,6 +17,7 @@ export default function VehicleList({ isAdmin, mode }) {
     const [checkedOutVehicles, setCheckedOutVehicles] = useState([]);
     const [disabledVehicles, setDisabledVehicles] = useState([]);
     const [error, setError] = useState("");
+    const { userData } = useContext(UserContext);
 
     const refreshVehicles = async () => {
         axios
@@ -57,7 +59,9 @@ export default function VehicleList({ isAdmin, mode }) {
 
         try {
             const url = SERVER_URL + "api/vehicles/import/";
-            await axios.post(url, vehiclesArray);
+            await axios.post(url, vehiclesArray, {
+                headers: { "x-auth-token": userData.token },
+            });
             setError("");
             await refreshVehicles();
         } catch (err) {

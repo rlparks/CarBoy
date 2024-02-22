@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
 export default function AddDestination() {
     const navigate = useNavigate();
@@ -9,6 +10,7 @@ export default function AddDestination() {
         buildingNumber: "",
         destinationName: "",
     });
+    const { userData } = useContext(UserContext);
 
     function buildingNumberChangeHandler(event) {
         event.target.value = event.target.value.slice(0, 4);
@@ -36,7 +38,9 @@ export default function AddDestination() {
         } else {
             const url = SERVER_URL + "api/destinations/";
             try {
-                await axios.post(url, destination);
+                await axios.post(url, destination, {
+                    headers: { "x-auth-token": userData.token },
+                });
                 navigate("/success/managedestinations");
             } catch (err) {
                 setError(err.response.data.error);

@@ -33,7 +33,9 @@ export default function CheckoutPage() {
 
             const url = SERVER_URL + "api/checkout/" + vehicleNumber;
             try {
-                const res = await axios.post(url, vehicleObj);
+                const res = await axios.post(url, vehicleObj, {
+                    headers: { "x-auth-token": userData.token },
+                });
                 navigate("/success");
             } catch (err) {
                 setError(err.response.data.error);
@@ -42,7 +44,9 @@ export default function CheckoutPage() {
     }
 
     useEffect(() => {
-        getVehicleDetails(vehicleNumber).then((vehicle) => setVehicle(vehicle));
+        getVehicleDetails(vehicleNumber, userData.token).then((vehicle) =>
+            setVehicle(vehicle)
+        );
 
         // setDestinationArray([
         //     "1131 - STEM I",
@@ -58,9 +62,13 @@ export default function CheckoutPage() {
         //     "0031 - Candler Hall",
         // ]);
 
-        axios.get(SERVER_URL + "api/destinations/").then((res) => {
-            setDestinationArray(res.data.sort(sortDestinations));
-        });
+        axios
+            .get(SERVER_URL + "api/destinations/", {
+                headers: { "x-auth-token": userData.token },
+            })
+            .then((res) => {
+                setDestinationArray(res.data.sort(sortDestinations));
+            });
     }, []);
 
     useEffect(() => {

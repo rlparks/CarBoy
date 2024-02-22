@@ -52,7 +52,9 @@ export default function CheckinPage() {
 
             const url = SERVER_URL + "api/checkin/" + vehicleNumber;
             try {
-                await axios.post(url, vehicleObj);
+                await axios.post(url, vehicleObj, {
+                    headers: { "x-auth-token": userData.token },
+                });
                 navigate("/success");
             } catch (err) {
                 setError(err.response.data.error);
@@ -61,7 +63,7 @@ export default function CheckinPage() {
     }
 
     useEffect(() => {
-        getVehicleDetails(vehicleNumber).then((vehicle) => {
+        getVehicleDetails(vehicleNumber, userData.token).then((vehicle) => {
             setVehicle(vehicle);
             if (vehicle) {
                 if (vehicle.trips) {
@@ -75,7 +77,7 @@ export default function CheckinPage() {
 
     useEffect(() => {
         if (currentTrip.employee) {
-            getUser(currentTrip.employee)
+            getUser(currentTrip.employee, userData.token)
                 .then((employeeObj) => {
                     setCurrentTripEmployeeUser(employeeObj);
                 })

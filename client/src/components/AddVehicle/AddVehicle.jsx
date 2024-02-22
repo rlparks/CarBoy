@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
 export default function AddVehicle() {
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function AddVehicle() {
     const [image, setImage] = useState();
     const [error, setError] = useState("");
     const [isDP, setIsDP] = useState(false);
+    const { userData } = useContext(UserContext);
 
     function vehicleNumberChangeHandler(event) {
         if (isDP) {
@@ -88,7 +90,9 @@ export default function AddVehicle() {
             };
 
             try {
-                await axios.post(SERVER_URL + "api/vehicles/", newVehicle);
+                await axios.post(SERVER_URL + "api/vehicles/", newVehicle, {
+                    headers: { "x-auth-token": userData.token },
+                });
                 navigate("/success/managevehicles");
             } catch (err) {
                 setError(err.response.data.error);

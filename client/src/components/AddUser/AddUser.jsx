@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
 export default function AddUser() {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function AddUser() {
         admin: false,
         pictureUrl: "",
     });
+    const { userData } = useContext(UserContext);
 
     function usernameChangeHandler(event) {
         setUser((prevUser) => {
@@ -55,7 +57,9 @@ export default function AddUser() {
         } else {
             const url = SERVER_URL + "api/login/signup/";
             try {
-                await axios.post(url, user);
+                await axios.post(url, user, {
+                    headers: { "x-auth-token": userData.token },
+                });
                 navigate("/success/manageusers");
             } catch (err) {
                 setError(err.response.data.msg);

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     getDestination,
@@ -7,6 +7,7 @@ import {
     getVehicleDetails,
 } from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import UserContext from "../../context/UserContext";
 
 export default function DeletePage({ mode }) {
     const params = useParams();
@@ -22,11 +23,12 @@ export default function DeletePage({ mode }) {
     const [error, setError] = useState("");
     const [identifier, setIdentifier] = useState("");
     const [item, setItem] = useState({});
+    const { userData } = useContext(UserContext);
 
     useEffect(() => {
         if (itemId) {
             if (mode === "user") {
-                getUser(itemId).then((user) => {
+                getUser(itemId, userData.token).then((user) => {
                     if (user) {
                         if (!user.fullName) {
                             user.fullName = user.username;
@@ -37,12 +39,12 @@ export default function DeletePage({ mode }) {
                     setItem(user);
                 });
             } else if (mode === "vehicle") {
-                getVehicleDetails(itemId).then((vehicle) => {
+                getVehicleDetails(itemId, userData.token).then((vehicle) => {
                     setItem(vehicle);
                 });
                 setIdentifier(params.vehicleNumber);
             } else if (mode === "destination") {
-                getDestination(itemId).then((destination) => {
+                getDestination(itemId, userData.token).then((destination) => {
                     setItem(destination);
 
                     if (destination) {
@@ -66,7 +68,9 @@ export default function DeletePage({ mode }) {
         }
 
         try {
-            await axios.delete(url);
+            await axios.delete(url, {
+                headers: { "x-auth-token": userData.token },
+            });
             navigate("/success/manage" + mode + "s");
         } catch (err) {
             setError(err.response.data.error);

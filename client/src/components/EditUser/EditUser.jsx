@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUser } from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import UserContext from "../../context/UserContext";
 
 export default function EditUser() {
     const params = useParams();
@@ -17,9 +18,10 @@ export default function EditUser() {
     });
     const [userExists, setUserExists] = useState(true);
     const [newPassword, setNewPassword] = useState("");
+    const { userData } = useContext(UserContext);
 
     useEffect(() => {
-        getUser(userId).then((user) => {
+        getUser(userId, userData.token).then((user) => {
             if (user) {
                 if (!user.fullName) {
                     user.fullName = "";
@@ -71,7 +73,9 @@ export default function EditUser() {
 
             const url = SERVER_URL + "api/users/" + user._id;
             try {
-                await axios.put(url, userObj);
+                await axios.put(url, userObj, {
+                    headers: { "x-auth-token": userData.token },
+                });
                 navigate("/success/manageusers");
             } catch (err) {
                 setError(err.response.data.error);

@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     admin: Boolean,
     fullName: String,
     pictureUrl: String,
+    disabled: Boolean,
 });
 
 module.exports = User = mongoose.model("user", userSchema);

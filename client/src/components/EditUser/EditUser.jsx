@@ -15,6 +15,7 @@ export default function EditUser() {
         fullName: "",
         admin: false,
         pictureUrl: "",
+        disabled: false,
     });
     const [userExists, setUserExists] = useState(true);
     const [newPassword, setNewPassword] = useState("");
@@ -59,6 +60,10 @@ export default function EditUser() {
         setUser((prevUser) => {
             return { ...prevUser, pictureUrl: event.target.value };
         });
+    }
+
+    function disabledChangeHandler(event) {
+        setUser({ ...user, disabled: event.target.checked });
     }
 
     async function submitHandler(event) {
@@ -139,6 +144,17 @@ export default function EditUser() {
                                 className="form-check-input"
                             />
                             <label className="form-check-label">Admin</label>
+                        </div>
+                    </div>
+                    <div className="mb-3">
+                        <div className="form-check">
+                            <input
+                                checked={user.disabled}
+                                onChange={disabledChangeHandler}
+                                type="checkbox"
+                                className="form-check-input"
+                            />
+                            <label className="form-check-label">Disabled</label>
                         </div>
                     </div>
                     <button className="btn btn-primary">Submit</button>

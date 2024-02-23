@@ -53,19 +53,30 @@ export default function App() {
             }
 
             if (serverRunning) {
-                const tokenResponse = await axios.post(
-                    SERVER_URL + "api/login/tokenIsValid",
-                    null,
-                    { headers: { "x-auth-token": token } }
-                );
+                try {
+                    const tokenResponse = await axios.post(
+                        SERVER_URL + "api/login/tokenIsValid",
+                        null,
+                        { headers: { "x-auth-token": token } }
+                    );
 
-                if (tokenResponse.data) {
-                    const userRes = await axios.get(SERVER_URL + "api/login", {
-                        headers: { "x-auth-token": token },
-                    });
+                    if (tokenResponse.data) {
+                        const userRes = await axios.get(
+                            SERVER_URL + "api/login",
+                            {
+                                headers: { "x-auth-token": token },
+                            }
+                        );
+                        setUserData({
+                            token,
+                            user: userRes.data,
+                        });
+                    }
+                } catch (err) {
+                    localStorage.clear();
                     setUserData({
-                        token,
-                        user: userRes.data,
+                        token: undefined,
+                        user: undefined,
                     });
                 }
 

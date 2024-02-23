@@ -84,18 +84,22 @@ userRouter.post("/login", async (req, res) => {
         const { username, password } = req.body;
         console.log("LOGIN ATTEMPT: " + username);
         if (!username || !password) {
-            return res.status(400).json({ msg: "Please fill out all fields" });
+            return res
+                .status(400)
+                .json({ error: "Please fill out all fields" });
         }
         const user = await User.findOne({ username });
         if (!user) {
-            return res
-                .status(400)
-                .json({ msg: "User with username does not exist" });
+            return res.status(400).json({ error: "Invalid credentials." });
         }
 
         const passwordsMatch = await bcryptjs.compare(password, user.password);
         if (!passwordsMatch) {
-            return res.status(400).json({ msg: "Incorrect password" });
+            return res.status(400).json({ error: "Invalid credentials." });
+        }
+
+        if (user.disabled) {
+            return res.status(400).json({ error: "Invalid credentials." });
         }
 
         // TODO

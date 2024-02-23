@@ -37,8 +37,8 @@ export default function LoginPage() {
         } catch (err) {
             // console.error("Login error:", err.response);
 
-            if (err.response && err.response.status === 400) {
-                setError("Invalid username or password.");
+            if (err.response) {
+                setError(err.response.data.error);
             }
         }
     }

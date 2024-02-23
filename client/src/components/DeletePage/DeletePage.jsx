@@ -92,7 +92,8 @@ export default function DeletePage({ mode }) {
                 </p>
                 {mode !== "destination" && (
                     <p className="text-center text-danger">
-                        This will affect past trips.
+                        This will affect past trips. Consider disabling this{" "}
+                        {mode} instead.
                     </p>
                 )}
                 <div className="d-flex justify-content-center">

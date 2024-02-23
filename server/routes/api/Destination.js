@@ -1,5 +1,6 @@
 const express = require("express");
 const auth = require("../../middleware/auth");
+const isAdmin = require("../../middleware/isAdmin");
 const router = express.Router();
 
 const Destination = require("../../models/Destination").model;
@@ -22,7 +23,7 @@ router.get("/:id", auth, (req, res) => {
             })
         );
 });
-router.post("/", auth, (req, res) => {
+router.post("/", auth, isAdmin, (req, res) => {
     Destination.create(req.body)
         .then((item) => res.json({ msg: "Destination added successfully" }))
         .catch((err) => {
@@ -32,7 +33,7 @@ router.post("/", auth, (req, res) => {
             });
         });
 });
-router.post("/import", auth, (req, res) => {
+router.post("/import", auth, isAdmin, (req, res) => {
     Destination.insertMany(req.body)
         .then((result) => {
             res.json({ msg: "Destinations successfully imported" });
@@ -43,7 +44,7 @@ router.post("/import", auth, (req, res) => {
             });
         });
 });
-router.put("/:id", auth, (req, res) => {
+router.put("/:id", auth, isAdmin, (req, res) => {
     Destination.findByIdAndUpdate(req.params.id, req.body)
         .then((item) => res.json({ msg: "Updated successfully" }))
         .catch((err) =>
@@ -52,7 +53,7 @@ router.put("/:id", auth, (req, res) => {
             })
         );
 });
-router.delete("/:id", auth, (req, res) => {
+router.delete("/:id", auth, isAdmin, (req, res) => {
     Destination.findByIdAndDelete(req.params.id)
         .then((item) => {
             if (!item) {

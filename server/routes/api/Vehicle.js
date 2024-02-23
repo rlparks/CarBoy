@@ -1,5 +1,6 @@
 const express = require("express");
 const auth = require("../../middleware/auth");
+const isAdmin = require("../../middleware/isAdmin");
 const router = express.Router();
 
 const Vehicle = require("../../models/Vehicle").model;
@@ -22,7 +23,7 @@ router.get("/:vehicleNumber", auth, (req, res) => {
             })
         );
 });
-router.post("/", auth, (req, res) => {
+router.post("/", auth, isAdmin, (req, res) => {
     req.body.checkedOut = false;
     Vehicle.create(req.body)
         .then((item) => res.json({ msg: "Vehicle added successfully" }))
@@ -33,7 +34,7 @@ router.post("/", auth, (req, res) => {
             // console.log(err);
         });
 });
-router.post("/import", auth, (req, res) => {
+router.post("/import", auth, isAdmin, (req, res) => {
     Vehicle.insertMany(req.body)
         .then((result) => {
             res.json({ msg: "Vehicles successfully imported" });
@@ -44,7 +45,7 @@ router.post("/import", auth, (req, res) => {
             });
         });
 });
-router.put("/:id", auth, (req, res) => {
+router.put("/:id", auth, isAdmin, (req, res) => {
     Vehicle.findByIdAndUpdate(req.params.id, req.body)
         .then((item) => res.json({ msg: "Updated successfully" }))
         .catch((err) =>
@@ -53,7 +54,7 @@ router.put("/:id", auth, (req, res) => {
             })
         );
 });
-router.delete("/:vehicleNumber", auth, (req, res) => {
+router.delete("/:vehicleNumber", auth, isAdmin, (req, res) => {
     Vehicle.findOneAndDelete({ vehicleNumber: req.params.vehicleNumber })
         .then((item) => {
             if (!item) {

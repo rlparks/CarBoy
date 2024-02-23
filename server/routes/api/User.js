@@ -4,6 +4,7 @@ const bcryptjs = require("bcryptjs");
 
 const User = require("../../models/User");
 const auth = require("../../middleware/auth");
+const isAdmin = require("../../middleware/isAdmin");
 
 router.get("/", auth, (req, res) => {
     User.find()
@@ -42,7 +43,7 @@ router.get("/:id", auth, (req, res) => {
 //             console.log(err);
 //         });
 // });
-router.put("/:id", auth, async (req, res) => {
+router.put("/:id", auth, isAdmin, async (req, res) => {
     if (req.body.newPassword && req.body.newPassword !== "") {
         // password change
         const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
@@ -75,7 +76,7 @@ router.put("/:id", auth, async (req, res) => {
             res.status(400).json({ error: "Unable to update the database" })
         );
 });
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", auth, isAdmin, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (user && user.admin) {

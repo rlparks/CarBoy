@@ -90,9 +90,11 @@ export default function DeletePage({ mode }) {
                 <p className="text-center">
                     Are you sure you want to delete this {mode}?
                 </p>
-                <p className="text-center text-danger">
-                    This will affect past trips.
-                </p>
+                {mode !== "destination" && (
+                    <p className="text-center text-danger">
+                        This will affect past trips.
+                    </p>
+                )}
                 <div className="d-flex justify-content-center">
                     <button
                         className="btn btn-danger mx-2"

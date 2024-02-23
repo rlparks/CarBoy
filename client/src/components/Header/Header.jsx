@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Title from "../Title/Title";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/UserContext";
@@ -6,6 +6,7 @@ import { getUser } from "../../assets/helpers";
 
 export default function Header({ setUserData, isAdmin, serverDown }) {
     const { userData, user } = useContext(UserContext);
+    const navigate = useNavigate();
 
     function handleLogout() {
         localStorage.clear();
@@ -13,6 +14,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
             token: undefined,
             user: undefined,
         });
+        navigate("/");
     }
 
     return (

@@ -38,8 +38,14 @@ if (process.env.CREATE_DEFAULT_ADMIN) {
 
 userRouter.post("/signup", async (req, res) => {
     try {
-        const { username, password, confirmPassword, admin, fullName } =
-            req.body;
+        const {
+            username,
+            password,
+            confirmPassword,
+            admin,
+            fullName,
+            pictureUrl,
+        } = req.body;
         if (!username || !password || !confirmPassword) {
             return res.status(400).json({ msg: "Please fill out all fields" });
         }
@@ -64,6 +70,7 @@ userRouter.post("/signup", async (req, res) => {
             password: passwordHash,
             admin,
             fullName,
+            pictureUrl,
         });
         const savedUser = await newUser.save();
         res.json(savedUser);

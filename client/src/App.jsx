@@ -147,15 +147,19 @@ export default function App() {
                         <Route
                             path="/managevehicles"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
-                                    <VehicleList
-                                        isAdmin={user.admin}
-                                        mode="manage"
-                                    />
-                                </RequireAdmin>
+                                // not using RequireAdmin to avoid component refresh when navigating
+                                userData.user ? (
+                                    user.admin ? (
+                                        <VehicleList
+                                            isAdmin={user.admin}
+                                            mode="manage"
+                                        />
+                                    ) : (
+                                        <ErrorPage type={403} />
+                                    )
+                                ) : (
+                                    <ErrorPage type={401} />
+                                )
                             }
                         />
                         <Route

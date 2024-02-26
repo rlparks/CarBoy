@@ -84,7 +84,7 @@ export default function DeletePage({ mode }) {
 
     return item ? (
         <div className="d-flex justify-content-center">
-            <div className="w-25">
+            <div className="w-50">
                 <h2 className="text-center mb-3">{"Delete: " + identifier}</h2>
                 {error && <p className="text-center text-danger">{error}</p>}
                 <p className="text-center">

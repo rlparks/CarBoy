@@ -62,7 +62,7 @@ export default function EditDestination() {
 
     return destinationExists ? (
         <div className="d-flex justify-content-center">
-            <div className="w-25">
+            <div className="w-50">
                 <h2 className="text-center mb-3">
                     {"Edit: " + destination.destinationName}
                 </h2>
@@ -89,7 +89,7 @@ export default function EditDestination() {
                             placeholder="2118"
                         />
                     </div>
-                    <button className="btn btn-primary">Submit</button>
+                    <button className="btn btn-primary mb-3">Submit</button>
                 </form>
             </div>
         </div>

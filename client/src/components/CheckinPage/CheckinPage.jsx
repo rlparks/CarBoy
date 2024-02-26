@@ -93,24 +93,26 @@ export default function CheckinPage() {
         <div className="">
             <h2 className="text-center mb-3">Check In</h2>
             {error && <p className="text-center text-danger">{error}</p>}
-            <div className="d-flex justify-content-center flex-column">
-                <div className="d-flex justify-content-evenly">
-                    <div className="w-25">
-                        <img
-                            className="img-fluid"
-                            src={vehicle.pictureUrl}
-                            alt={"Image of " + vehicleNumber}
-                            style={{ width: "500px" }}
-                        />
-                    </div>
-                    <div className="w-50">
-                        {!vehicle.checkedOut ? (
-                            <p className="text-center">
-                                Error: Vehicle is already checked in.
-                            </p>
-                        ) : (
-                            <CheckinForm />
-                        )}
+            <div className="d-flex justify-content-center">
+                <div className="w-75">
+                    <div className="row row-cols-1 row-cols-lg-2">
+                        <div className="col">
+                            <img
+                                className="img-fluid"
+                                src={vehicle.pictureUrl}
+                                alt={"Image of " + vehicleNumber}
+                                style={{ width: "500px" }}
+                            />
+                        </div>
+                        <div className="col">
+                            {!vehicle.checkedOut ? (
+                                <p className="text-center">
+                                    Error: Vehicle is already checked in.
+                                </p>
+                            ) : (
+                                <CheckinForm />
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -183,7 +185,7 @@ export default function CheckinPage() {
                     </div>
                 )}
 
-                <button className="btn btn-primary">Submit</button>
+                <button className="btn btn-primary mb-3">Submit</button>
             </form>
         );
     }

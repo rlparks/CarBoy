@@ -69,7 +69,7 @@ export default function AddUser() {
 
     return (
         <div className="d-flex justify-content-center">
-            <div className="w-25">
+            <div className="w-50">
                 <h2 className="text-center mb-3">{"Add User"}</h2>
                 {error && <p className="text-center text-danger">{error}</p>}
                 <form onSubmit={submitHandler}>
@@ -135,7 +135,7 @@ export default function AddUser() {
                             <label className="form-check-label">Admin</label>
                         </div>
                     </div>
-                    <button className="btn btn-primary">Submit</button>
+                    <button className="btn btn-primary mb-3">Submit</button>
                 </form>
             </div>
         </div>

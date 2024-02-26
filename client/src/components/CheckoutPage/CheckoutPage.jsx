@@ -81,91 +81,97 @@ export default function CheckoutPage() {
         <div className="">
             <h2 className="text-center mb-3">Check Out</h2>
             {error && <p className="text-center text-danger">{error}</p>}
-            <div className="d-flex justify-content-center flex-column">
-                <div className="d-flex justify-content-evenly">
-                    <div className="w-25">
-                        <img
-                            className="img-fluid"
-                            src={vehicle.pictureUrl}
-                            alt={"Image of " + vehicleNumber}
-                            style={{ width: "500px" }}
-                        />
-                    </div>
-                    <div className="w-50">
-                        {vehicle.checkedOut ? (
-                            <p className="text-center">
-                                Error: Vehicle is already checked out.
-                            </p>
-                        ) : (
-                            <form onSubmit={submitHandler}>
-                                <div className="mb-3">
-                                    <label className="form-label">
-                                        Vehicle Number
-                                    </label>
-                                    <input
-                                        disabled
-                                        value={vehicleNumber}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">
-                                        Employee
-                                    </label>
-                                    <input
-                                        disabled
-                                        value={name}
-                                        className="form-control"
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">
-                                        Destination
-                                    </label>
-                                    <input
-                                        autoFocus
-                                        value={destination}
-                                        onChange={destinationChangeHander}
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Type to search..."
-                                        list="destinationDatalist"
-                                    />
-                                    <datalist id="destinationDatalist">
-                                        {destinationArray.map((destination) => {
-                                            const destDisplay =
-                                                destination.buildingNumber
-                                                    ? destination.buildingNumber +
-                                                      " - " +
-                                                      destination.destinationName
-                                                    : destination.destinationName;
-                                            return (
-                                                <option
-                                                    key={destination._id}
-                                                    value={destDisplay}
-                                                />
-                                            );
-                                        })}
-                                    </datalist>
-                                </div>
-                                {vehicle.make !== "Departmental" && (
+            <div className="d-flex justify-content-center">
+                <div className="w-75">
+                    <div className="row row-cols-1 row-cols-lg-2">
+                        <div className="col">
+                            <img
+                                className="img-fluid mx-auto"
+                                src={vehicle.pictureUrl}
+                                alt={"Image of " + vehicleNumber}
+                                style={{ width: "500px" }}
+                            />
+                        </div>
+                        <div className="col">
+                            {vehicle.checkedOut ? (
+                                <p className="text-center">
+                                    Error: Vehicle is already checked out.
+                                </p>
+                            ) : (
+                                <form onSubmit={submitHandler}>
                                     <div className="mb-3">
                                         <label className="form-label">
-                                            Starting Mileage
+                                            Vehicle Number
                                         </label>
                                         <input
                                             disabled
-                                            value={vehicle.mileage}
+                                            value={vehicleNumber}
                                             className="form-control"
                                         />
                                     </div>
-                                )}
+                                    <div className="mb-3">
+                                        <label className="form-label">
+                                            Employee
+                                        </label>
+                                        <input
+                                            disabled
+                                            value={name}
+                                            className="form-control"
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">
+                                            Destination
+                                        </label>
+                                        <input
+                                            autoFocus
+                                            value={destination}
+                                            onChange={destinationChangeHander}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Type to search..."
+                                            list="destinationDatalist"
+                                        />
+                                        <datalist id="destinationDatalist">
+                                            {destinationArray.map(
+                                                (destination) => {
+                                                    const destDisplay =
+                                                        destination.buildingNumber
+                                                            ? destination.buildingNumber +
+                                                              " - " +
+                                                              destination.destinationName
+                                                            : destination.destinationName;
+                                                    return (
+                                                        <option
+                                                            key={
+                                                                destination._id
+                                                            }
+                                                            value={destDisplay}
+                                                        />
+                                                    );
+                                                }
+                                            )}
+                                        </datalist>
+                                    </div>
+                                    {vehicle.make !== "Departmental" && (
+                                        <div className="mb-3">
+                                            <label className="form-label">
+                                                Starting Mileage
+                                            </label>
+                                            <input
+                                                disabled
+                                                value={vehicle.mileage}
+                                                className="form-control"
+                                            />
+                                        </div>
+                                    )}
 
-                                <button className="btn btn-primary">
-                                    Submit
-                                </button>
-                            </form>
-                        )}
+                                    <button className="btn btn-primary mb-3">
+                                        Submit
+                                    </button>
+                                </form>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

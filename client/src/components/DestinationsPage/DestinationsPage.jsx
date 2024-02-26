@@ -67,7 +67,7 @@ export default function DestinationsPage({ isAdmin, mode }) {
                         {destinations.length > 0 ? (
                             <div
                                 className={
-                                    "row row-cols-lg-" +
+                                    "row row-cols-1 row-cols-lg-" +
                                     numColumns +
                                     " g-4 card-deck"
                                 }

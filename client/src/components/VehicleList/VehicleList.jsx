@@ -79,7 +79,7 @@ export default function VehicleList({ isAdmin, mode }) {
                         {availableVehicles.length > 0 ? (
                             <div
                                 className={
-                                    "row row-cols-lg-" +
+                                    "row row-cols-1 row-cols-lg-" +
                                     numColumns +
                                     " g-4 card-deck"
                                 }
@@ -106,7 +106,9 @@ export default function VehicleList({ isAdmin, mode }) {
                         {checkedOutVehicles.length > 0 ? (
                             <div
                                 className={
-                                    "row row-cols-lg-" + numColumns + " g-4"
+                                    "row row-cols-1 row-cols-lg-" +
+                                    numColumns +
+                                    " g-4"
                                 }
                             >
                                 {checkedOutVehicles.map((vehicle) => (
@@ -132,7 +134,9 @@ export default function VehicleList({ isAdmin, mode }) {
                                 <h2 className="text-center m-3">Disabled</h2>
                                 <div
                                     className={
-                                        "row row-cols-lg-" + numColumns + " g-4"
+                                        "row row-cols-1 row-cols-lg-" +
+                                        numColumns +
+                                        " g-4"
                                     }
                                 >
                                     {disabledVehicles.map((vehicle) => (

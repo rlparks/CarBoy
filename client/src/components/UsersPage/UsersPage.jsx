@@ -39,7 +39,7 @@ export default function UsersPage() {
                         <h2 className="text-center mb-3">Users</h2>
                         <div
                             className={
-                                "row row-cols-lg-" +
+                                "row row-cols-1 row-cols-lg-" +
                                 numColumns +
                                 " g-4 card-deck"
                             }
@@ -58,7 +58,7 @@ export default function UsersPage() {
                             </h2>
                             <div
                                 className={
-                                    "row row-cols-lg-" +
+                                    "row row-cols-1 row-cols-lg-" +
                                     numColumns +
                                     " g-4 card-deck"
                                 }

@@ -24,9 +24,8 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
     return (
         <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
             <Container fluid>
-                <Navbar.Brand>
-                    {/* fails at updating active NavLink */}
-                    {/*as={NavLink} to="/" href="/"*/}
+                <Navbar.Brand as={Nav.Link} href="/">
+                    {/* fails at updating active NavLink, so forcing page load */}
                     <Title />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

@@ -27,7 +27,6 @@ export default function EditUser({ mode }) {
         } else if (mode === "self") {
             // editing own profile
             userId = userData.user.id;
-            console.log(userId);
         }
 
         getUser(userId, userData.token).then((user) => {
@@ -88,12 +87,6 @@ export default function EditUser({ mode }) {
                 userObj = {
                     ...userObj,
                     newPassword,
-                };
-            }
-            if (mode === "self") {
-                userObj = {
-                    ...userObj,
-                    self: true,
                 };
             }
 

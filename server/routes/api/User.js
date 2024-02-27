@@ -48,7 +48,7 @@ router.put("/", auth, async (req, res) => {
         // specify which fields users can update
         userObj.pictureUrl = req.body.pictureUrl;
 
-        User.findByIdAndUpdate(req.params.id, userObj)
+        User.findByIdAndUpdate(userId, userObj)
             .then((item) => res.json({ msg: "Updated successfully" }))
             .catch((err) =>
                 res.status(400).json({ error: "Unable to update the database" })

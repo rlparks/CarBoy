@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Title from "../Title/Title";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/UserContext";
@@ -21,11 +21,12 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
         navigate("/");
     }
 
+    const url = useLocation();
+    const [link, setLink] = useState(url.pathname);
     return (
         <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
             <Container fluid>
-                <Navbar.Brand as={Nav.Link} href="/">
-                    {/* fails at updating active NavLink, so forcing page load */}
+                <Navbar.Brand as={NavLink} to="/" onClick={() => setLink("/")}>
                     <Title />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -33,13 +34,21 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                     <Nav className="me-auto">
                         {userData.user && (
                             <>
-                                <Nav.Link as={NavLink} to="/" href="/">
+                                <Nav.Link
+                                    as={NavLink}
+                                    to="/"
+                                    onClick={() => setLink("/")}
+                                    className={link === "/" && "active"}
+                                >
                                     Home
                                 </Nav.Link>
                                 <Nav.Link
                                     as={NavLink}
                                     to="/trips"
-                                    href="/trips"
+                                    onClick={() => setLink("/trips")}
+                                    className={
+                                        link.includes("/trips") && "active"
+                                    }
                                 >
                                     Trips
                                 </Nav.Link>
@@ -50,21 +59,35 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                 <Nav.Link
                                     as={NavLink}
                                     to="/managevehicles"
-                                    href="managevehicles"
+                                    onClick={() => setLink("/managevehicles")}
+                                    className={
+                                        link.includes("/managevehicles") &&
+                                        "active"
+                                    }
                                 >
                                     Manage Vehicles
                                 </Nav.Link>
                                 <Nav.Link
                                     as={NavLink}
                                     to="/managedestinations"
-                                    href="managedestinations"
+                                    onClick={() =>
+                                        setLink("/managedestinations")
+                                    }
+                                    className={
+                                        link.includes("/managedestinations") &&
+                                        "active"
+                                    }
                                 >
                                     Manage Destinations
                                 </Nav.Link>
                                 <Nav.Link
                                     as={NavLink}
                                     to="/manageusers"
-                                    href="/manageusers"
+                                    onClick={() => setLink("/manageusers")}
+                                    className={
+                                        link.includes("/manageusers") &&
+                                        "active"
+                                    }
                                 >
                                     Manage Users
                                 </Nav.Link>
@@ -75,7 +98,16 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                         <Nav>
                             {userData.user ? (
                                 <div className="d-flex">
-                                    <Nav.Link>{user.fullName}</Nav.Link>
+                                    <Nav.Link
+                                        as={NavLink}
+                                        to="/manageself"
+                                        onClick={() => setLink("/manageself")}
+                                        className={
+                                            link === "/manageself" && "active"
+                                        }
+                                    >
+                                        {user.fullName}
+                                    </Nav.Link>
                                     <button
                                         className="btn btn-secondary"
                                         onClick={handleLogout}
@@ -88,7 +120,10 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                     <Nav.Link
                                         as={NavLink}
                                         to="/login"
-                                        href="/login"
+                                        onClick={() => setLink("/login")}
+                                        className={
+                                            link.includes("/login") && "active"
+                                        }
                                     >
                                         <Button variant="secondary">
                                             Login

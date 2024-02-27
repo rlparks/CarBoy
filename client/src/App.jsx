@@ -246,8 +246,18 @@ export default function App() {
                                     userData={userData}
                                     isAdmin={user.admin}
                                 >
-                                    <EditUser />
+                                    <EditUser mode="admin" />
                                 </RequireAdmin>
+                            }
+                        />
+                        <Route
+                            path="/manageself"
+                            element={
+                                userData.user ? (
+                                    <EditUser mode="self" />
+                                ) : (
+                                    <ErrorPage type={401} />
+                                )
                             }
                         />
                         <Route

@@ -28,21 +28,36 @@ router.get("/:id", auth, (req, res) => {
                 .json({ noitemfound: "No user found with that ID: " + err })
         );
 });
-// router.post("/", async (req, res) => {
-//     const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
-//     if (req.body.newPassword !== "") {
-//         req.body.password = passwordHash;
-//     } else {
-//         res.status(400).json({ error: "No password provided" });
-//         return;
-//     }
-//     User.create(req.body)
-//         .then((item) => res.json({ msg: "User added successfully" }))
-//         .catch((err) => {
-//             res.status(400).json({ error: "Unable to add this user" });
-//             console.log(err);
-//         });
-// });
+
+// weird method? not sure which to use
+// editing own profile
+router.put("/", auth, async (req, res) => {
+    const userId = req.user;
+    if (userId !== req.body._id) {
+        return res.status(401).json({ err: "Error: Not Authorized." });
+    }
+
+    try {
+        let userObj = await User.findById(userId);
+
+        if (req.body.newPassword) {
+            const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
+            userObj.password = passwordHash;
+        }
+
+        // specify which fields users can update
+        userObj.pictureUrl = req.body.pictureUrl;
+
+        User.findByIdAndUpdate(req.params.id, userObj)
+            .then((item) => res.json({ msg: "Updated successfully" }))
+            .catch((err) =>
+                res.status(400).json({ error: "Unable to update the database" })
+            );
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 router.put("/:id", auth, isAdmin, async (req, res) => {
     if (req.body.newPassword && req.body.newPassword !== "") {
         // password change

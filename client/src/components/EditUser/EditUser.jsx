@@ -5,10 +5,8 @@ import { getUser } from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import UserContext from "../../context/UserContext";
 
-export default function EditUser() {
-    const params = useParams();
+export default function EditUser({ mode }) {
     const navigate = useNavigate();
-    const userId = params.userId;
     const [error, setError] = useState("");
     const [user, setUser] = useState({
         username: "",
@@ -21,11 +19,25 @@ export default function EditUser() {
     const [newPassword, setNewPassword] = useState("");
     const { userData } = useContext(UserContext);
 
+    const params = useParams();
     useEffect(() => {
+        let userId;
+        if (mode === "admin") {
+            userId = params.userId;
+        } else if (mode === "self") {
+            // editing own profile
+            userId = userData.user.id;
+            console.log(userId);
+        }
+
         getUser(userId, userData.token).then((user) => {
             if (user) {
                 if (!user.fullName) {
                     user.fullName = "";
+                }
+                // avoid uncontrolled state when user doesn't have this field
+                if (!user.hasOwnProperty("disabled")) {
+                    user.disabled = false;
                 }
                 setUser(user);
             } else {
@@ -71,12 +83,24 @@ export default function EditUser() {
         if (!user.username || !user.fullName) {
             alert("Please fill out all fields.");
         } else {
-            const userObj = {
-                ...user,
-                newPassword,
-            };
+            let userObj = user;
+            if (newPassword) {
+                userObj = {
+                    ...userObj,
+                    newPassword,
+                };
+            }
+            if (mode === "self") {
+                userObj = {
+                    ...userObj,
+                    self: true,
+                };
+            }
 
-            const url = SERVER_URL + "api/users/" + user._id;
+            let url = SERVER_URL + "api/users/";
+            if (mode === "admin") {
+                url += user._id;
+            }
             try {
                 await axios.put(url, userObj, {
                     headers: { "x-auth-token": userData.token },
@@ -97,12 +121,24 @@ export default function EditUser() {
                     <div className="mb-3">
                         <label className="form-label">Username</label>
                         <input
-                            autoFocus
+                            autoFocus={mode === "admin"}
+                            disabled={mode !== "admin"}
                             value={user.username}
                             onChange={usernameChangeHandler}
                             type="text"
                             className="form-control"
                             placeholder="abc12345"
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Full Name</label>
+                        <input
+                            disabled={mode !== "admin"}
+                            value={user.fullName}
+                            onChange={fullNameChangeHandler}
+                            type="text"
+                            className="form-control"
+                            placeholder="Example User"
                         />
                     </div>
                     <div className="mb-3">
@@ -116,16 +152,6 @@ export default function EditUser() {
                         />
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Full Name</label>
-                        <input
-                            value={user.fullName}
-                            onChange={fullNameChangeHandler}
-                            type="text"
-                            className="form-control"
-                            placeholder="Example User"
-                        />
-                    </div>
-                    <div className="mb-3">
                         <label className="form-label">Picture URL</label>
                         <input
                             value={user.pictureUrl}
@@ -135,28 +161,36 @@ export default function EditUser() {
                             placeholder="https://www.example.com/image.png"
                         />
                     </div>
-                    <div className="mb-3">
-                        <div className="form-check">
-                            <input
-                                checked={user.admin}
-                                onChange={adminChangeHandler}
-                                type="checkbox"
-                                className="form-check-input"
-                            />
-                            <label className="form-check-label">Admin</label>
+                    {mode === "admin" && (
+                        <div>
+                            <div className="mb-3">
+                                <div className="form-check">
+                                    <input
+                                        checked={user.admin}
+                                        onChange={adminChangeHandler}
+                                        type="checkbox"
+                                        className="form-check-input"
+                                    />
+                                    <label className="form-check-label">
+                                        Admin
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="mb-3">
+                                <div className="form-check">
+                                    <input
+                                        checked={user.disabled}
+                                        onChange={disabledChangeHandler}
+                                        type="checkbox"
+                                        className="form-check-input"
+                                    />
+                                    <label className="form-check-label">
+                                        Disabled
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="mb-3">
-                        <div className="form-check">
-                            <input
-                                checked={user.disabled}
-                                onChange={disabledChangeHandler}
-                                type="checkbox"
-                                className="form-check-input"
-                            />
-                            <label className="form-check-label">Disabled</label>
-                        </div>
-                    </div>
+                    )}
                     <button className="btn btn-primary mb-3">Submit</button>
                 </form>
             </div>

@@ -23,13 +23,27 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
 
     const url = useLocation();
     const [link, setLink] = useState(url.pathname);
+    const [expanded, setExpanded] = useState(false);
+
+    function handleClick(url) {
+        setLink(url);
+        setExpanded(false);
+    }
+
     return (
-        <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+        <Navbar expanded={expanded} expand="lg" className="bg-body-tertiary">
             <Container fluid>
-                <Navbar.Brand as={NavLink} to="/" onClick={() => setLink("/")}>
+                <Navbar.Brand
+                    as={NavLink}
+                    to="/"
+                    onClick={() => handleClick("/")}
+                >
                     <Title />
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Toggle
+                    onClick={() => setExpanded(true)}
+                    aria-controls="responsive-navbar-nav"
+                />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         {userData.user && (
@@ -37,7 +51,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                 <Nav.Link
                                     as={NavLink}
                                     to="/"
-                                    onClick={() => setLink("/")}
+                                    onClick={() => handleClick("/")}
                                     className={link === "/" && "active"}
                                 >
                                     Home
@@ -45,7 +59,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                 <Nav.Link
                                     as={NavLink}
                                     to="/trips"
-                                    onClick={() => setLink("/trips")}
+                                    onClick={() => handleClick("/trips")}
                                     className={
                                         link.includes("/trips") && "active"
                                     }
@@ -59,7 +73,9 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                 <Nav.Link
                                     as={NavLink}
                                     to="/managevehicles"
-                                    onClick={() => setLink("/managevehicles")}
+                                    onClick={() =>
+                                        handleClick("/managevehicles")
+                                    }
                                     className={
                                         link.includes("/managevehicles") &&
                                         "active"
@@ -71,7 +87,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                     as={NavLink}
                                     to="/managedestinations"
                                     onClick={() =>
-                                        setLink("/managedestinations")
+                                        handleClick("/managedestinations")
                                     }
                                     className={
                                         link.includes("/managedestinations") &&
@@ -83,7 +99,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                 <Nav.Link
                                     as={NavLink}
                                     to="/manageusers"
-                                    onClick={() => setLink("/manageusers")}
+                                    onClick={() => handleClick("/manageusers")}
                                     className={
                                         link.includes("/manageusers") &&
                                         "active"
@@ -101,7 +117,9 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                     <Nav.Link
                                         as={NavLink}
                                         to="/manageself"
-                                        onClick={() => setLink("/manageself")}
+                                        onClick={() =>
+                                            handleClick("/manageself")
+                                        }
                                         className={
                                             link === "/manageself" && "active"
                                         }
@@ -120,7 +138,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                     <Nav.Link
                                         as={NavLink}
                                         to="/login"
-                                        onClick={() => setLink("/login")}
+                                        onClick={() => handleClick("/login")}
                                         className={
                                             link.includes("/login") && "active"
                                         }

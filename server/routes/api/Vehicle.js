@@ -7,7 +7,9 @@ const fs = require("fs");
 const path = require("path");
 
 const Vehicle = require("../../models/Vehicle").model;
-const upload = multer({ dest: "images/vehicles/" });
+
+const imageLocation = "images/vehicles/";
+const upload = multer({ dest: imageLocation });
 
 router.get("/", (req, res) => {
     Vehicle.find()
@@ -94,6 +96,11 @@ router.delete("/:vehicleNumber", auth, isAdmin, (req, res) => {
                 return res
                     .status(404)
                     .json({ error: "Error: No such vehicle." });
+            }
+
+            if (item.pictureUrl) {
+                const fileName = path.basename(item.pictureUrl);
+                fs.unlinkSync(imageLocation + fileName);
             }
             res.json({ msg: "Vehicle entry deleted successfully" });
         })

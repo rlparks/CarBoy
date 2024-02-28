@@ -41,7 +41,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                     <Title />
                 </Navbar.Brand>
                 <Navbar.Toggle
-                    onClick={() => setExpanded(true)}
+                    onClick={() => setExpanded((prev) => !prev)}
                     aria-controls="responsive-navbar-nav"
                 />
                 <Navbar.Collapse id="responsive-navbar-nav">

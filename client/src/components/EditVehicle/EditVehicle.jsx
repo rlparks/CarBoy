@@ -16,9 +16,10 @@ export default function EditVehicle() {
         year: "",
         licensePlate: "",
         mileage: "",
-        pictureUrl: "",
+        // pictureUrl: "",
         disabled: false,
     });
+    const [image, setImage] = useState();
     const [error, setError] = useState("");
     const [vehicleExists, setVehicleExists] = useState(true);
     const { userData } = useContext(UserContext);
@@ -74,13 +75,17 @@ export default function EditVehicle() {
         setVehicle({ ...vehicle, licensePlate: event.target.value });
     }
 
-    function pictureUrlChangeHandler(event) {
-        setVehicle({ ...vehicle, pictureUrl: event.target.value });
-    }
+    // function pictureUrlChangeHandler(event) {
+    //     setVehicle({ ...vehicle, pictureUrl: event.target.value });
+    // }
 
     function mileageChangeHandler(event) {
         event.target.value = event.target.value.slice(0, 10);
         setVehicle({ ...vehicle, mileage: event.target.value });
+    }
+
+    function imageChangeHandler(event) {
+        setImage(event.target.files[0]);
     }
 
     function disabledChangeHandler(event) {
@@ -100,10 +105,17 @@ export default function EditVehicle() {
         ) {
             alert("Please fill out all fields.");
         } else {
+            if (image) {
+                vehicle.image = image;
+            }
+
             const url = SERVER_URL + "api/vehicles/" + vehicle._id;
             try {
                 await axios.put(url, vehicle, {
-                    headers: { "x-auth-token": userData.token },
+                    headers: {
+                        "x-auth-token": userData.token,
+                        "Content-Type": "multipart/form-data",
+                    },
                 });
                 navigate("/success/managevehicles");
             } catch (err) {
@@ -179,7 +191,7 @@ export default function EditVehicle() {
                             placeholder="1000000"
                         />
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                         <label className="form-label">Picture URL</label>
                         <input
                             value={vehicle.pictureUrl}
@@ -187,6 +199,15 @@ export default function EditVehicle() {
                             type="text"
                             className="form-control"
                             placeholder="https://www.example.com/image.png"
+                        />
+                    </div> */}
+                    <div className="mb-3">
+                        <label className="form-label">Image</label>
+                        <input
+                            type="file"
+                            accept=".jpeg, .jpg, .png"
+                            className="form-control"
+                            onChange={imageChangeHandler}
                         />
                     </div>
                     <div className="mb-3">

@@ -85,13 +85,17 @@ export default function AddVehicle() {
                 year: year,
                 // lastOilChangeTime: lastOilChangeTime,
                 licensePlate: licensePlate,
-                pictureUrl: pictureUrl,
+                // pictureUrl: pictureUrl,
                 mileage: mileage,
+                image: image,
             };
 
             try {
                 await axios.post(SERVER_URL + "api/vehicles/", newVehicle, {
-                    headers: { "x-auth-token": userData.token },
+                    headers: {
+                        "x-auth-token": userData.token,
+                        "Content-Type": "multipart/form-data",
+                    },
                 });
                 navigate("/success/managevehicles");
             } catch (err) {
@@ -194,7 +198,7 @@ export default function AddVehicle() {
                             </div>
                         </div>
                     )}
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                         <label className="form-label">Picture URL</label>
                         <input
                             value={pictureUrl}
@@ -203,15 +207,16 @@ export default function AddVehicle() {
                             className="form-control"
                             placeholder="https://www.example.com/image.png"
                         />
-                    </div>
-                    {/* <div className="mb-3">
+                    </div> */}
+                    <div className="mb-3">
                         <label className="form-label">Image</label>
                         <input
                             type="file"
                             accept=".jpeg, .jpg, .png"
                             className="form-control"
+                            onChange={imageChangeHandler}
                         />
-                    </div> */}
+                    </div>
                     <div className="mb-3">
                         <div className="form-check">
                             <input

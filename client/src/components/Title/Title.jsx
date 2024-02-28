@@ -8,7 +8,7 @@ export default function Title() {
                 height="50px"
             />
             <div className="d-flex flex-column justify-content-center">
-                <h1>CarBoy</h1>
+                <h1 style={{ fontSize: "2.5rem" }}>CarBoy</h1>
             </div>
         </div>
     );

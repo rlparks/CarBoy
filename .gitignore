@@ -5,6 +5,7 @@ dist-ssr
 *.local
 
 data
+images
 
 # Editor directories and files
 .vscode/*

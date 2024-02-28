@@ -2,8 +2,12 @@ const express = require("express");
 const auth = require("../../middleware/auth");
 const isAdmin = require("../../middleware/isAdmin");
 const router = express.Router();
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
 const Vehicle = require("../../models/Vehicle").model;
+const upload = multer({ dest: "images/vehicles/" });
 
 router.get("/", (req, res) => {
     Vehicle.find()
@@ -23,16 +27,39 @@ router.get("/:vehicleNumber", auth, (req, res) => {
             })
         );
 });
-router.post("/", auth, isAdmin, (req, res) => {
+router.post("/", auth, isAdmin, upload.single("image"), (req, res) => {
+    // console.log(req);
     req.body.checkedOut = false;
-    Vehicle.create(req.body)
-        .then((item) => res.json({ msg: "Vehicle added successfully" }))
-        .catch((err) => {
-            res.status(400).json({
-                error: "Error adding vehicle. This is likely due to a duplicate vehicle number.",
+    if (req.body.vehicleNumber) {
+        Vehicle.create(req.body)
+            .then((item) => {
+                if (req.file) {
+                    console.log(req.file);
+                    const extension = path.extname(req.file.originalname);
+                    console.log(extension);
+                    fs.renameSync(
+                        req.file.path,
+                        req.file.destination +
+                            req.body.vehicleNumber +
+                            extension
+                    );
+                }
+                return res.json({ msg: "Vehicle added successfully" });
+            })
+            .catch((err) => {
+                fs.unlinkSync(req.file.path);
+                return res.status(400).json({
+                    error:
+                        "Error adding vehicle. This is likely due to a duplicate vehicle number." +
+                        err,
+                });
+                // console.log(err);
             });
-            // console.log(err);
+    } else {
+        return res.status(400).json({
+            error: "Error adding vehicle. No request found.",
         });
+    }
 });
 router.post("/import", auth, isAdmin, (req, res) => {
     Vehicle.insertMany(req.body)

@@ -26,6 +26,9 @@ mongoose
             res.status(200).json({ message: "Server is running!" })
         );
 
+        // image server
+        app.use("/api/images", express.static("images"));
+
         const vehicles = require("./routes/api/Vehicle");
         app.use("/api/vehicles", vehicles);
 

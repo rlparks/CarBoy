@@ -31,17 +31,23 @@ router.post("/", auth, isAdmin, upload.single("image"), (req, res) => {
     // console.log(req);
     req.body.checkedOut = false;
     if (req.body.vehicleNumber) {
+        let fileName;
+        if (req.file) {
+            fileName =
+                req.body.vehicleNumber + path.extname(req.file.originalname);
+            req.body.pictureUrl =
+                process.env.CARBOY_PUBLIC_URL +
+                "api/images/vehicles/" +
+                fileName;
+        }
+
         Vehicle.create(req.body)
             .then((item) => {
                 if (req.file) {
                     console.log(req.file);
-                    const extension = path.extname(req.file.originalname);
-                    console.log(extension);
                     fs.renameSync(
                         req.file.path,
-                        req.file.destination +
-                            req.body.vehicleNumber +
-                            extension
+                        req.file.destination + fileName
                     );
                 }
                 return res.json({ msg: "Vehicle added successfully" });

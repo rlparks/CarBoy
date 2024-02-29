@@ -11,6 +11,8 @@ const Vehicle = require("../../models/Vehicle").model;
 const imageLocation = "images/vehicles/";
 const upload = multer({ dest: imageLocation });
 
+function noCB() {}
+
 router.get("/", (req, res) => {
     Vehicle.find()
         .then((items) => {
@@ -46,16 +48,18 @@ router.post("/", auth, isAdmin, upload.single("image"), (req, res) => {
         Vehicle.create(req.body)
             .then((item) => {
                 if (req.file) {
-                    console.log(req.file);
-                    fs.renameSync(
-                        req.file.path,
-                        req.file.destination + fileName
+                    // console.log(req.file);
+                    fs.rename(req.file.path, imageLocation + fileName, () =>
+                        res.json({ msg: "Vehicle added successfully" })
                     );
+                } else {
+                    return res.json({ msg: "Vehicle added successfully" });
                 }
-                return res.json({ msg: "Vehicle added successfully" });
             })
-            .catch((err) => {
-                fs.unlinkSync(req.file.path);
+            .catch(async (err) => {
+                if (req.file) {
+                    await fs.unlink(req.file.path, noCB);
+                }
                 return res.status(400).json({
                     error:
                         "Error adding vehicle. This is likely due to a duplicate vehicle number." +
@@ -80,18 +84,71 @@ router.post("/import", auth, isAdmin, (req, res) => {
             });
         });
 });
-router.put("/:id", auth, isAdmin, (req, res) => {
-    Vehicle.findByIdAndUpdate(req.params.id, req.body)
-        .then((item) => res.json({ msg: "Updated successfully" }))
-        .catch((err) =>
-            res.status(400).json({
-                error: "Error updating vehicle. This is likely due to a duplicate vehicle number.",
-            })
-        );
+router.put("/:id", auth, isAdmin, upload.single("image"), async (req, res) => {
+    try {
+        let oldVehicle = await Vehicle.findById(req.params.id);
+        // console.log(oldVehicle);
+
+        const vehicleNumberChangedAndTheVehicleHadAnExistingImage =
+            req.body.vehicleNumber !== oldVehicle.vehicleNumber &&
+            oldVehicle.pictureUrl;
+
+        const prevName = oldVehicle.pictureUrl
+            ? path.basename(oldVehicle.pictureUrl)
+            : null;
+
+        const newFileName = oldVehicle.pictureUrl
+            ? req.body.vehicleNumber + path.extname(prevName)
+            : null;
+        // rename current image
+        if (vehicleNumberChangedAndTheVehicleHadAnExistingImage) {
+            await fs.rename(
+                imageLocation + prevName,
+                imageLocation + newFileName,
+                noCB
+            );
+
+            req.body.pictureUrl =
+                process.env.CARBOY_PUBLIC_URL +
+                "api/images/vehicles/" +
+                newFileName;
+        }
+
+        if (req.file) {
+            // vehicle already had image
+            if (oldVehicle.pictureUrl) {
+                // delete
+                await fs.unlink(imageLocation + newFileName, noCB);
+            }
+
+            // finalize new image
+            const newNewFileName =
+                req.body.vehicleNumber + path.extname(req.file.originalname);
+            await fs.rename(
+                req.file.path,
+                imageLocation + newNewFileName,
+                noCB
+            );
+            req.body.pictureUrl =
+                process.env.CARBOY_PUBLIC_URL +
+                "api/images/vehicles/" +
+                newNewFileName;
+        }
+
+        await oldVehicle.updateOne(req.body);
+        return res.status(200).json({ msg: "Updated successfully" });
+    } catch (err) {
+        if (req.file) {
+            await fs.unlink(req.file.path, noCB);
+        }
+        return res.status(400).json({
+            error: "Error updating vehicle. This is likely due to a duplicate vehicle number.",
+        });
+    }
 });
 router.delete("/:vehicleNumber", auth, isAdmin, (req, res) => {
     Vehicle.findOneAndDelete({ vehicleNumber: req.params.vehicleNumber })
-        .then((item) => {
+        .then(async (item) => {
             if (!item) {
                 return res
                     .status(404)
@@ -100,12 +157,13 @@ router.delete("/:vehicleNumber", auth, isAdmin, (req, res) => {
 
             if (item.pictureUrl) {
                 const fileName = path.basename(item.pictureUrl);
-                fs.unlinkSync(imageLocation + fileName);
+                await fs.unlink(imageLocation + fileName, noCB);
             }
-            res.json({ msg: "Vehicle entry deleted successfully" });
+
+            return res.json({ msg: "Vehicle entry deleted successfully" });
         })
         .catch((err) =>
-            res.status(404).json({ error: "Error: No such vehicle." })
+            res.status(404).json({ error: "Error: No such vehicle." + err })
         );
 });
 

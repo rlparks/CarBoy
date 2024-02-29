@@ -1,10 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const bcryptjs = require("bcryptjs");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 
 const User = require("../../models/User");
 const auth = require("../../middleware/auth");
 const isAdmin = require("../../middleware/isAdmin");
+
+const imageLocation = "images/users/";
+const upload = multer({ dest: imageLocation });
+
+function noCB() {}
 
 router.get("/", auth, (req, res) => {
     User.find()
@@ -29,9 +37,55 @@ router.get("/:id", auth, (req, res) => {
         );
 });
 
+router.post("/", auth, isAdmin, upload.single("image"), async (req, res) => {
+    try {
+        const { username, password, confirmPassword, admin, fullName } =
+            req.body;
+        if (!username || !password || !confirmPassword) {
+            return res.status(400).json({ msg: "Please fill out all fields" });
+        }
+        if (password.length < 6) {
+            return res
+                .status(400)
+                .json({ msg: "Password should be at least 6 characters" });
+        }
+        if (confirmPassword !== password) {
+            return res.status(400).json({ msg: "Passwords do not match" });
+        }
+        const existingUserWithUsername = await User.findOne({ username });
+        if (existingUserWithUsername) {
+            return res
+                .status(400)
+                .json({ msg: "User with username already exists" });
+        }
+
+        const passwordHash = await bcryptjs.hash(password, 8);
+
+        const newUser = new User({
+            username,
+            password: passwordHash,
+            admin,
+            fullName,
+        });
+        // console.log(newUser);
+        if (req.file) {
+            fileName = newUser._id + path.extname(req.file.originalname);
+            await fs.rename(req.file.path, imageLocation + fileName, noCB);
+
+            newUser.pictureUrl =
+                process.env.CARBOY_PUBLIC_URL + "api/images/users/" + fileName;
+        }
+
+        const savedUser = await newUser.save();
+        res.json(savedUser);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // weird method? not sure which to use
 // editing own profile
-router.put("/", auth, async (req, res) => {
+router.put("/", auth, upload.single("image"), async (req, res) => {
     const userId = req.user;
     if (userId !== req.body._id) {
         return res.status(401).json({ err: "Error: Not Authorized." });
@@ -46,7 +100,7 @@ router.put("/", auth, async (req, res) => {
         }
 
         // specify which fields users can update
-        userObj.pictureUrl = req.body.pictureUrl;
+        // userObj.pictureUrl = req.body.pictureUrl;
 
         User.findByIdAndUpdate(userId, userObj)
             .then((item) => res.json({ msg: "Updated successfully" }))
@@ -58,7 +112,7 @@ router.put("/", auth, async (req, res) => {
     }
 });
 
-router.put("/:id", auth, isAdmin, async (req, res) => {
+router.put("/:id", auth, isAdmin, upload.single("image"), async (req, res) => {
     if (req.body.newPassword && req.body.newPassword !== "") {
         // password change
         const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
@@ -85,11 +139,29 @@ router.put("/:id", auth, isAdmin, async (req, res) => {
         }
     }
 
-    await User.findByIdAndUpdate(req.params.id, req.body)
-        .then((item) => res.json({ msg: "Updated successfully" }))
-        .catch((err) =>
-            res.status(400).json({ error: "Unable to update the database" })
-        );
+    try {
+        const oldUser = await User.findById(req.params.id);
+        if (req.file) {
+            if (oldUser.pictureUrl) {
+                // delete
+                await fs.unlink(
+                    imageLocation + path.basename(oldUser.pictureUrl),
+                    noCB
+                );
+            }
+
+            // finalize new image
+            const fileName = oldUser._id + path.extname(req.file.originalname);
+            await fs.rename(req.file.path, imageLocation + fileName, noCB);
+            req.body.pictureUrl =
+                process.env.CARBOY_PUBLIC_URL + "api/images/users/" + fileName;
+        }
+
+        await oldUser.updateOne(req.body);
+        return res.json({ msg: "Updated successfully" });
+    } catch (err) {
+        return res.status(400).json({ error: "Unable to update the database" });
+    }
 });
 router.delete("/:id", auth, isAdmin, async (req, res) => {
     try {
@@ -108,6 +180,11 @@ router.delete("/:id", auth, isAdmin, async (req, res) => {
                 });
                 return;
             }
+        }
+
+        if (user.pictureUrl) {
+            const fileName = path.basename(user.pictureUrl);
+            await fs.unlink(imageLocation + fileName, noCB);
         }
     } catch (err) {
         res.status(404).json({ error: "Error: No such user." });

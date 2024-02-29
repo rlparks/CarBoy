@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
+const isAdmin = require("../../middleware/isAdmin");
 
 if (process.env.CREATE_DEFAULT_ADMIN) {
     async function createDefaultAdmin() {
@@ -35,49 +36,6 @@ if (process.env.CREATE_DEFAULT_ADMIN) {
 
     createDefaultAdmin();
 }
-
-userRouter.post("/signup", async (req, res) => {
-    try {
-        const {
-            username,
-            password,
-            confirmPassword,
-            admin,
-            fullName,
-            pictureUrl,
-        } = req.body;
-        if (!username || !password || !confirmPassword) {
-            return res.status(400).json({ msg: "Please fill out all fields" });
-        }
-        if (password.length < 6) {
-            return res
-                .status(400)
-                .json({ msg: "Password should be at least 6 characters" });
-        }
-        if (confirmPassword !== password) {
-            return res.status(400).json({ msg: "Passwords do not match" });
-        }
-        const existingUserWithUsername = await User.findOne({ username });
-        if (existingUserWithUsername) {
-            return res
-                .status(400)
-                .json({ msg: "User with username already exists" });
-        }
-
-        const passwordHash = await bcryptjs.hash(password, 8);
-        const newUser = new User({
-            username,
-            password: passwordHash,
-            admin,
-            fullName,
-            pictureUrl,
-        });
-        const savedUser = await newUser.save();
-        res.json(savedUser);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
 
 userRouter.post("/login", async (req, res) => {
     try {

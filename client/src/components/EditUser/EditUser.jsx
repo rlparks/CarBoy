@@ -12,11 +12,12 @@ export default function EditUser({ mode }) {
         username: "",
         fullName: "",
         admin: false,
-        pictureUrl: "",
+        // pictureUrl: "",
         disabled: false,
     });
     const [userExists, setUserExists] = useState(true);
     const [newPassword, setNewPassword] = useState("");
+    const [image, setImage] = useState();
     const { userData } = useContext(UserContext);
 
     const params = useParams();
@@ -67,10 +68,13 @@ export default function EditUser({ mode }) {
         });
     }
 
-    function pictureUrlChangeHandler(event) {
-        setUser((prevUser) => {
-            return { ...prevUser, pictureUrl: event.target.value };
-        });
+    // function pictureUrlChangeHandler(event) {
+    //     setUser((prevUser) => {
+    //         return { ...prevUser, pictureUrl: event.target.value };
+    //     });
+    // }
+    function imageChangeHandler(event) {
+        setImage(event.target.files[0]);
     }
 
     function disabledChangeHandler(event) {
@@ -95,8 +99,14 @@ export default function EditUser({ mode }) {
                 url += user._id;
             }
             try {
+                if (image) {
+                    user.image = image;
+                }
                 await axios.put(url, userObj, {
-                    headers: { "x-auth-token": userData.token },
+                    headers: {
+                        "x-auth-token": userData.token,
+                        "Content-Type": "multipart/form-data",
+                    },
                 });
                 navigate("/success/manageusers");
             } catch (err) {
@@ -144,7 +154,8 @@ export default function EditUser({ mode }) {
                             placeholder="leave blank to not change"
                         />
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
+                    
                         <label className="form-label">Picture URL</label>
                         <input
                             value={user.pictureUrl}
@@ -152,6 +163,15 @@ export default function EditUser({ mode }) {
                             type="text"
                             className="form-control"
                             placeholder="https://www.example.com/image.png"
+                        />
+                    </div> */}
+                    <div className="mb-3">
+                        <label className="form-label">Image</label>
+                        <input
+                            type="file"
+                            accept=".jpeg, .jpg, .png"
+                            className="form-control"
+                            onChange={imageChangeHandler}
                         />
                     </div>
                     {mode === "admin" && (

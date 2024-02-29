@@ -12,9 +12,10 @@ export default function AddUser() {
         confirmPassword: "",
         fullName: "",
         admin: false,
-        pictureUrl: "",
+        // pictureUrl: "",
     });
     const { userData } = useContext(UserContext);
+    const [image, setImage] = useState();
 
     function usernameChangeHandler(event) {
         setUser((prevUser) => {
@@ -44,10 +45,14 @@ export default function AddUser() {
         });
     }
 
-    function pictureUrlChangeHandler(event) {
-        setUser((prevUser) => {
-            return { ...prevUser, pictureUrl: event.target.value };
-        });
+    // function pictureUrlChangeHandler(event) {
+    //     setUser((prevUser) => {
+    //         return { ...prevUser, pictureUrl: event.target.value };
+    //     });
+    // }
+
+    function imageChangeHandler(event) {
+        setImage(event.target.files[0]);
     }
 
     async function submitHandler(event) {
@@ -55,10 +60,16 @@ export default function AddUser() {
         if (!user.username || !user.fullName) {
             alert("Please fill out all fields.");
         } else {
-            const url = SERVER_URL + "api/login/signup/";
+            const url = SERVER_URL + "api/users/";
             try {
+                if (image) {
+                    user.image = image;
+                }
                 await axios.post(url, user, {
-                    headers: { "x-auth-token": userData.token },
+                    headers: {
+                        "x-auth-token": userData.token,
+                        "Content-Type": "multipart/form-data",
+                    },
                 });
                 navigate("/success/manageusers");
             } catch (err) {
@@ -114,7 +125,7 @@ export default function AddUser() {
                             placeholder="Example User"
                         />
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                         <label className="form-label">Picture URL</label>
                         <input
                             value={user.pictureUrl}
@@ -122,6 +133,15 @@ export default function AddUser() {
                             type="text"
                             className="form-control"
                             placeholder="https://www.example.com/image.png"
+                        />
+                    </div> */}
+                    <div className="mb-3">
+                        <label className="form-label">Image</label>
+                        <input
+                            type="file"
+                            accept=".jpeg, .jpg, .png"
+                            className="form-control"
+                            onChange={imageChangeHandler}
                         />
                     </div>
                     <div className="mb-3">

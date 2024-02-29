@@ -168,6 +168,7 @@ export default function EditUser({ mode }) {
                     <div className="mb-3">
                         <label className="form-label">Image</label>
                         <input
+                            disabled={mode !== "admin"}
                             type="file"
                             accept=".jpeg, .jpg, .png"
                             className="form-control"

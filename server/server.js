@@ -49,4 +49,5 @@ mongoose
     })
     .catch((err) => {
         console.log(`Error in DB Connection ${err}`);
+        return process.exit(1);
     });

@@ -11,7 +11,7 @@ export default function AddVehicle() {
     const [year, setYear] = useState("");
     // const [lastOilChangeTime, setLastOilChangeTime] = useState("");
     const [licensePlate, setLicensePlate] = useState("");
-    const [pictureUrl, setPictureUrl] = useState("");
+    // const [pictureUrl, setPictureUrl] = useState("");
     const [mileage, setMileage] = useState("");
     const [image, setImage] = useState();
     const [error, setError] = useState("");
@@ -51,9 +51,9 @@ export default function AddVehicle() {
         setLicensePlate(event.target.value);
     }
 
-    function pictureUrlChangeHandler(event) {
-        setPictureUrl(event.target.value);
-    }
+    // function pictureUrlChangeHandler(event) {
+    //     setPictureUrl(event.target.value);
+    // }
 
     function mileageChangeHandler(event) {
         event.target.value = event.target.value.slice(0, 10);
@@ -66,14 +66,17 @@ export default function AddVehicle() {
 
     function isDPChangeHandler(event) {
         setIsDP(event.target.checked);
+        if (event.target.checked) {
+            setMake("Departmental");
+            setModel("Permit");
+        } else {
+            setMake("");
+            setModel("");
+        }
     }
 
     async function addVehicleHandler(event) {
         event.preventDefault();
-        if (isDP) {
-            setMake("Departmental");
-            setModel("Permit");
-        }
 
         if (!vehicleNumber || !make || !model) {
             alert("Please fill out all fields");

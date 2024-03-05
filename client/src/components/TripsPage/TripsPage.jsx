@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getVehicleDetails } from "../../assets/helpers";
 import TripCard from "../TripCard/TripCard";
 import UserContext from "../../context/UserContext";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function TripsPage() {
     const numColumns = 1;
@@ -25,11 +26,13 @@ export default function TripsPage() {
     useEffect(() => {
         getVehicleDetails(vehicleNumber, userData.token).then((vehicle) => {
             setVehicle(vehicle);
-            setTrips(vehicle.trips.reverse());
+            if (vehicle) {
+                setTrips(vehicle.trips.reverse());
+            }
         });
     }, []);
 
-    return (
+    return vehicle ? (
         <div className="d-flex justify-content-center">
             <div className="w-50">
                 <h2 className="text-center mb-3">
@@ -56,5 +59,7 @@ export default function TripsPage() {
                 )}
             </div>
         </div>
+    ) : (
+        <ErrorPage type={404} />
     );
 }

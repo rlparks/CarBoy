@@ -6,11 +6,13 @@
 
 A MERN application for logging vehicle use. Each vehicle can be checked out and in while logging the mileage at each point.
 
-<div style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
-    <img width="300px" src=".github/home.png" alt="A screenshot of CarBoy's home page"/>
-    <img width="300px" src=".github/check_out.png" alt="A screenshot of CarBoy's check out page"/>
-    <img width="300px" src=".github/manage_vehicles.png" alt="A screenshot of CarBoy's manage vehicles page"/>
-    <img width="300px" src=".github/edit_vehicle.png" alt="A screenshot of CarBoy's edit vehicle page"/>
+<div align="center">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+        <img width="300px" src=".github/home.png" alt="A screenshot of CarBoy's home page"/>
+        <img width="300px" src=".github/check_out.png" alt="A screenshot of CarBoy's check out page"/>
+        <img width="300px" src=".github/manage_vehicles.png" alt="A screenshot of CarBoy's manage vehicles page"/>
+        <img width="300px" src=".github/edit_vehicle.png" alt="A screenshot of CarBoy's edit vehicle page"/>
+    </div>
 </div>
 
 ## How to Run

@@ -54,9 +54,8 @@ export default function App() {
 
             if (serverRunning) {
                 try {
-                    const tokenResponse = await axios.post(
+                    const tokenResponse = await axios.get(
                         SERVER_URL + "api/login/tokenIsValid",
-                        null,
                         { headers: { "x-auth-token": token } }
                     );
 

@@ -76,16 +76,18 @@ export default function CheckinPage() {
     }, []);
 
     useEffect(() => {
-        if (currentTrip.employee) {
-            getUser(currentTrip.employee, userData.token)
-                .then((employeeObj) => {
-                    setCurrentTripEmployeeUser(employeeObj);
-                })
-                .catch((err) => console.log("Error in getUser"));
-        }
+        if (currentTrip) {
+            if (currentTrip.employee) {
+                getUser(currentTrip.employee, userData.token)
+                    .then((employeeObj) => {
+                        setCurrentTripEmployeeUser(employeeObj);
+                    })
+                    .catch((err) => console.log("Error in getUser"));
+            }
 
-        if (currentTrip.startMileage) {
-            setEndMileage(currentTrip.startMileage);
+            if (currentTrip.startMileage) {
+                setEndMileage(currentTrip.startMileage);
+            }
         }
     }, [currentTrip]);
 

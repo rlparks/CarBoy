@@ -31,7 +31,11 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
     }
 
     return (
-        <Navbar expanded={expanded} expand="lg" className="bg-body-tertiary">
+        <Navbar
+            expanded={expanded}
+            expand="lg"
+            className="bg-body-tertiary mb-3"
+        >
             <Container fluid>
                 <Navbar.Brand
                     as={NavLink}

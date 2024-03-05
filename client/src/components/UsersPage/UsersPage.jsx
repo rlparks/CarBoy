@@ -74,7 +74,7 @@ export default function UsersPage() {
                 </div>
             </div>
 
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center mb-3">
                 <Link className="btn btn-primary" to="/adduser">
                     Add User
                 </Link>

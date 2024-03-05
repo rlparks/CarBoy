@@ -34,7 +34,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
         <Navbar
             expanded={expanded}
             expand="lg"
-            className="bg-body-tertiary mb-3"
+            className="bg-body-tertiary mb-1"
         >
             <Container fluid>
                 <Navbar.Brand

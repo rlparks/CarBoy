@@ -8,8 +8,8 @@ export default function ErrorPage({ type }) {
                     <div>
                         <h1 className="mb-3">Error 404: Page Not Found</h1>
                         <p>
-                            Please contact ESD IT if you expected to find a page
-                            here.
+                            Please contact support if you expected to find a
+                            page here.
                         </p>
                         <p>Otherwise, return home and try again.</p>
                         <Link className="btn btn-outline-primary" to="/">
@@ -45,7 +45,7 @@ export default function ErrorPage({ type }) {
                     <div>
                         <h1 className="mb-3">Error 503: Service Unavailable</h1>
                         <p>CarBoy is unable to access its server.</p>
-                        <p>Please alert ESD IT.</p>
+                        <p>Please alert support.</p>
                     </div>
                 )}
             </div>

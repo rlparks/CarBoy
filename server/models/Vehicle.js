@@ -8,17 +8,30 @@ const VehicleSchema = new mongoose.Schema({
         trim: true,
         required: true,
     },
-    make: String,
-    model: String,
+    make: {
+        type: String,
+        trim: true,
+    },
+    model: {
+        type: String,
+        trim: true,
+    },
     year: Number,
     // lastOilChangeTime: Date,
-    licensePlate: String,
+    licensePlate: {
+        type: String,
+        trim: true,
+    },
     pictureUrl: String,
     trips: [TripSchema],
     checkedOut: Boolean,
     mileage: Number,
     currentUserId: String,
     disabled: Boolean,
+    department: {
+        type: String,
+        trim: true,
+    },
 });
 
 module.exports.model = Vehicle = mongoose.model("vehicle", VehicleSchema);

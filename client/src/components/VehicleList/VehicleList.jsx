@@ -8,6 +8,7 @@ import {
     sortVehicles,
 } from "../../assets/helpers";
 import UserContext from "../../context/UserContext";
+import VehicleSubList from "../VehicleSubList/VehicleSubList";
 
 export default function VehicleList({ isAdmin, mode }) {
     const numColumns = 5;
@@ -16,6 +17,7 @@ export default function VehicleList({ isAdmin, mode }) {
     const [availableVehicles, setAvailableVehicles] = useState([]);
     const [checkedOutVehicles, setCheckedOutVehicles] = useState([]);
     const [disabledVehicles, setDisabledVehicles] = useState([]);
+    const [departments, setDepartments] = useState([]);
     const [error, setError] = useState("");
     const { userData } = useContext(UserContext);
 
@@ -42,6 +44,26 @@ export default function VehicleList({ isAdmin, mode }) {
         );
         setDisabledVehicles(vehicles.filter((vehicle) => vehicle.disabled));
     }, [vehicles]);
+
+    useEffect(() => {
+        // set unique departments only from available vehicles to save CPU time
+        if (availableVehicles && availableVehicles.length > 0) {
+            // using temp array to prevent duplicates due to async state
+            let tempDepartments = [];
+            for (const vehicle of availableVehicles) {
+                if (!vehicle.department) {
+                    vehicle.department = "No Department";
+                }
+                if (
+                    vehicle.department &&
+                    !tempDepartments.includes(vehicle.department)
+                ) {
+                    tempDepartments.push(vehicle.department);
+                }
+            }
+            setDepartments(tempDepartments.sort());
+        }
+    }, [availableVehicles]);
 
     function exportVehiclesHandler(event) {
         event.preventDefault();
@@ -77,24 +99,41 @@ export default function VehicleList({ isAdmin, mode }) {
                         <h2 className="text-center mb-3">Available</h2>
 
                         {availableVehicles.length > 0 ? (
-                            <div
-                                className={
-                                    "row row-cols-1 row-cols-lg-" +
-                                    numColumns +
-                                    " g-4 card-deck"
-                                }
-                            >
-                                {availableVehicles.map((vehicle) => (
-                                    <div className="col" key={vehicle._id}>
-                                        <VehicleCard
-                                            isAdmin={isAdmin}
-                                            vehicle={vehicle}
-                                            mode={mode}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
+                            departments.map((department) => {
+                                const deptArray = availableVehicles.filter(
+                                    (vehicle) =>
+                                        vehicle.department === department
+                                );
+
+                                return (
+                                    <VehicleSubList
+                                        key={department}
+                                        items={deptArray}
+                                        title={department}
+                                        numColumns={numColumns}
+                                        isAdmin={isAdmin}
+                                        mode={mode}
+                                    />
+                                );
+                            })
                         ) : (
+                            // <div
+                            //     className={
+                            //         "row row-cols-1 row-cols-lg-" +
+                            //         numColumns +
+                            //         " g-4 card-deck"
+                            //     }
+                            // >
+                            //     {availableVehicles.map((vehicle) => (
+                            //         <div className="col" key={vehicle._id}>
+                            //             <VehicleCard
+                            //                 isAdmin={isAdmin}
+                            //                 vehicle={vehicle}
+                            //                 mode={mode}
+                            //             />
+                            //         </div>
+                            //     ))}
+                            // </div>
                             <p className="text-center">
                                 No vehicles are currently available.
                             </p>

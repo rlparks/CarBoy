@@ -13,6 +13,7 @@ export default function AddVehicle() {
     const [licensePlate, setLicensePlate] = useState("");
     // const [pictureUrl, setPictureUrl] = useState("");
     const [mileage, setMileage] = useState("");
+    const [department, setDepartment] = useState("");
     const [image, setImage] = useState();
     const [error, setError] = useState("");
     const [isDP, setIsDP] = useState(false);
@@ -59,6 +60,9 @@ export default function AddVehicle() {
         event.target.value = event.target.value.slice(0, 10);
         setMileage(event.target.value);
     }
+    function departmentChangeHandler(event) {
+        setDepartment(event.target.value);
+    }
 
     function imageChangeHandler(event) {
         setImage(event.target.files[0]);
@@ -91,6 +95,7 @@ export default function AddVehicle() {
                 // pictureUrl: pictureUrl,
                 mileage: mileage,
                 image: image,
+                department: department,
             };
 
             try {
@@ -211,6 +216,17 @@ export default function AddVehicle() {
                             placeholder="https://www.example.com/image.png"
                         />
                     </div> */}
+
+                    <div className="mb-3">
+                        <label className="form-label">Department</label>
+                        <input
+                            value={department}
+                            onChange={departmentChangeHandler}
+                            type="text"
+                            className="form-control"
+                            placeholder="General"
+                        />
+                    </div>
                     <div className="mb-3">
                         <label className="form-label">Image</label>
                         <input

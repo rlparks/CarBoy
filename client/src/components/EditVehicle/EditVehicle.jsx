@@ -18,6 +18,7 @@ export default function EditVehicle() {
         mileage: "",
         // pictureUrl: "",
         disabled: false,
+        department: "",
     });
     const [image, setImage] = useState();
     const [error, setError] = useState("");
@@ -82,6 +83,10 @@ export default function EditVehicle() {
     function mileageChangeHandler(event) {
         event.target.value = event.target.value.slice(0, 10);
         setVehicle({ ...vehicle, mileage: event.target.value });
+    }
+
+    function departmentChangeHandler(event) {
+        setVehicle({ ...vehicle, department: event.target.value });
     }
 
     function imageChangeHandler(event) {
@@ -201,6 +206,16 @@ export default function EditVehicle() {
                             placeholder="https://www.example.com/image.png"
                         />
                     </div> */}
+                    <div className="mb-3">
+                        <label className="form-label">Department</label>
+                        <input
+                            value={vehicle.department}
+                            onChange={departmentChangeHandler}
+                            type="text"
+                            className="form-control"
+                            placeholder="General"
+                        />
+                    </div>
                     <div className="mb-3">
                         <label className="form-label">Image</label>
                         <input

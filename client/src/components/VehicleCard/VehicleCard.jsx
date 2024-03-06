@@ -22,7 +22,7 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
     }, [userData]);
 
     return (
-        <div className="card" key={vehicle._id}>
+        <div className="card mb-3" key={vehicle._id}>
             <img
                 className="card-img-top"
                 src={vehicle.pictureUrl}

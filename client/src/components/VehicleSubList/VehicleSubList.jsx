@@ -10,7 +10,7 @@ export default function VehicleSubList({
     // only exist if items
     return items.length > 0 ? (
         <div>
-            <h3 className="text-center mb-3">{title}</h3>
+            <h4 className="text-center mb-3">{title}</h4>
             <div
                 className={
                     "row row-cols-1 row-cols-lg-" +

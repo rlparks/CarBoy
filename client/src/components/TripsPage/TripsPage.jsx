@@ -65,7 +65,8 @@ export default function TripsPage() {
         }
         const tripsString = JSON.stringify(tempTrips);
         const now = new Date(Date.now()).toISOString();
-        const fileName = "CarBoy_trips_" + now + ".csv";
+        const fileName =
+            "CarBoy_trips_" + vehicle.vehicleNumber + "_" + now + ".csv";
 
         downloadCSVFileFromJSON(fileName, tripsString);
     }

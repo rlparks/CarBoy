@@ -66,12 +66,9 @@ export default function VehicleList({ isAdmin, mode }) {
             let tempDepartments = [];
             for (const vehicle of availableVehicles) {
                 if (!vehicle.department) {
-                    vehicle.department = "No Department";
+                    vehicle.department = "";
                 }
-                if (
-                    vehicle.department &&
-                    !tempDepartments.includes(vehicle.department)
-                ) {
+                if (!tempDepartments.includes(vehicle.department)) {
                     tempDepartments.push(vehicle.department);
                 }
             }

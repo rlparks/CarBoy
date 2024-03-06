@@ -215,7 +215,7 @@ export default function EditVehicle() {
                             onChange={departmentChangeHandler}
                             type="text"
                             className="form-control"
-                            placeholder="General"
+                            placeholder="leave blank for none"
                         />
                     </div>
                     <div className="mb-3">

@@ -13,6 +13,7 @@ export default function SuccessPage() {
         setTimeout(() => {
             navigate(url);
         }, 1000);
+        document.title = "CarBoy · Success";
     }, []);
 
     return (

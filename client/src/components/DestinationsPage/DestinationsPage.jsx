@@ -29,6 +29,7 @@ export default function DestinationsPage({ isAdmin, mode }) {
 
     useEffect(() => {
         refreshDestinations();
+        document.title = "CarBoy · Manage Destinations";
     }, []);
 
     function exportDestinationsHandler(event) {

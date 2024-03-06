@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function ErrorPage({ type }) {
+    useEffect(() => {
+        document.title = "CarBoy · Error · " + type;
+    }, []);
     return (
         <div className="d-flex justify-content-center">
             <div className="text-center">

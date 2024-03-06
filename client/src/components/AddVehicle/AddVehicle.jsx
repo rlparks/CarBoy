@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 
@@ -111,6 +111,11 @@ export default function AddVehicle() {
             }
         }
     }
+
+    useEffect(() => {
+        document.title = "CarBoy · Add Vehicle";
+    }, []);
+
     return (
         <div className="d-flex justify-content-center">
             <div className="w-50">

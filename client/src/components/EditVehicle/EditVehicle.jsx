@@ -28,6 +28,8 @@ export default function EditVehicle() {
     useEffect(() => {
         getVehicleDetails(vehicleNumber, userData.token).then((vehicle) => {
             if (vehicle) {
+                document.title =
+                    "CarBoy · Edit Vehicle · " + vehicle.vehicleNumber;
                 if (vehicle.make === "Departmental") {
                     vehicle.mileage = "";
                     vehicle.licensePlate = "";

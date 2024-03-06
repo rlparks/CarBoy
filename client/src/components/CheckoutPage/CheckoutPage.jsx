@@ -44,9 +44,10 @@ export default function CheckoutPage() {
     }
 
     useEffect(() => {
-        getVehicleDetails(vehicleNumber, userData.token).then((vehicle) =>
-            setVehicle(vehicle)
-        );
+        getVehicleDetails(vehicleNumber, userData.token).then((vehicle) => {
+            setVehicle(vehicle);
+            document.title = "CarBoy · Check Out · " + vehicle.vehicleNumber;
+        });
 
         // setDestinationArray([
         //     "1131 - STEM I",

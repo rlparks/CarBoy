@@ -27,6 +27,8 @@ export default function DeletePage({ mode }) {
 
     useEffect(() => {
         if (itemId) {
+            document.title =
+                "CarBoy · Delete " + mode[0].toUpperCase() + mode.slice(1);
             if (mode === "user") {
                 getUser(itemId, userData.token).then((user) => {
                     if (user) {

@@ -68,6 +68,8 @@ export default function CheckinPage() {
             if (vehicle) {
                 if (vehicle.trips) {
                     setCurrentTrip(vehicle.trips[vehicle.trips.length - 1]);
+                    document.title =
+                        "CarBoy · Check In · " + vehicle.vehicleNumber;
                 } else {
                     alert("Error: vehicle has no trips.");
                 }

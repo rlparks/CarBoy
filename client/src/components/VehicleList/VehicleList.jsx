@@ -32,6 +32,20 @@ export default function VehicleList({ isAdmin, mode }) {
     }, []);
 
     useEffect(() => {
+        switch (mode) {
+            case "normal":
+                document.title = "CarBoy";
+                break;
+            case "manage":
+                document.title = "CarBoy · Manage Vehicles";
+                break;
+            case "trips":
+                document.title = "CarBoy · Trips";
+                break;
+        }
+    }, [mode]);
+
+    useEffect(() => {
         setAvailableVehicles(
             vehicles.filter(
                 (vehicle) => !vehicle.checkedOut && !vehicle.disabled

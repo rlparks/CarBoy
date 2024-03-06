@@ -24,6 +24,7 @@ export default function UsersPage() {
 
     useEffect(() => {
         refreshUsers();
+        document.title = "CarBoy · Manage Users";
     }, []);
 
     useEffect(() => {

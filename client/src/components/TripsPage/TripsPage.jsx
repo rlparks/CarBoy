@@ -33,6 +33,7 @@ export default function TripsPage() {
             setVehicle(vehicle);
             if (vehicle) {
                 setTrips(vehicle.trips.reverse());
+                document.title = "CarBoy · Trips · " + vehicle.vehicleNumber;
             }
         });
     }, []);

@@ -20,6 +20,9 @@ export default function EditDestination() {
     useEffect(() => {
         getDestination(destinationId, userData.token).then((destination) => {
             if (destination) {
+                document.title =
+                    "CarBoy · Edit Destination · " +
+                    destination.destinationName;
                 if (!destination.buildingNumber) {
                     // force not-null to make React happy
                     destination.buildingNumber = "";

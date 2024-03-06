@@ -32,6 +32,7 @@ export default function EditUser({ mode }) {
 
         getUser(userId, userData.token).then((user) => {
             if (user) {
+                document.title = "CarBoy · Edit User · " + user.username;
                 if (!user.fullName) {
                     user.fullName = "";
                 }

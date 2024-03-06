@@ -1,6 +1,6 @@
 import axios from "axios";
 import UserContext from "../../context/UserContext";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
@@ -42,7 +42,9 @@ export default function LoginPage() {
             }
         }
     }
-
+    useEffect(() => {
+        document.title = "CarBoy · Login";
+    }, []);
     return (
         <div className="d-flex justify-content-center">
             <div className="w-50">

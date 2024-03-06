@@ -3,25 +3,25 @@ import { getDateTimeFormat, getUser } from "../../assets/helpers";
 import UserContext from "../../context/UserContext";
 
 export default function TripCard({ trip }) {
-    const [employee, setEmployee] = useState({
-        fullName: "Error retrieving user",
-    });
+    // const [employee, setEmployee] = useState({
+    //     fullName: "Error retrieving user",
+    // });
     const { userData } = useContext(UserContext);
 
-    useState(() => {
-        if (trip.employee != null) {
-            getUser(trip.employee, userData.token)
-                .then((user) => {
-                    // console.log(user);
-                    if (user !== null) {
-                        setEmployee(user);
-                    }
-                })
-                .catch((err) =>
-                    setEmployee({ fullName: "Error retrieving user" })
-                );
-        }
-    }, [userData]);
+    // useState(() => {
+    //     if (trip.employee != null) {
+    //         getUser(trip.employee, userData.token)
+    //             .then((user) => {
+    //                 // console.log(user);
+    //                 if (user !== null) {
+    //                     setEmployee(user);
+    //                 }
+    //             })
+    //             .catch((err) =>
+    //                 setEmployee({ fullName: "Error retrieving user" })
+    //             );
+    //     }
+    // }, [userData]);
 
     const startTime = getDateTimeFormat().format(new Date(trip.startTime));
     const endTime = trip.endTime
@@ -37,14 +37,14 @@ export default function TripCard({ trip }) {
                         {startTime + " - " + endTime}
                     </h5>
                     <h6 className="card-subtitle text-body-secondary">
-                        {employee.fullName}
+                        {trip.employee.fullName}
                     </h6>
                 </div>
-                {employee.pictureUrl && (
+                {trip.employee.pictureUrl && (
                     <img
                         className="img-fluid rounded-circle"
-                        src={employee.pictureUrl}
-                        alt={"Image of " + employee.username}
+                        src={trip.employee.pictureUrl}
+                        alt={"Image of " + trip.employee.username}
                         style={{ height: "75px" }}
                     />
                 )}

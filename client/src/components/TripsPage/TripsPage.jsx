@@ -26,27 +26,60 @@ export default function TripsPage() {
         trips: [],
     });
     const [trips, setTrips] = useState([]);
+    const [filteredTrips, setFilteredTrips] = useState("");
     const { userData } = useContext(UserContext);
 
     useEffect(() => {
-        getVehicleDetails(vehicleNumber, userData.token).then((vehicle) => {
-            setVehicle(vehicle);
-            if (vehicle) {
-                setTrips(vehicle.trips.reverse());
-                document.title = "CarBoy · Trips · " + vehicle.vehicleNumber;
+        getVehicleDetails(vehicleNumber, userData.token).then(
+            async (vehicle) => {
+                setVehicle(vehicle);
+                if (vehicle) {
+                    for (let trip of vehicle.trips) {
+                        let employee = await getUser(
+                            trip.employee,
+                            userData.token
+                        );
+                        trip.employee = employee;
+                    }
+                    setTrips(vehicle.trips);
+                    setFilteredTrips(vehicle.trips.reverse());
+                    document.title =
+                        "CarBoy · Trips · " + vehicle.vehicleNumber;
+                }
             }
-        });
+        );
     }, []);
 
     async function exportAllHandler(event) {
         event.preventDefault();
 
         // convert into more human-readable format
-        let tempTrips = [...trips];
-        // for oldest trips at end
-        tempTrips.reverse();
+        let tempTrips = structuredClone(trips);
+        exportTrips(tempTrips.reverse());
+    }
 
-        for (let trip of tempTrips) {
+    async function exportFilteredHandler(event) {
+        event.preventDefault();
+
+        // convert into more human-readable format
+        let tempTrips = structuredClone(filteredTrips);
+        exportTrips(tempTrips.reverse());
+    }
+
+    async function exportTrips(tripsArray) {
+        await makeHumanReadable(tripsArray);
+
+        const tripsString = JSON.stringify(tripsArray);
+        const now = new Date(Date.now()).toISOString();
+        const fileName =
+            "CarBoy_trips_" + vehicle.vehicleNumber + "_" + now + ".csv";
+
+        downloadCSVFileFromJSON(fileName, tripsString);
+    }
+
+    // mutates array
+    async function makeHumanReadable(tripsArray) {
+        for (let trip of tripsArray) {
             delete trip._id;
             trip.startTime = getDateTimeFormat().format(
                 new Date(trip.startTime)
@@ -59,17 +92,10 @@ export default function TripsPage() {
                 ? trip.endMileage - trip.startMileage
                 : "";
 
-            const employee = await getUser(trip.employee, userData.token);
-            trip.employee = employee.fullName
-                ? employee.fullName
-                : employee.username;
+            trip.employee = trip.employee.fullName
+                ? trip.employee.fullName
+                : trip.employee.username;
         }
-        const tripsString = JSON.stringify(tempTrips);
-        const now = new Date(Date.now()).toISOString();
-        const fileName =
-            "CarBoy_trips_" + vehicle.vehicleNumber + "_" + now + ".csv";
-
-        downloadCSVFileFromJSON(fileName, tripsString);
     }
 
     return vehicle ? (
@@ -78,7 +104,7 @@ export default function TripsPage() {
                 <h2 className="text-center mb-3">
                     {"Trips: " + vehicleNumber}
                 </h2>
-                {trips.length > 0 ? (
+                {filteredTrips.length > 0 ? (
                     <div>
                         <div className="d-flex justify-content-center mb-3">
                             <button
@@ -98,9 +124,9 @@ export default function TripsPage() {
                                 </svg>
                                 Export CSV (All)
                             </button>
-                            {/* <button
+                            <button
                                 className="btn btn-secondary me-1"
-                                onClick={null}
+                                onClick={exportFilteredHandler}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -113,8 +139,8 @@ export default function TripsPage() {
                                     <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293z" />
                                     <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
                                 </svg>
-                                Export CSV (Month)
-                            </button> */}
+                                Export CSV (Filtered)
+                            </button>
                         </div>
                         <div
                             className={
@@ -123,7 +149,7 @@ export default function TripsPage() {
                                 " g-4 card-deck"
                             }
                         >
-                            {trips.map((trip) => (
+                            {filteredTrips.map((trip) => (
                                 <div className="col" key={trip._id}>
                                     <TripCard trip={trip} />
                                 </div>

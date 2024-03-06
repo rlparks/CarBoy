@@ -1,4 +1,5 @@
 import axios from "axios";
+import Papa from "papaparse";
 
 export async function getVehicleDetails(vehicleNumber, token) {
     const url = SERVER_URL + "api/vehicles/" + vehicleNumber;
@@ -65,6 +66,22 @@ export function getDateTimeFormat() {
 
 export function downloadJSONFile(fileName, jsonString) {
     const blob = new Blob([jsonString], { type: "application/json" });
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const tempA = document.createElement("a");
+    tempA.href = downloadUrl;
+    tempA.download = fileName;
+
+    document.body.appendChild(tempA);
+    tempA.click();
+
+    document.body.removeChild(tempA);
+    window.URL.revokeObjectURL(downloadUrl);
+}
+
+export function downloadCSVFileFromJSON(fileName, jsonString) {
+    const csvString = Papa.unparse(jsonString);
+
+    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8" });
     const downloadUrl = window.URL.createObjectURL(blob);
     const tempA = document.createElement("a");
     tempA.href = downloadUrl;

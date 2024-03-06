@@ -24,10 +24,9 @@ export default function TripCard({ trip }) {
     }, [userData]);
 
     const startTime = getDateTimeFormat().format(new Date(trip.startTime));
-    const endTime =
-        trip.endTime !== null
-            ? getDateTimeFormat().format(new Date(trip.endTime))
-            : "Now";
+    const endTime = trip.endTime
+        ? getDateTimeFormat().format(new Date(trip.endTime))
+        : "Now";
     const distance = trip.endMileage ? trip.endMileage - trip.startMileage : -1;
 
     return (

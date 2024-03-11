@@ -54,7 +54,44 @@ export default function TripsPage() {
     }, []);
 
     useEffect(() => {
-        console.log("Filter changed!");
+        if (startFilter && endFilter) {
+            const filtered = trips.filter((trip) => {
+                let startDate = new Date(trip.startTime);
+
+                // very high end date if not supplied
+                let endDate = trip.endTime
+                    ? new Date(trip.endTime)
+                    : new Date(3000, 1, 1);
+
+                const startFilterSplit = startFilter.split("-");
+                const endFilterSplit = endFilter.split("-");
+
+                // sketchy relying on this
+                // not sure
+                let startFilterDate = new Date(0);
+                startFilterDate.setFullYear(
+                    startFilterSplit[0],
+                    startFilterSplit[1] - 1,
+                    startFilterSplit[2]
+                );
+                let endFilterDate = new Date(0);
+                endFilterDate.setFullYear(
+                    endFilterSplit[0],
+                    endFilterSplit[1] - 1,
+                    endFilterSplit[2]
+                );
+
+                startFilterDate.setHours(0, 0, 0);
+                endFilterDate.setHours(23, 59, 59);
+
+                // oh yea, this is a .filter
+                return startFilterDate <= startDate && endFilterDate >= endDate;
+            });
+
+            setFilteredTrips(filtered);
+        } else {
+            setFilteredTrips(trips);
+        }
     }, [startFilter, endFilter]);
 
     async function exportAllHandler(event) {
@@ -112,7 +149,7 @@ export default function TripsPage() {
                 <h2 className="text-center mb-3">
                     {"Trips: " + vehicleNumber}
                 </h2>
-                {filteredTrips.length > 0 ? (
+                {trips.length > 0 ? (
                     <div>
                         <div className="d-flex justify-content-center mb-3">
                             <button

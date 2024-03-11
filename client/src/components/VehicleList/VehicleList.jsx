@@ -3,9 +3,12 @@ import { useContext, useEffect, useState } from "react";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import { Link } from "react-router-dom";
 import {
+    downloadCSVFileFromJSON,
     downloadJSONFile,
+    makeHumanReadable,
     readJSONFromFile,
     sortVehicles,
+    getUser,
 } from "../../assets/helpers";
 import UserContext from "../../context/UserContext";
 import VehicleSubList from "../VehicleSubList/VehicleSubList";
@@ -109,8 +112,16 @@ export default function VehicleList({ isAdmin, mode }) {
         for (const vehicle of vehicles) {
             megaTripsArray = megaTripsArray.concat(vehicle.trips);
         }
+        const tempTrips = structuredClone(megaTripsArray);
+        for (let trip of tempTrips) {
+            let employee = await getUser(trip.employee, userData.token);
+            trip.employee = employee;
+        }
+        await makeHumanReadable(tempTrips);
 
-        console.log(megaTripsArray);
+        const now = new Date(Date.now()).toISOString();
+        const fileName = "CarBoy_trips_" + now + ".csv";
+        downloadCSVFileFromJSON(fileName, tempTrips);
     }
 
     return (

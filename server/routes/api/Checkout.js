@@ -43,6 +43,7 @@ router.post("/:vehicleNumber", auth, (req, res) => {
                         res.json({ msg: "Successfully checked out" })
                     )
                     .catch((err) => {
+                        console.log(err);
                         res.status(500).json({
                             error: "Error checking out vehicle.",
                         });

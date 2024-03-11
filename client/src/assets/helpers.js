@@ -142,3 +142,23 @@ export function sortUsers(a, b) {
     const bName = b.username.toUpperCase();
     return aName < bName ? -1 : 1;
 }
+
+// mutates array
+export async function makeHumanReadable(tripsArray, vehicleNumber) {
+    for (let trip of tripsArray) {
+        delete trip._id;
+        trip.startTime = getDateTimeFormat().format(new Date(trip.startTime));
+        trip.endTime = trip.endTime
+            ? getDateTimeFormat().format(new Date(trip.endTime))
+            : "";
+
+        trip.distance = trip.endMileage
+            ? trip.endMileage - trip.startMileage
+            : "";
+
+        trip.employee = trip.employee.fullName
+            ? trip.employee.fullName
+            : trip.employee.username;
+        trip.vehicleNumber = vehicleNumber;
+    }
+}

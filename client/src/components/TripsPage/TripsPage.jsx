@@ -5,6 +5,7 @@ import {
     getDateTimeFormat,
     getUser,
     getVehicleDetails,
+    makeHumanReadable,
 } from "../../assets/helpers";
 import TripCard from "../TripCard/TripCard";
 import UserContext from "../../context/UserContext";
@@ -111,7 +112,7 @@ export default function TripsPage() {
     }
 
     async function exportTrips(tripsArray) {
-        await makeHumanReadable(tripsArray);
+        await makeHumanReadable(tripsArray, vehicleNumber);
 
         const tripsString = JSON.stringify(tripsArray);
         const now = new Date(Date.now()).toISOString();
@@ -119,28 +120,6 @@ export default function TripsPage() {
             "CarBoy_trips_" + vehicle.vehicleNumber + "_" + now + ".csv";
 
         downloadCSVFileFromJSON(fileName, tripsString);
-    }
-
-    // mutates array
-    async function makeHumanReadable(tripsArray) {
-        for (let trip of tripsArray) {
-            delete trip._id;
-            trip.startTime = getDateTimeFormat().format(
-                new Date(trip.startTime)
-            );
-            trip.endTime = trip.endTime
-                ? getDateTimeFormat().format(new Date(trip.endTime))
-                : "";
-
-            trip.distance = trip.endMileage
-                ? trip.endMileage - trip.startMileage
-                : "";
-
-            trip.employee = trip.employee.fullName
-                ? trip.employee.fullName
-                : trip.employee.username;
-            trip.vehicleNumber = vehicleNumber;
-        }
     }
 
     function clearFilter(event) {

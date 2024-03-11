@@ -7,6 +7,11 @@ const TripSchema = new mongoose.Schema({
     endMileage: Number,
     destination: String,
     employee: String,
+    vehicleNumber: {
+        type: Number,
+        trim: true,
+        required: true,
+    },
 });
 
 // module.exports.model = Trip = mongoose.model("trip", TripSchema);

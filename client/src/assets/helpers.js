@@ -159,6 +159,6 @@ export async function makeHumanReadable(tripsArray, vehicleNumber) {
         trip.employee = trip.employee.fullName
             ? trip.employee.fullName
             : trip.employee.username;
-        trip.vehicleNumber = vehicleNumber;
+        // trip.vehicleNumber = vehicleNumber;
     }
 }

@@ -79,7 +79,7 @@ export default function CheckinPage() {
 
     useEffect(() => {
         if (currentTrip) {
-            console.log(currentTrip);
+            // console.log(currentTrip);
             if (currentTrip.employee && currentTrip.employee[0]) {
                 getUser(currentTrip.employee[0], userData.token)
                     .then((employeeObj) => {

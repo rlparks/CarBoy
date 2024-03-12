@@ -20,7 +20,7 @@ router.post("/:vehicleNumber", auth, (req, res) => {
             const tripsArray = vehicle.trips;
             const now = new Date(Date.now());
             if (vehicle.currentUserId == null) {
-                vehicle.currentUserId = req.body.userId;
+                vehicle.currentUserId = req.user;
                 vehicle.checkedOut = true;
 
                 const newTrip = {
@@ -29,7 +29,7 @@ router.post("/:vehicleNumber", auth, (req, res) => {
                     startMileage: vehicle.mileage,
                     endMileage: null,
                     destination: req.body.destination,
-                    employee: [req.body.userId],
+                    employee: [req.user],
                     vehicleNumber: vehicle.vehicleNumber,
                 };
                 tripsArray.push(newTrip);

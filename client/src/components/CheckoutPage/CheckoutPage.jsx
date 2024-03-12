@@ -28,7 +28,6 @@ export default function CheckoutPage() {
             const vehicleObj = {
                 vehicleNumber,
                 destination,
-                userId: userData.user.id,
             };
 
             const url = SERVER_URL + "api/checkout/" + vehicleNumber;

@@ -156,7 +156,7 @@ export async function makeHumanReadable(tripsArray, vehicleNumber) {
             ? trip.endMileage - trip.startMileage
             : "";
 
-        console.log(trip);
+        // console.log(trip);
         trip.employeeOut = trip.employee[0].fullName
             ? trip.employee[0].fullName
             : trip.employee[0].username;

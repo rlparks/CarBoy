@@ -39,11 +39,18 @@ export default function TripsPage() {
                 setVehicle(vehicle);
                 if (vehicle) {
                     for (let trip of vehicle.trips) {
-                        let employee = await getUser(
-                            trip.employee,
+                        let employeeOut = await getUser(
+                            trip.employee[0],
                             userData.token
                         );
-                        trip.employee = employee;
+
+                        trip.employee[0] = employeeOut;
+                        if (trip.employee[1]) {
+                            trip.employee[1] = await getUser(
+                                trip.employee[1],
+                                userData.token
+                            );
+                        }
                     }
                     setTrips(vehicle.trips);
                     setFilteredTrips(vehicle.trips.reverse());

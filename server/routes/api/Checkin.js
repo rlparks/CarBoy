@@ -33,6 +33,8 @@ router.post("/:vehicleNumber", auth, (req, res) => {
                         return;
                     }
                     currentTrip.endMileage = endMileage;
+                    // track who checked in vehicle
+                    currentTrip.employee[1] = req.user;
                     vehicle.mileage = endMileage;
                 }
                 tripsArray.push(currentTrip);

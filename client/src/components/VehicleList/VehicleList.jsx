@@ -114,8 +114,13 @@ export default function VehicleList({ isAdmin, mode }) {
         }
         const tempTrips = structuredClone(megaTripsArray);
         for (let trip of tempTrips) {
-            let employee = await getUser(trip.employee, userData.token);
-            trip.employee = employee;
+            trip.employee[0] = await getUser(trip.employee[0], userData.token);
+            if (trip.employee[1]) {
+                trip.employee[1] = await getUser(
+                    trip.employee[1],
+                    userData.token
+                );
+            }
         }
         await makeHumanReadable(tempTrips);
 

@@ -29,7 +29,7 @@ router.post("/:vehicleNumber", auth, (req, res) => {
                     startMileage: vehicle.mileage,
                     endMileage: null,
                     destination: req.body.destination,
-                    employee: req.body.userId,
+                    employee: [req.body.userId],
                     vehicleNumber: vehicle.vehicleNumber,
                 };
                 tripsArray.push(newTrip);

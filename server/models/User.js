@@ -13,7 +13,11 @@ const userSchema = new mongoose.Schema({
         minLength: 6,
     },
     admin: Boolean,
-    fullName: String,
+    fullName: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     pictureUrl: String,
     disabled: Boolean,
 });

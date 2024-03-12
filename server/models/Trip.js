@@ -6,7 +6,7 @@ const TripSchema = new mongoose.Schema({
     startMileage: Number,
     endMileage: Number,
     destination: String,
-    employee: String,
+    employee: [String],
     vehicleNumber: {
         type: Number,
         trim: true,

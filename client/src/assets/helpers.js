@@ -156,9 +156,12 @@ export async function makeHumanReadable(tripsArray, vehicleNumber) {
             ? trip.endMileage - trip.startMileage
             : "";
 
-        trip.employee = trip.employee.fullName
-            ? trip.employee.fullName
-            : trip.employee.username;
+        console.log(trip);
+        trip.employeeOut = trip.employee[0].fullName
+            ? trip.employee[0].fullName
+            : trip.employee[0].username;
+        trip.employeeIn = trip.employee[1] ? trip.employee[1].fullName : null;
+        delete trip.employee;
         // trip.vehicleNumber = vehicleNumber;
     }
 }

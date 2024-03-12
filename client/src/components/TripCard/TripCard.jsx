@@ -37,14 +37,23 @@ export default function TripCard({ trip }) {
                         {startTime + " - " + endTime}
                     </h5>
                     <h6 className="card-subtitle text-body-secondary">
-                        {trip.employee.fullName}
+                        {trip.employee[0].fullName}
                     </h6>
+                    {trip.employee[1] &&
+                        trip.employee[0]._id !== trip.employee[1]._id && (
+                            <>
+                                <br />
+                                <h6 className="card-subtitle text-body-secondary">
+                                    Checked in by: {trip.employee[1].fullName}
+                                </h6>
+                            </>
+                        )}
                 </div>
-                {trip.employee.pictureUrl && (
+                {trip.employee[0].pictureUrl && (
                     <img
                         className="img-fluid rounded-circle"
-                        src={trip.employee.pictureUrl}
-                        alt={"Image of " + trip.employee.username}
+                        src={trip.employee[0].pictureUrl}
+                        alt={"Image of " + trip.employee[0].username}
                         style={{ height: "75px" }}
                     />
                 )}

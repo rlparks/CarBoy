@@ -63,18 +63,18 @@ export default function TripCard({ trip }) {
                 <li className="list-group-item">
                     {"Destination: " + trip.destination}
                 </li>
-                {trip.startMileage !== null && (
+                {trip.startMileage && (
                     <li className="list-group-item">
                         {"Starting Mileage: " + trip.startMileage}
                     </li>
                 )}
-                {trip.endMileage !== null && (
+                {trip.endMileage && (
                     <li className="list-group-item">
                         {"Ending Mileage: " + trip.endMileage}
                     </li>
                 )}
                 {/* duplicate for style reasons */}
-                {trip.endMileage !== null && (
+                {trip.endMileage && (
                     <li className="list-group-item">
                         {"Distance: " + distance}
                     </li>

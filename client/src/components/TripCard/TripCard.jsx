@@ -6,7 +6,7 @@ export default function TripCard({ trip }) {
     // const [employee, setEmployee] = useState({
     //     fullName: "Error retrieving user",
     // });
-    const { userData } = useContext(UserContext);
+    // const { userData } = useContext(UserContext);
 
     // useState(() => {
     //     if (trip.employee != null) {

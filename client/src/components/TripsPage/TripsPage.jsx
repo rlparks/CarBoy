@@ -136,7 +136,7 @@ export default function TripsPage() {
     }
 
     return vehicle ? (
-        <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-center mb-3">
             <div className="w-50">
                 <h2 className="text-center mb-3">
                     {"Trips: " + vehicleNumber}

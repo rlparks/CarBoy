@@ -29,5 +29,7 @@ export default function VehicleSubList({
                 ))}
             </div>
         </div>
-    ) : null;
+    ) : (
+        <p className="text-center">No vehicles are currently available.</p>
+    );
 }

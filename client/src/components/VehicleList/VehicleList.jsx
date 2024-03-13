@@ -134,7 +134,7 @@ export default function VehicleList({ isAdmin, mode }) {
             <div className="d-flex justify-content-center mb-3">
                 <div className="w-75">
                     <div>
-                        <h2 className="text-center mb-3">Available</h2>
+                        <h1 className="text-center mb-3">Available</h1>
 
                         {availableVehicles.length > 0 ? (
                             departments.map((department) => {
@@ -179,7 +179,7 @@ export default function VehicleList({ isAdmin, mode }) {
                     </div>
 
                     <div>
-                        <h2 className="text-center m-3">In Use</h2>
+                        <h1 className="text-center m-3">In Use</h1>
                         {checkedOutVehicles.length > 0 ? (
                             <div
                                 className={
@@ -208,7 +208,7 @@ export default function VehicleList({ isAdmin, mode }) {
                     {(mode === "manage" || mode === "trips") &&
                         disabledVehicles.length > 0 && (
                             <div>
-                                <h2 className="text-center m-3">Disabled</h2>
+                                <h1 className="text-center m-3">Disabled</h1>
                                 <div
                                     className={
                                         "row row-cols-1 row-cols-lg-" +

@@ -43,7 +43,7 @@ export default function TripCard({ trip }) {
                         trip.employee[0]._id !== trip.employee[1]._id && (
                             <>
                                 <br />
-                                <h6 className="card-subtitle text-body-secondary">
+                                <h6 className="card-subtitle text-warning">
                                     Checked in by: {trip.employee[1].fullName}
                                 </h6>
                             </>

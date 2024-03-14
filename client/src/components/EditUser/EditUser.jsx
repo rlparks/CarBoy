@@ -110,7 +110,7 @@ export default function EditUser({ mode }) {
                     },
                 });
                 if (mode === "self") {
-                    navigate("/");
+                    navigate("/success");
                 } else {
                     navigate("/success/manageusers");
                 }

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getUser } from "../../assets/helpers";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import UserContext from "../../context/UserContext";
+import PasswordInput from "../PasswordInput/PasswordInput";
 
 export default function EditUser({ mode }) {
     const navigate = useNavigate();
@@ -150,13 +151,22 @@ export default function EditUser({ mode }) {
                         />
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Password</label>
-                        <input
+                        <label id="passwordLabel" className="form-label">
+                            Password
+                        </label>
+                        {/* <input
                             value={newPassword}
                             onChange={newPasswordChangeHandler}
                             type="password"
                             className="form-control"
                             placeholder="leave blank to not change"
+                        /> */}
+                        <PasswordInput
+                            value={newPassword}
+                            onChange={newPasswordChangeHandler}
+                            autoComplete="new-password"
+                            id="new-password"
+                            ariadescribedby="passwordLabel"
                         />
                     </div>
                     {/* <div className="mb-3">

@@ -2,6 +2,7 @@ import axios from "axios";
 import UserContext from "../../context/UserContext";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import PasswordInput from "../PasswordInput/PasswordInput";
 
 export default function LoginPage() {
     const { setUserData } = useContext(UserContext);
@@ -63,13 +64,18 @@ export default function LoginPage() {
                         />
                     </div>
                     <div className="mb-3">
-                        <label className="form-label">Password</label>
-                        <input
-                            value={password}
-                            onChange={passwordChangeHandler}
-                            type="password"
-                            className="form-control"
-                        />
+                        <label id="passwordLabel" className="form-label">
+                            Password
+                        </label>
+                        <div className="input-group">
+                            <PasswordInput
+                                value={password}
+                                onChange={passwordChangeHandler}
+                                autoComplete="current-password"
+                                id="current-password"
+                                ariadescribedby="passwordLabel"
+                            />
+                        </div>
                     </div>
                     <button className="btn btn-primary mb-3">Submit</button>
                 </form>

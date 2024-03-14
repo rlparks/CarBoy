@@ -40,23 +40,26 @@ if (process.env.CREATE_DEFAULT_ADMIN) {
 userRouter.post("/login", async (req, res) => {
     try {
         const { username, password } = req.body;
-        console.log("LOGIN ATTEMPT: " + username);
         if (!username || !password) {
             return res
                 .status(400)
                 .json({ error: "Please fill out all fields" });
         }
         const user = await User.findOne({ username });
+        // return same error message as to not give any info
         if (!user) {
+            console.log("LOGIN FAILURE (NO USER): " + username);
             return res.status(400).json({ error: "Invalid credentials." });
         }
 
         const passwordsMatch = await bcryptjs.compare(password, user.password);
         if (!passwordsMatch) {
+            console.log("LOGIN FAILURE (INVALID PASSWORD): " + username);
             return res.status(400).json({ error: "Invalid credentials." });
         }
 
         if (user.disabled) {
+            console.log("LOGIN FAILURE (ACCOUNT DISABLED): " + username);
             return res.status(400).json({ error: "Invalid credentials." });
         }
 
@@ -68,6 +71,7 @@ userRouter.post("/login", async (req, res) => {
             user: { id: user._id, username: user.username },
         });
     } catch (err) {
+        console.log("LOGIN ERROR: " + err);
         res.status(500).json({ error: err.message });
     }
 });

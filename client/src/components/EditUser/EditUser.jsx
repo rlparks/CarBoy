@@ -109,7 +109,11 @@ export default function EditUser({ mode }) {
                         "Content-Type": "multipart/form-data",
                     },
                 });
-                navigate("/success/manageusers");
+                if (mode === "self") {
+                    navigate("/");
+                } else {
+                    navigate("/success/manageusers");
+                }
             } catch (err) {
                 setError(err.response.data.error);
             }

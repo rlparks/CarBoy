@@ -107,6 +107,23 @@ router.put("/", auth, upload.single("image"), resizeImage, async (req, res) => {
         let userObj = await User.findById(userId);
 
         if (req.body.newPassword) {
+            if (!req.body.newConfirmPassword) {
+                return res
+                    .status(400)
+                    .json({ error: "Please confirm your password." });
+            }
+
+            if (req.body.newPassword !== req.body.newConfirmPassword) {
+                return res.status(400).json({ error: "Passwords don't match" });
+            }
+
+            if (req.body.newPassword.length < 6) {
+                return res
+                    .status(400)
+                    .json({
+                        error: "Password should be at least 6 characters",
+                    });
+            }
             const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
             userObj.password = passwordHash;
         }

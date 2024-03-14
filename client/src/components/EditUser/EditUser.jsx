@@ -18,6 +18,7 @@ export default function EditUser({ mode }) {
     });
     const [userExists, setUserExists] = useState(true);
     const [newPassword, setNewPassword] = useState("");
+    const [newConfirmPassword, setNewConfirmPassword] = useState("");
     const [image, setImage] = useState();
     const { userData } = useContext(UserContext);
 
@@ -58,6 +59,10 @@ export default function EditUser({ mode }) {
         setNewPassword(event.target.value);
     }
 
+    function newConfirmPasswordChangeHandler(event) {
+        setNewConfirmPassword(event.target.value);
+    }
+
     function fullNameChangeHandler(event) {
         setUser((prevUser) => {
             return { ...prevUser, fullName: event.target.value };
@@ -94,6 +99,13 @@ export default function EditUser({ mode }) {
                     ...userObj,
                     newPassword,
                 };
+
+                if (mode === "self") {
+                    userObj = {
+                        ...userObj,
+                        newConfirmPassword,
+                    };
+                }
             }
 
             let url = SERVER_URL + "api/users/";
@@ -169,6 +181,30 @@ export default function EditUser({ mode }) {
                             ariadescribedby="passwordLabel"
                         />
                     </div>
+                    {mode === "self" && (
+                        <div className="mb-3">
+                            <label
+                                id="confirmPasswordLabel"
+                                className="form-label"
+                            >
+                                Confirm Password
+                            </label>
+                            {/* <input
+                            value={newPassword}
+                            onChange={newPasswordChangeHandler}
+                            type="password"
+                            className="form-control"
+                            placeholder="leave blank to not change"
+                        /> */}
+                            <PasswordInput
+                                value={newConfirmPassword}
+                                onChange={newConfirmPasswordChangeHandler}
+                                autoComplete="new-password"
+                                id="new-password"
+                                ariadescribedby="confirmPasswordLabel"
+                            />
+                        </div>
+                    )}
                     {/* <div className="mb-3">
                     
                         <label className="form-label">Picture URL</label>
@@ -180,18 +216,19 @@ export default function EditUser({ mode }) {
                             placeholder="https://www.example.com/image.png"
                         />
                     </div> */}
-                    <div className="mb-3">
-                        <label className="form-label">Image</label>
-                        <input
-                            disabled={mode !== "admin"}
-                            type="file"
-                            accept=".jpeg, .jpg, .png"
-                            className="form-control"
-                            onChange={imageChangeHandler}
-                        />
-                    </div>
+
                     {mode === "admin" && (
                         <div>
+                            <div className="mb-3">
+                                <label className="form-label">Image</label>
+                                <input
+                                    disabled={mode !== "admin"}
+                                    type="file"
+                                    accept=".jpeg, .jpg, .png"
+                                    className="form-control"
+                                    onChange={imageChangeHandler}
+                                />
+                            </div>
                             <div className="mb-3">
                                 <div className="form-check">
                                     <input

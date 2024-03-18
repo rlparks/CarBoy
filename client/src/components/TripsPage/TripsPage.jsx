@@ -33,6 +33,7 @@ export default function TripsPage() {
     const [startFilter, setStartFilter] = useState("");
     const [endFilter, setEndFilter] = useState("");
     const [loading, setLoading] = useState(true);
+    const [endIndex, setEndIndex] = useState(3);
 
     useEffect(() => {
         if (loading) {
@@ -48,27 +49,8 @@ export default function TripsPage() {
 
     async function populateTrips(vehicle) {
         if (vehicle) {
-            for (let trip of vehicle.trips) {
-                const differentOutIn = trip.employee[1]
-                    ? trip.employee[0] !== trip.employee[1]
-                    : false;
-
-                trip.employee[0] = await getUser(
-                    trip.employee[0],
-                    userData.token
-                );
-
-                if (differentOutIn) {
-                    trip.employee[1] = await getUser(
-                        trip.employee[1],
-                        userData.token
-                    );
-                } else {
-                    trip.employee[1] = trip.employee[0];
-                }
-            }
-            setTrips(vehicle.trips);
-            setFilteredTrips(vehicle.trips.reverse());
+            setTrips(vehicle.trips.reverse());
+            setFilteredTrips(vehicle.trips.slice(0, endIndex));
             document.title = "CarBoy · Trips · " + vehicle.vehicleNumber;
 
             setLoading(false);
@@ -133,7 +115,7 @@ export default function TripsPage() {
     }
 
     async function exportTrips(tripsArray) {
-        await makeHumanReadable(tripsArray, vehicleNumber);
+        await makeHumanReadable(tripsArray, userData.token);
 
         const tripsString = JSON.stringify(tripsArray);
         const now = new Date(Date.now()).toISOString();
@@ -147,6 +129,15 @@ export default function TripsPage() {
         event.preventDefault();
         setStartFilter("");
         setEndFilter("");
+    }
+
+    function loadMoreTrips(event) {
+        event.preventDefault();
+        setEndIndex((prev) => {
+            const newVal = prev + 3;
+            setFilteredTrips(vehicle.trips.slice(0, newVal));
+            return newVal;
+        });
     }
 
     return vehicle ? (
@@ -299,6 +290,30 @@ export default function TripsPage() {
                                     </div>
                                 ))}
                             </div>
+                            {endIndex < trips.length && (
+                                <div className="d-flex justify-content-center m-3">
+                                    <button
+                                        className="btn btn-secondary me-1"
+                                        onClick={loadMoreTrips}
+                                    >
+                                        {/* https://icons.getbootstrap.com/icons/arrow-down/ */}
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            className="bi bi-arrow-down"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"
+                                            />
+                                        </svg>
+                                        Load More
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <p className="text-center">

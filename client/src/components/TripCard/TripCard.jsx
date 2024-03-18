@@ -3,25 +3,31 @@ import { getDateTimeFormat, getUser } from "../../assets/helpers";
 import UserContext from "../../context/UserContext";
 
 export default function TripCard({ trip }) {
-    // const [employee, setEmployee] = useState({
-    //     fullName: "Error retrieving user",
-    // });
-    // const { userData } = useContext(UserContext);
+    const [employeeOut, setEmployeeOut] = useState({
+        fullName: "Error retrieving user",
+    });
+    const [employeeIn, setEmployeeIn] = useState("");
+    const { userData } = useContext(UserContext);
 
-    // useState(() => {
-    //     if (trip.employee != null) {
-    //         getUser(trip.employee, userData.token)
-    //             .then((user) => {
-    //                 // console.log(user);
-    //                 if (user !== null) {
-    //                     setEmployee(user);
-    //                 }
-    //             })
-    //             .catch((err) =>
-    //                 setEmployee({ fullName: "Error retrieving user" })
-    //             );
-    //     }
-    // }, [userData]);
+    useState(() => {
+        if (trip.employee[0] != null) {
+            const differentOutIn = trip.employee[1]
+                ? trip.employee[0] !== trip.employee[1]
+                : false;
+
+            getUser(trip.employee[0], userData.token).then((empOut) => {
+                setEmployeeOut(empOut);
+
+                if (differentOutIn) {
+                    getUser(trip.employee[1], userData.token).then((empIn) =>
+                        setEmployeeIn(empIn)
+                    );
+                } else {
+                    setEmployeeIn(empOut);
+                }
+            });
+        }
+    }, [userData]);
 
     const startTime = getDateTimeFormat().format(new Date(trip.startTime));
     const endTime = trip.endTime
@@ -37,23 +43,22 @@ export default function TripCard({ trip }) {
                         {startTime + " - " + endTime}
                     </h5>
                     <h6 className="card-subtitle text-body-secondary">
-                        {trip.employee[0].fullName}
+                        {employeeOut.fullName}
                     </h6>
-                    {trip.employee[1] &&
-                        trip.employee[0]._id !== trip.employee[1]._id && (
-                            <>
-                                <br />
-                                <h6 className="card-subtitle text-warning">
-                                    Checked in by: {trip.employee[1].fullName}
-                                </h6>
-                            </>
-                        )}
+                    {employeeIn && employeeOut._id !== employeeIn._id && (
+                        <>
+                            <br />
+                            <h6 className="card-subtitle text-warning">
+                                Checked in by: {employeeIn.fullName}
+                            </h6>
+                        </>
+                    )}
                 </div>
-                {trip.employee[0].pictureUrl && (
+                {employeeOut.pictureUrl && (
                     <img
                         className="img-fluid rounded-circle"
-                        src={trip.employee[0].pictureUrl}
-                        alt={"Image of " + trip.employee[0].username}
+                        src={employeeOut.pictureUrl}
+                        alt={"Image of " + employeeOut.username}
                         style={{ height: "75px" }}
                     />
                 )}

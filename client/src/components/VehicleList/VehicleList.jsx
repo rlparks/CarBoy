@@ -115,16 +115,17 @@ export default function VehicleList({ isAdmin, mode }) {
             megaTripsArray = megaTripsArray.concat(vehicle.trips);
         }
         const tempTrips = structuredClone(megaTripsArray);
-        for (let trip of tempTrips) {
-            trip.employee[0] = await getUser(trip.employee[0], userData.token);
-            if (trip.employee[1]) {
-                trip.employee[1] = await getUser(
-                    trip.employee[1],
-                    userData.token
-                );
-            }
-        }
-        await makeHumanReadable(tempTrips);
+        // not needed since was moved to makeHumanReadable with proxy trips
+        // for (let trip of tempTrips) {
+        //     trip.employee[0] = await getUser(trip.employee[0], userData.token);
+        //     if (trip.employee[1]) {
+        //         trip.employee[1] = await getUser(
+        //             trip.employee[1],
+        //             userData.token
+        //         );
+        //     }
+        // }
+        await makeHumanReadable(tempTrips, userData.token);
 
         setMegaExportText("Export CSV");
         const now = new Date(Date.now()).toISOString();

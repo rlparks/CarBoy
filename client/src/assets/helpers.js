@@ -144,7 +144,7 @@ export function sortUsers(a, b) {
 }
 
 // mutates array
-export async function makeHumanReadable(tripsArray, vehicleNumber) {
+export async function makeHumanReadable(tripsArray, token) {
     for (let trip of tripsArray) {
         delete trip._id;
         trip.startTime = getDateTimeFormat().format(new Date(trip.startTime));
@@ -157,6 +157,19 @@ export async function makeHumanReadable(tripsArray, vehicleNumber) {
             : "";
 
         // console.log(trip);
+        // set trip employee to object
+        const differentOutIn = trip.employee[1]
+            ? trip.employee[0] !== trip.employee[1]
+            : false;
+
+        trip.employee[0] = await getUser(trip.employee[0], token);
+
+        if (differentOutIn) {
+            trip.employee[1] = await getUser(trip.employee[1], token);
+        } else if (trip.employee[1]) {
+            trip.employee[1] = trip.employee[0];
+        }
+
         trip.employeeOut = trip.employee[0].fullName
             ? trip.employee[0].fullName
             : trip.employee[0].username;

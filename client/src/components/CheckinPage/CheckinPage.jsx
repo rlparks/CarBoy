@@ -25,7 +25,9 @@ export default function CheckinPage() {
 
     const [endMileage, setEndMileage] = useState("");
     function endingMileageChangeHandler(event) {
+        // round mileage to nearest whole number
         event.target.value = event.target.value.slice(0, 10);
+        event.target.value = Math.round(event.target.value);
         setEndMileage(event.target.value);
     }
 

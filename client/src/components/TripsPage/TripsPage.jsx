@@ -94,7 +94,7 @@ export default function TripsPage() {
 
             setFilteredTrips(filtered);
         } else {
-            setFilteredTrips(trips);
+            setFilteredTrips(trips.slice(0, endIndex));
         }
     }, [startFilter, endFilter]);
 
@@ -290,30 +290,31 @@ export default function TripsPage() {
                                     </div>
                                 ))}
                             </div>
-                            {endIndex < trips.length && (
-                                <div className="d-flex justify-content-center m-3">
-                                    <button
-                                        className="btn btn-secondary me-1"
-                                        onClick={loadMoreTrips}
-                                    >
-                                        {/* https://icons.getbootstrap.com/icons/arrow-down/ */}
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            fill="currentColor"
-                                            className="bi bi-arrow-down"
-                                            viewBox="0 0 16 16"
+                            {endIndex < trips.length &&
+                                !(endFilter && startFilter) && (
+                                    <div className="d-flex justify-content-center m-3">
+                                        <button
+                                            className="btn btn-secondary me-1"
+                                            onClick={loadMoreTrips}
                                         >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"
-                                            />
-                                        </svg>
-                                        Load More
-                                    </button>
-                                </div>
-                            )}
+                                            {/* https://icons.getbootstrap.com/icons/arrow-down/ */}
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="16"
+                                                height="16"
+                                                fill="currentColor"
+                                                className="bi bi-arrow-down"
+                                                viewBox="0 0 16 16"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"
+                                                />
+                                            </svg>
+                                            Load More
+                                        </button>
+                                    </div>
+                                )}
                         </div>
                     ) : (
                         <p className="text-center">

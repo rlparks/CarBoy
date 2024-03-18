@@ -23,6 +23,7 @@ export default function VehicleList({ isAdmin, mode }) {
     const [departments, setDepartments] = useState([]);
     const [error, setError] = useState("");
     const { userData } = useContext(UserContext);
+    const [megaExportText, setMegaExportText] = useState("Export CSV");
 
     const refreshVehicles = async () => {
         axios
@@ -107,6 +108,7 @@ export default function VehicleList({ isAdmin, mode }) {
 
     async function megaExportTripsHandler(event) {
         event.preventDefault();
+        setMegaExportText("Loading...");
         let megaTripsArray = [];
 
         for (const vehicle of vehicles) {
@@ -124,6 +126,7 @@ export default function VehicleList({ isAdmin, mode }) {
         }
         await makeHumanReadable(tempTrips);
 
+        setMegaExportText("Export CSV");
         const now = new Date(Date.now()).toISOString();
         const fileName = "CarBoy_trips_" + now + ".csv";
         downloadCSVFileFromJSON(fileName, tempTrips);
@@ -305,7 +308,7 @@ export default function VehicleList({ isAdmin, mode }) {
                             <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293z" />
                             <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
                         </svg>
-                        Export CSV
+                        {megaExportText}
                     </button>
                 </div>
             )}

@@ -48,114 +48,123 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                     onClick={() => setExpanded((prev) => !prev)}
                     aria-controls="responsive-navbar-nav"
                 />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto">
-                        {userData.user && (
-                            <>
-                                <Nav.Link
-                                    as={NavLink}
-                                    to="/"
-                                    onClick={() => handleClick("/")}
-                                    className={link === "/" && "active"}
-                                >
-                                    Home
-                                </Nav.Link>
-                                <Nav.Link
-                                    as={NavLink}
-                                    to="/trips"
-                                    onClick={() => handleClick("/trips")}
-                                    className={
-                                        link.includes("/trips") && "active"
-                                    }
-                                >
-                                    Trips
-                                </Nav.Link>
-                            </>
-                        )}
-                        {isAdmin && (
-                            <>
-                                <Nav.Link
-                                    as={NavLink}
-                                    to="/managevehicles"
-                                    onClick={() =>
-                                        handleClick("/managevehicles")
-                                    }
-                                    className={
-                                        link.includes("/managevehicles") &&
-                                        "active"
-                                    }
-                                >
-                                    Manage Vehicles
-                                </Nav.Link>
-                                <Nav.Link
-                                    as={NavLink}
-                                    to="/managedestinations"
-                                    onClick={() =>
-                                        handleClick("/managedestinations")
-                                    }
-                                    className={
-                                        link.includes("/managedestinations") &&
-                                        "active"
-                                    }
-                                >
-                                    Manage Destinations
-                                </Nav.Link>
-                                <Nav.Link
-                                    as={NavLink}
-                                    to="/manageusers"
-                                    onClick={() => handleClick("/manageusers")}
-                                    className={
-                                        link.includes("/manageusers") &&
-                                        "active"
-                                    }
-                                >
-                                    Manage Users
-                                </Nav.Link>
-                            </>
-                        )}
-                    </Nav>
-                    {!serverDown && (
-                        <Nav>
-                            {userData.user ? (
-                                <div className="d-flex">
+                {!link.includes("/dashboard") && (
+                    <Navbar.Collapse id="responsive-navbar-nav">
+                        <Nav className="me-auto">
+                            {userData.user && (
+                                <>
                                     <Nav.Link
                                         as={NavLink}
-                                        to="/manageself"
+                                        to="/"
+                                        onClick={() => handleClick("/")}
+                                        className={link === "/" && "active"}
+                                    >
+                                        Home
+                                    </Nav.Link>
+                                    <Nav.Link
+                                        as={NavLink}
+                                        to="/trips"
+                                        onClick={() => handleClick("/trips")}
+                                        className={
+                                            link.includes("/trips") && "active"
+                                        }
+                                    >
+                                        Trips
+                                    </Nav.Link>
+                                </>
+                            )}
+                            {isAdmin && (
+                                <>
+                                    <Nav.Link
+                                        as={NavLink}
+                                        to="/managevehicles"
                                         onClick={() =>
-                                            handleClick("/manageself")
+                                            handleClick("/managevehicles")
                                         }
                                         className={
-                                            link === "/manageself" && "active"
+                                            link.includes("/managevehicles") &&
+                                            "active"
                                         }
                                     >
-                                        {user.fullName}
+                                        Manage Vehicles
                                     </Nav.Link>
-                                    <button
-                                        className="btn btn-secondary"
-                                        onClick={handleLogout}
-                                    >
-                                        Logout
-                                    </button>
-                                </div>
-                            ) : (
-                                <div className="d-flex">
                                     <Nav.Link
                                         as={NavLink}
-                                        to="/login"
-                                        onClick={() => handleClick("/login")}
+                                        to="/managedestinations"
+                                        onClick={() =>
+                                            handleClick("/managedestinations")
+                                        }
                                         className={
-                                            link.includes("/login") && "active"
+                                            link.includes(
+                                                "/managedestinations"
+                                            ) && "active"
                                         }
                                     >
-                                        <Button variant="secondary">
-                                            Login
-                                        </Button>
+                                        Manage Destinations
                                     </Nav.Link>
-                                </div>
+                                    <Nav.Link
+                                        as={NavLink}
+                                        to="/manageusers"
+                                        onClick={() =>
+                                            handleClick("/manageusers")
+                                        }
+                                        className={
+                                            link.includes("/manageusers") &&
+                                            "active"
+                                        }
+                                    >
+                                        Manage Users
+                                    </Nav.Link>
+                                </>
                             )}
                         </Nav>
-                    )}
-                </Navbar.Collapse>
+                        {!serverDown && (
+                            <Nav>
+                                {userData.user ? (
+                                    <div className="d-flex">
+                                        <Nav.Link
+                                            as={NavLink}
+                                            to="/manageself"
+                                            onClick={() =>
+                                                handleClick("/manageself")
+                                            }
+                                            className={
+                                                link === "/manageself" &&
+                                                "active"
+                                            }
+                                        >
+                                            {user.fullName}
+                                        </Nav.Link>
+                                        <button
+                                            className="btn btn-secondary"
+                                            onClick={handleLogout}
+                                        >
+                                            Logout
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="d-flex">
+                                        <Nav.Link
+                                            as={NavLink}
+                                            to="/login"
+                                            onClick={() =>
+                                                handleClick("/login")
+                                            }
+                                            className={
+                                                link.includes("/login") &&
+                                                "active"
+                                            }
+                                        >
+                                            <Button variant="secondary">
+                                                Login
+                                            </Button>
+                                        </Nav.Link>
+                                    </div>
+                                )}
+                            </Nav>
+                        )}
+                    </Navbar.Collapse>
+                )}
             </Container>
         </Navbar>
     );

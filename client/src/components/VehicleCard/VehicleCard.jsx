@@ -45,7 +45,7 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
 
                 {mode === "trips" && <TripButtons vehicle={vehicle} />}
             </div>
-            {!userData.user && (
+            {!userData.user && mode !== "dashboard" && (
                 <Link to="/login" className="card-footer text-body-secondary">
                     Login to use
                 </Link>
@@ -54,7 +54,8 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
             {userData.user &&
                 vehicle.checkedOut &&
                 currentUser &&
-                currentUser.fullName && (
+                currentUser.fullName &&
+                mode !== "dashboard" && (
                     <div className="card-footer text-body-secondary">
                         {currentUser.fullName
                             ? currentUser.fullName

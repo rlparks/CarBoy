@@ -89,12 +89,14 @@ export default function DashboardPage() {
                 : 0;
             mileageAllTimeTemp += tripDistance;
 
+            // collect popularity of destinations
             if (destinationOccurences[trip.destination]) {
                 destinationOccurences[trip.destination]++;
             } else {
                 destinationOccurences[trip.destination] = 1;
             }
 
+            // collect popularity of vehicles
             if (vehicleOccurences[trip.vehicleNumber]) {
                 vehicleOccurences[trip.vehicleNumber]++;
             } else {

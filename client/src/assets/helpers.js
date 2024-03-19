@@ -186,10 +186,9 @@ export function filterTripsByYYYYdashMMdashDD(trips, startFilter, endFilter) {
     return trips.filter((trip) => {
         let startDate = new Date(trip.startTime);
 
-        // very high end date if not supplied
-        let endDate = trip.endTime
-            ? new Date(trip.endTime)
-            : new Date(3000, 1, 1);
+        // set end date to trip start date if unfinished trip
+        // includes these trips in cases where they may fit
+        let endDate = trip.endTime ? new Date(trip.endTime) : startDate;
 
         const startFilterSplit = startFilter.split("-");
         const endFilterSplit = endFilter.split("-");

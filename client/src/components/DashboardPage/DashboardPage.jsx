@@ -81,11 +81,25 @@ export default function DashboardPage() {
 
         // calculate mileage stats
         let mileageAllTimeTemp = 0;
+        let destinationOccurences = {};
+        let vehicleOccurences = {};
         for (const trip of megaTripsArray) {
             const tripDistance = trip.endMileage
                 ? trip.endMileage - trip.startMileage
                 : 0;
             mileageAllTimeTemp += tripDistance;
+
+            if (destinationOccurences[trip.destination]) {
+                destinationOccurences[trip.destination]++;
+            } else {
+                destinationOccurences[trip.destination] = 1;
+            }
+
+            if (vehicleOccurences[trip.vehicleNumber]) {
+                vehicleOccurences[trip.vehicleNumber]++;
+            } else {
+                vehicleOccurences[trip.vehicleNumber] = 1;
+            }
         }
         setTotalMileage(mileageAllTimeTemp);
 

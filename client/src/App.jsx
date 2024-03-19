@@ -20,6 +20,7 @@ import { getUser } from "./assets/helpers";
 import DestinationsPage from "./components/DestinationsPage/DestinationsPage";
 import AddDestination from "./components/AddDestination/AddDestination";
 import EditDestination from "./components/EditDestination/EditDestination";
+import DashboardPage from "./components/DashboardPage/DashboardPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -345,6 +346,7 @@ export default function App() {
                                 </RequireAdmin>
                             }
                         />
+                        <Route path="/dashboard" element={<DashboardPage />} />
                         <Route path="/success" element={<SuccessPage />} />
                         <Route
                             path="/success/:redirectUrl"

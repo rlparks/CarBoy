@@ -34,7 +34,13 @@ export default function Header({
         setExpanded(false);
     }
     const url = useLocation();
-    setLink(url.pathname);
+
+    // no dependencies, so this runs EVERY rerender
+    // meaning link is always accurate! :)
+    // thankfully React is smart enough to not rerender
+    // on every setLink call...
+    useEffect(() => setLink(url.pathname));
+
     if (link.includes("/dashboard")) {
         return (
             <div className="d-flex justify-content-center mt-3 mb-1">

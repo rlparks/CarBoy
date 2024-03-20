@@ -8,7 +8,13 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 
-export default function Header({ setUserData, isAdmin, serverDown }) {
+export default function Header({
+    setUserData,
+    isAdmin,
+    serverDown,
+    link,
+    setLink,
+}) {
     const { userData, user } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -21,14 +27,14 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
         navigate("/");
     }
 
-    const url = useLocation();
-    const [link, setLink] = useState(url.pathname);
     const [expanded, setExpanded] = useState(false);
 
     function handleClick(url) {
         setLink(url);
         setExpanded(false);
     }
+    const url = useLocation();
+    setLink(url.pathname);
 
     return (
         <Navbar
@@ -73,6 +79,13 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                     </Nav.Link>
                                 </>
                             )}
+                            <Nav.Link
+                                as={NavLink}
+                                to="/dashboard"
+                                onClick={() => handleClick("/dashboard")}
+                            >
+                                Dashboard
+                            </Nav.Link>
                             {isAdmin && (
                                 <>
                                     <Nav.Link

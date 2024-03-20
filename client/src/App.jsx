@@ -108,6 +108,8 @@ export default function App() {
         }
     }, [userData]);
 
+    const [link, setLink] = useState("/");
+
     return (
         <UserContext.Provider value={{ userData, setUserData, user }}>
             {serverRunning ? (
@@ -121,7 +123,7 @@ export default function App() {
     function NoServerBrowserRouter() {
         return (
             <BrowserRouter>
-                <Header serverDown={true} />
+                <Header link={link} setLink={setLink} serverDown={true} />
                 <Routes>
                     <Route path="*" element={<ErrorPage type={503} />} />
                 </Routes>
@@ -133,7 +135,12 @@ export default function App() {
         {
             return (
                 <BrowserRouter>
-                    <Header setUserData={setUserData} isAdmin={user.admin} />
+                    <Header
+                        link={link}
+                        setLink={setLink}
+                        setUserData={setUserData}
+                        isAdmin={user.admin}
+                    />
                     <Routes>
                         <Route
                             path="/"

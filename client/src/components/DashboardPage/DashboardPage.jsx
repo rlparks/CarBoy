@@ -5,6 +5,7 @@ import {
     sortVehicles,
 } from "../../assets/helpers";
 import VehicleCard from "../VehicleCard/VehicleCard";
+import Title from "../Title/Title";
 
 export default function DashboardPage() {
     const [vehicles, setVehicles] = useState([]);
@@ -25,6 +26,7 @@ export default function DashboardPage() {
     const [mostPopularVehicleNumber, setMostPopularVehicleNumber] =
         useState("");
     const [popularVehicleTrips, setPopularVehicleTrips] = useState("");
+    const [mostPopularVehicleObj, setMostPopularVehicleObj] = useState({});
 
     const [mostPopularDestination, setMostPopularDestination] = useState("");
     const [popularDestinationTrips, setPopularDestinationTrips] = useState("");
@@ -194,6 +196,7 @@ export default function DashboardPage() {
                         )}
                     </div>
                     <div>
+                        <h2 className="text-center mb-3">Statistics</h2>
                         <div
                             className={
                                 "row row-cols-1 row-cols-lg-" +
@@ -202,27 +205,72 @@ export default function DashboardPage() {
                             }
                         >
                             <div className="col">
-                                <p>Total vehicles: {vehicles.length}</p>
-                                <p>
-                                    Available vehicles:{" "}
-                                    {availableVehicles.length}
-                                </p>
-                                <p>
-                                    Checked out vehicles:{" "}
-                                    {checkedOutVehicles.length}
-                                </p>
+                                <div className="card">
+                                    <div className="card-body">
+                                        <h5 className="card-title">Vehicles</h5>
+                                        <p className="card-text">
+                                            <b>{vehicles.length}</b> total
+                                            vehicle
+                                            {vehicles.length !== 1 && "s"}
+                                        </p>
+                                        <p className="card-text">
+                                            <b>{availableVehicles.length}</b>{" "}
+                                            available vehicle
+                                            {availableVehicles.length !== 1 &&
+                                                "s"}
+                                        </p>
+                                        <p className="card-text">
+                                            <b>{checkedOutVehicles.length}</b>{" "}
+                                            checked out vehicle
+                                            {checkedOutVehicles.length !== 1 &&
+                                                "s"}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col">
-                                <p>Total trip count: {totalTripCount}</p>
-                                <p>Trips year to date: {yearTripCount}</p>
-                                <p>Trips month to date: {monthTripCount}</p>
-                                <p>Trips day to date: {dayTripCount}</p>
+                                <div className="card">
+                                    <div className="card-body">
+                                        <h5 className="card-title">Trips</h5>
+                                        <p className="card-text">
+                                            <b>{totalTripCount}</b> total trip
+                                            {totalTripCount !== 1 && "s"}
+                                        </p>
+                                        {/* <p className="card-text">
+                                            <b>{yearTripCount}</b> trip{yearTripCount !== 1 && "s"} this
+                                            year
+                                        </p> */}
+                                        <p className="card-text">
+                                            <b>{monthTripCount}</b> trip
+                                            {monthTripCount !== 1 && "s"} this
+                                            month
+                                        </p>
+                                        <p className="card-text">
+                                            <b>{dayTripCount}</b> trip
+                                            {dayTripCount !== 1 && "s"} today
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col">
-                                <p>Total mileage: {totalMileage}</p>
-                                <p>Mileage year to date: {yearMileage}</p>
-                                <p>Mileage month to date: {monthMileage}</p>
-                                <p>Mileage day to date: {dayMileage}</p>
+                                <div className="card">
+                                    <div className="card-body">
+                                        <h5 className="card-title">Mileage</h5>
+                                        <p className="card-text">
+                                            <b>{totalMileage}</b> total mile
+                                            {totalMileage !== 1 && "s"}
+                                        </p>
+                                        <p className="card-text">
+                                            <b>{monthMileage}</b> mile
+                                            {monthTripCount !== 1 && "s"} this
+                                            month
+                                        </p>
+                                        <p className="card-text">
+                                            <b>{dayMileage}</b> mile
+                                            {dayMileage !== 1 && "s"} today
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col">
                                 <p>
@@ -230,6 +278,8 @@ export default function DashboardPage() {
                                     {mostPopularVehicleNumber} with{" "}
                                     {popularVehicleTrips} trips all time
                                 </p>
+                            </div>
+                            <div className="col">
                                 <p>
                                     Most popular destination:{" "}
                                     {mostPopularDestination} with{" "}

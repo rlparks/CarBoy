@@ -24,7 +24,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
     const [expanded, setExpanded] = useState(false);
 
     function handleClick(url) {
-        setLink(url);
+        // setLink(url);
         setExpanded(false);
     }
     const url = useLocation();
@@ -34,7 +34,11 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
     // meaning link is always accurate! :)
     // thankfully React is smart enough to not rerender
     // on every setLink call...
-    useEffect(() => setLink(url.pathname));
+    useEffect(() => {
+        if (link !== url.pathname) {
+            setLink(url.pathname);
+        }
+    });
 
     if (link.includes("/dashboard")) {
         return (

@@ -22,6 +22,13 @@ export default function DashboardPage() {
     const [monthMileage, setMonthMileage] = useState("");
     const [dayMileage, setDayMileage] = useState("");
 
+    const [mostPopularVehicleNumber, setMostPopularVehicleNumber] =
+        useState("");
+    const [popularVehicleTrips, setPopularVehicleTrips] = useState("");
+
+    const [mostPopularDestination, setMostPopularDestination] = useState("");
+    const [popularDestinationTrips, setPopularDestinationTrips] = useState("");
+
     useEffect(() => {
         document.title = "CarBoy · Dashboard";
         axios.get(SERVER_URL + "api/vehicles/").then((result) => {
@@ -104,6 +111,30 @@ export default function DashboardPage() {
             }
         }
         setTotalMileage(mileageAllTimeTemp);
+
+        // my first ever usage of this kind of for loop
+        let maxOccurences = -1;
+        let maxVehicleNumber = null;
+        for (const vehicleKey in vehicleOccurences) {
+            if (vehicleOccurences[vehicleKey] > maxOccurences) {
+                maxOccurences = vehicleOccurences[vehicleKey];
+                maxVehicleNumber = vehicleKey;
+            }
+        }
+        setMostPopularVehicleNumber(maxVehicleNumber);
+        setPopularVehicleTrips(maxOccurences);
+
+        let maxDestinationCount = -1;
+        let maxDestinationName = null;
+        for (const destinationKey in destinationOccurences) {
+            if (destinationOccurences[destinationKey] > maxDestinationCount) {
+                maxDestinationCount = destinationOccurences[destinationKey];
+                maxDestinationName = destinationKey;
+            }
+        }
+        // console.log(destinationOccurences);
+        setMostPopularDestination(maxDestinationName);
+        setPopularDestinationTrips(maxDestinationCount);
 
         let mileageYearTemp = 0;
         for (const trip of tripsThisYear) {
@@ -192,6 +223,18 @@ export default function DashboardPage() {
                                 <p>Mileage year to date: {yearMileage}</p>
                                 <p>Mileage month to date: {monthMileage}</p>
                                 <p>Mileage day to date: {dayMileage}</p>
+                            </div>
+                            <div className="col">
+                                <p>
+                                    Most popular vehicle:{" "}
+                                    {mostPopularVehicleNumber} with{" "}
+                                    {popularVehicleTrips} trips all time
+                                </p>
+                                <p>
+                                    Most popular destination:{" "}
+                                    {mostPopularDestination} with{" "}
+                                    {popularDestinationTrips} trips all time
+                                </p>
                             </div>
                         </div>
                     </div>

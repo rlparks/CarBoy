@@ -8,13 +8,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 
-export default function Header({
-    setUserData,
-    isAdmin,
-    serverDown,
-    link,
-    setLink,
-}) {
+export default function Header({ setUserData, isAdmin, serverDown }) {
     const { userData, user } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -34,6 +28,7 @@ export default function Header({
         setExpanded(false);
     }
     const url = useLocation();
+    const [link, setLink] = useState(url.pathname);
 
     // no dependencies, so this runs EVERY rerender
     // meaning link is always accurate! :)

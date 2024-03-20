@@ -26,28 +26,31 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
     }, [userData]);
 
     return (
-        <div className="card mb-3" key={vehicle._id}>
+        <div className="card h-100 mb-3" key={vehicle._id}>
             <img
                 className="card-img-top"
                 src={vehicle.pictureUrl}
                 alt={"Image of " + vehicle.vehicleNumber}
-                style={({ width: "75%" }, { height: "75%" })}
+                // style={({ width: "75%" }, { height: "75%" })}
             />
-            <div className="card-body">
-                <h5 className="card-title">{vehicle.vehicleNumber}</h5>
-                <p className="card-text">
-                    {vehicle.year} {vehicle.make} {vehicle.model}
-                </p>
-                {/* <p className="card-text text-body-secondary">{vehicle.year}</p> */}
-                {mode === "normal" && userData.user && (
-                    <VehicleButton vehicle={vehicle} />
-                )}
+            <div className="card-body d-flex flex-column justify-content-between">
+                <div>
+                    <h5 className="card-title">{vehicle.vehicleNumber}</h5>
+                    <p className="card-text">
+                        {vehicle.year} {vehicle.make} {vehicle.model}
+                    </p>
+                </div>
+                <div>
+                    {mode === "normal" && userData.user && (
+                        <VehicleButton vehicle={vehicle} />
+                    )}
 
-                {mode === "manage" && (
-                    <AdminButtons isAdmin={isAdmin} vehicle={vehicle} />
-                )}
+                    {mode === "manage" && (
+                        <AdminButtons isAdmin={isAdmin} vehicle={vehicle} />
+                    )}
 
-                {mode === "trips" && <TripButtons vehicle={vehicle} />}
+                    {mode === "trips" && <TripButtons vehicle={vehicle} />}
+                </div>
             </div>
             {!userData.user && mode !== "dashboard" && (
                 <Link to="/login" className="card-footer text-body-secondary">

@@ -104,6 +104,7 @@ export default function Header({
                         >
                             Dashboard
                         </Nav.Link>
+                        {/* <div className="vr" /> */}
                         {isAdmin && (
                             <>
                                 <Nav.Link

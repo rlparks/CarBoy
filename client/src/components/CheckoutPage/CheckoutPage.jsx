@@ -129,7 +129,7 @@ export default function CheckoutPage() {
                                             onChange={destinationChangeHander}
                                             type="text"
                                             className="form-control"
-                                            placeholder="Type to search or enter your own"
+                                            placeholder="Type to search, or enter your own"
                                             list="destinationDatalist"
                                         />
                                         <datalist id="destinationDatalist">

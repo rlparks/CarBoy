@@ -156,7 +156,7 @@ function TripButtons({ vehicle }) {
         <div>
             <div className="btn-group">
                 <Link
-                    className="btn btn-success"
+                    className="btn btn-primary"
                     to={"/trips/" + vehicle.vehicleNumber}
                 >
                     {/* https://icons.getbootstrap.com/icons/sign-turn-right/ */}

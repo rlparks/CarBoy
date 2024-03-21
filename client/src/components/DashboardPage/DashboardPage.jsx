@@ -124,6 +124,12 @@ export default function DashboardPage() {
             }
         }
         setMostPopularVehicleNumber(maxVehicleNumber);
+        setMostPopularVehicleObj(
+            findVehicleObjInVehicleArrayFromVehicleNumber(
+                vehicleArr,
+                maxVehicleNumber
+            )
+        );
         setPopularVehicleTrips(maxOccurences);
 
         let maxDestinationCount = -1;
@@ -171,7 +177,9 @@ export default function DashboardPage() {
             <div className="d-flex justify-content-center mb-3">
                 <div className="w-75">
                     <div>
-                        <h2 className="text-center mb-3">In Use</h2>
+                        <h2 className="text-center mb-3">
+                            In Use: {checkedOutVehicles.length}
+                        </h2>
                         {checkedOutVehicles.length > 0 ? (
                             <div
                                 className={
@@ -206,85 +214,135 @@ export default function DashboardPage() {
                         >
                             <div className="col">
                                 <div className="card">
-                                    <div className="card-body">
+                                    <div className="card-body d-flex flex-column justify-content-between">
                                         <h5 className="card-title">Vehicles</h5>
-                                        <p className="card-text">
-                                            <b>{vehicles.length}</b> total
-                                            vehicle
-                                            {vehicles.length !== 1 && "s"}
-                                        </p>
-                                        <p className="card-text">
-                                            <b>{availableVehicles.length}</b>{" "}
-                                            available vehicle
-                                            {availableVehicles.length !== 1 &&
-                                                "s"}
-                                        </p>
-                                        <p className="card-text">
-                                            <b>{checkedOutVehicles.length}</b>{" "}
-                                            checked out vehicle
-                                            {checkedOutVehicles.length !== 1 &&
-                                                "s"}
-                                        </p>
+                                        <div>
+                                            <p className="card-text">
+                                                <b>{vehicles.length}</b> total
+                                                vehicle
+                                                {vehicles.length !== 1 && "s"}
+                                            </p>
+                                            <p className="card-text">
+                                                <b>
+                                                    {availableVehicles.length}
+                                                </b>{" "}
+                                                available vehicle
+                                                {availableVehicles.length !==
+                                                    1 && "s"}
+                                            </p>
+                                            <p className="card-text">
+                                                <b>
+                                                    {checkedOutVehicles.length}
+                                                </b>{" "}
+                                                checked out vehicle
+                                                {checkedOutVehicles.length !==
+                                                    1 && "s"}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col">
                                 <div className="card">
-                                    <div className="card-body">
+                                    <div className="card-body d-flex flex-column justify-content-between">
                                         <h5 className="card-title">Trips</h5>
-                                        <p className="card-text">
-                                            <b>{totalTripCount}</b> total trip
-                                            {totalTripCount !== 1 && "s"}
-                                        </p>
-                                        {/* <p className="card-text">
+                                        <div>
+                                            <p className="card-text">
+                                                <b>{totalTripCount}</b> total
+                                                trip
+                                                {totalTripCount !== 1 && "s"}
+                                            </p>
+                                            {/* <p className="card-text">
                                             <b>{yearTripCount}</b> trip{yearTripCount !== 1 && "s"} this
                                             year
                                         </p> */}
-                                        <p className="card-text">
-                                            <b>{monthTripCount}</b> trip
-                                            {monthTripCount !== 1 && "s"} this
-                                            month
-                                        </p>
-                                        <p className="card-text">
-                                            <b>{dayTripCount}</b> trip
-                                            {dayTripCount !== 1 && "s"} today
-                                        </p>
+                                            <p className="card-text">
+                                                <b>{monthTripCount}</b> trip
+                                                {monthTripCount !== 1 &&
+                                                    "s"}{" "}
+                                                this month
+                                            </p>
+                                            <p className="card-text">
+                                                <b>{dayTripCount}</b> trip
+                                                {dayTripCount !== 1 && "s"}{" "}
+                                                today
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col">
                                 <div className="card">
-                                    <div className="card-body">
+                                    <div className="card-body d-flex flex-column justify-content-between">
                                         <h5 className="card-title">Mileage</h5>
-                                        <p className="card-text">
-                                            <b>{totalMileage}</b> total mile
-                                            {totalMileage !== 1 && "s"}
-                                        </p>
-                                        <p className="card-text">
-                                            <b>{monthMileage}</b> mile
-                                            {monthTripCount !== 1 && "s"} this
-                                            month
-                                        </p>
-                                        <p className="card-text">
-                                            <b>{dayMileage}</b> mile
-                                            {dayMileage !== 1 && "s"} today
-                                        </p>
+                                        <div>
+                                            <p className="card-text">
+                                                <b>{totalMileage}</b> total mile
+                                                {totalMileage !== 1 && "s"}
+                                            </p>
+                                            <p className="card-text">
+                                                <b>{monthMileage}</b> mile
+                                                {monthTripCount !== 1 &&
+                                                    "s"}{" "}
+                                                this month
+                                            </p>
+                                            <p className="card-text">
+                                                <b>{dayMileage}</b> mile
+                                                {dayMileage !== 1 && "s"} today
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col">
-                                <p>
-                                    Most popular vehicle:{" "}
-                                    {mostPopularVehicleNumber} with{" "}
-                                    {popularVehicleTrips} trips all time
-                                </p>
+                                <div className="card">
+                                    <img
+                                        className="card-img-top"
+                                        src={mostPopularVehicleObj.pictureUrl}
+                                        alt={
+                                            "Image of " +
+                                            mostPopularVehicleNumber
+                                        }
+                                    />
+                                    <div className="card-body d-flex flex-column justify-content-between">
+                                        <h5 className="card-title">
+                                            Most popular vehicle
+                                        </h5>
+                                        <div>
+                                            <p className="card-text">
+                                                <b>
+                                                    {mostPopularVehicleNumber}
+                                                </b>
+                                            </p>
+                                            <p className="card-text">
+                                                <b>{popularVehicleTrips}</b>{" "}
+                                                total trip
+                                                {popularVehicleTrips !== 1 &&
+                                                    "s"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col">
-                                <p>
-                                    Most popular destination:{" "}
-                                    {mostPopularDestination} with{" "}
-                                    {popularDestinationTrips} trips all time
-                                </p>
+                                <div className="card">
+                                    <div className="card-body d-flex flex-column justify-content-between">
+                                        <h5 className="card-title">
+                                            Most popular destination
+                                        </h5>
+                                        <div>
+                                            <p className="card-text">
+                                                <b>{mostPopularDestination}</b>
+                                            </p>
+                                            <p className="card-text">
+                                                <b>{popularDestinationTrips}</b>{" "}
+                                                total trip
+                                                {popularDestinationTrips !==
+                                                    1 && "s"}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -292,4 +350,22 @@ export default function DashboardPage() {
             </div>
         </div>
     );
+
+    // avoids a GET for this vehicle
+    function findVehicleObjInVehicleArrayFromVehicleNumber(
+        vehicleArray,
+        vehicleNumber
+    ) {
+        for (const vehicle of vehicleArray) {
+            // console.log(
+            //     typeof vehicle.vehicleNumber + ", " + typeof vehicleNumber
+            // );
+            // the above comment tells a story
+            if (vehicle.vehicleNumber === Number(vehicleNumber)) {
+                return vehicle;
+            }
+        }
+
+        return {};
+    }
 }

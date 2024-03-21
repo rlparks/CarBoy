@@ -213,13 +213,15 @@ export default function DashboardPage() {
                                         <h5 className="card-title">Vehicles</h5>
                                         <div>
                                             <p className="card-text">
-                                                <b>{vehicles.length}</b> total
-                                                vehicle
+                                                <b>
+                                                    {vehicles.length.toLocaleString()}
+                                                </b>{" "}
+                                                total vehicle
                                                 {vehicles.length !== 1 && "s"}
                                             </p>
                                             <p className="card-text">
                                                 <b>
-                                                    {availableVehicles.length}
+                                                    {availableVehicles.length.toLocaleString()}
                                                 </b>{" "}
                                                 available vehicle
                                                 {availableVehicles.length !==
@@ -227,7 +229,7 @@ export default function DashboardPage() {
                                             </p>
                                             <p className="card-text">
                                                 <b>
-                                                    {checkedOutVehicles.length}
+                                                    {checkedOutVehicles.length.toLocaleString()}
                                                 </b>{" "}
                                                 checked out vehicle
                                                 {checkedOutVehicles.length !==
@@ -243,8 +245,10 @@ export default function DashboardPage() {
                                         <h5 className="card-title">Trips</h5>
                                         <div>
                                             <p className="card-text">
-                                                <b>{totalTripCount}</b> total
-                                                trip
+                                                <b>
+                                                    {totalTripCount.toLocaleString()}
+                                                </b>{" "}
+                                                total trip
                                                 {totalTripCount !== 1 && "s"}
                                             </p>
                                             {/* <p className="card-text">
@@ -252,13 +256,19 @@ export default function DashboardPage() {
                                             year
                                         </p> */}
                                             <p className="card-text">
-                                                <b>{monthTripCount}</b> trip
+                                                <b>
+                                                    {monthTripCount.toLocaleString()}
+                                                </b>{" "}
+                                                trip
                                                 {monthTripCount !== 1 &&
                                                     "s"}{" "}
                                                 this month
                                             </p>
                                             <p className="card-text">
-                                                <b>{dayTripCount}</b> trip
+                                                <b>
+                                                    {dayTripCount.toLocaleString()}
+                                                </b>{" "}
+                                                trip
                                                 {dayTripCount !== 1 && "s"}{" "}
                                                 today
                                             </p>
@@ -272,17 +282,26 @@ export default function DashboardPage() {
                                         <h5 className="card-title">Mileage</h5>
                                         <div>
                                             <p className="card-text">
-                                                <b>{totalMileage}</b> total mile
+                                                <b>
+                                                    {totalMileage.toLocaleString()}
+                                                </b>{" "}
+                                                total mile
                                                 {totalMileage !== 1 && "s"}
                                             </p>
                                             <p className="card-text">
-                                                <b>{monthMileage}</b> mile
+                                                <b>
+                                                    {monthMileage.toLocaleString()}
+                                                </b>{" "}
+                                                mile
                                                 {monthTripCount !== 1 &&
                                                     "s"}{" "}
                                                 this month
                                             </p>
                                             <p className="card-text">
-                                                <b>{dayMileage}</b> mile
+                                                <b>
+                                                    {dayMileage.toLocaleString()}
+                                                </b>{" "}
+                                                mile
                                                 {dayMileage !== 1 && "s"} today
                                             </p>
                                         </div>
@@ -310,7 +329,9 @@ export default function DashboardPage() {
                                                 </b>
                                             </p>
                                             <p className="card-text">
-                                                <b>{popularVehicleTrips}</b>{" "}
+                                                <b>
+                                                    {popularVehicleTrips.toLocaleString()}
+                                                </b>{" "}
                                                 total trip
                                                 {popularVehicleTrips !== 1 &&
                                                     "s"}
@@ -330,7 +351,9 @@ export default function DashboardPage() {
                                                 <b>{mostPopularDestination}</b>
                                             </p>
                                             <p className="card-text">
-                                                <b>{popularDestinationTrips}</b>{" "}
+                                                <b>
+                                                    {popularDestinationTrips.toLocaleString()}
+                                                </b>{" "}
                                                 total trip
                                                 {popularDestinationTrips !==
                                                     1 && "s"}

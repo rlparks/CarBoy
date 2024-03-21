@@ -346,7 +346,16 @@ export default function App() {
                                 </RequireAdmin>
                             }
                         />
-                        <Route path="/dashboard" element={<DashboardPage />} />
+                        <Route
+                            path="/dashboard"
+                            element={
+                                userData.user ? (
+                                    <DashboardPage />
+                                ) : (
+                                    <ErrorPage type={401} />
+                                )
+                            }
+                        />
                         <Route path="/success" element={<SuccessPage />} />
                         <Route
                             path="/success/:redirectUrl"

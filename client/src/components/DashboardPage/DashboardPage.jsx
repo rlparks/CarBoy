@@ -177,9 +177,7 @@ export default function DashboardPage() {
             <div className="d-flex justify-content-center mb-3">
                 <div className="w-75">
                     <div>
-                        <h2 className="text-center mb-3">
-                            In Use: {checkedOutVehicles.length}
-                        </h2>
+                        <h2 className="text-center mb-3">In Use</h2>
                         {checkedOutVehicles.length > 0 ? (
                             <div
                                 className={
@@ -190,10 +188,7 @@ export default function DashboardPage() {
                             >
                                 {checkedOutVehicles.map((vehicle) => (
                                     <div className="col" key={vehicle._id}>
-                                        <VehicleCard
-                                            vehicle={vehicle}
-                                            mode="dashboard"
-                                        />
+                                        <VehicleCard vehicle={vehicle} />
                                     </div>
                                 ))}
                             </div>
@@ -306,7 +301,7 @@ export default function DashboardPage() {
                                     />
                                     <div className="card-body d-flex flex-column justify-content-between">
                                         <h5 className="card-title">
-                                            Most popular vehicle
+                                            Most Popular Vehicle
                                         </h5>
                                         <div>
                                             <p className="card-text">
@@ -328,7 +323,7 @@ export default function DashboardPage() {
                                 <div className="card">
                                     <div className="card-body d-flex flex-column justify-content-between">
                                         <h5 className="card-title">
-                                            Most popular destination
+                                            Most Popular Destination
                                         </h5>
                                         <div>
                                             <p className="card-text">

@@ -94,15 +94,15 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                 >
                                     Trips
                                 </Nav.Link>
+                                <Nav.Link
+                                    as={NavLink}
+                                    to="/dashboard"
+                                    onClick={() => handleClick("/dashboard")}
+                                >
+                                    Dashboard
+                                </Nav.Link>
                             </>
                         )}
-                        <Nav.Link
-                            as={NavLink}
-                            to="/dashboard"
-                            onClick={() => handleClick("/dashboard")}
-                        >
-                            Dashboard
-                        </Nav.Link>
                         {/* <div className="vr" /> */}
                         {isAdmin && (
                             <>

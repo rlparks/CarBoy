@@ -8,11 +8,7 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
     const [currentUser, setCurrentUser] = useState({ fullName: "" });
 
     useState(() => {
-        if (
-            userData.user &&
-            vehicle.currentUserId != null &&
-            mode !== "dashboard"
-        ) {
+        if (userData.user && vehicle.currentUserId != null) {
             getUser(vehicle.currentUserId, userData.token)
                 .then((user) => {
                     // console.log(user);
@@ -52,7 +48,7 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
                     {mode === "trips" && <TripButtons vehicle={vehicle} />}
                 </div>
             </div>
-            {!userData.user && mode !== "dashboard" && (
+            {!userData.user && (
                 <Link to="/login" className="card-footer text-body-secondary">
                     Login to use
                 </Link>
@@ -61,8 +57,7 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
             {userData.user &&
                 vehicle.checkedOut &&
                 currentUser &&
-                currentUser.fullName &&
-                mode !== "dashboard" && (
+                currentUser.fullName && (
                     <div className="card-footer text-body-secondary">
                         {currentUser.fullName
                             ? currentUser.fullName

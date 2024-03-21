@@ -176,7 +176,7 @@ export default function DashboardPage() {
         <div>
             <div className="d-flex justify-content-center mb-3">
                 <div className="w-75">
-                    <div>
+                    <div className="mb-1">
                         <h2 className="text-center mb-3">In Use</h2>
                         {checkedOutVehicles.length > 0 ? (
                             <div

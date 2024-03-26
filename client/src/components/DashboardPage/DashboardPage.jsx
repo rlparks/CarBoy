@@ -31,26 +31,37 @@ export default function DashboardPage() {
     const [mostPopularDestination, setMostPopularDestination] = useState("");
     const [popularDestinationTrips, setPopularDestinationTrips] = useState("");
 
+    const refreshSeconds = 5;
+    const [numRefreshes, setNumRefreshes] = useState(0);
+
     useEffect(() => {
         document.title = "CarBoy · Dashboard";
+
+        // console.log("GET DATA");
         axios.get(SERVER_URL + "api/vehicles/").then((result) => {
             const sortedVehicles = result.data.sort(sortVehicles);
-            setVehicles(sortedVehicles);
+            if (vehicles !== sortedVehicles) {
+                setVehicles(sortedVehicles);
 
-            setAvailableVehicles(
-                sortedVehicles.filter(
-                    (vehicle) => !vehicle.checkedOut && !vehicle.disabled
-                )
-            );
-            setCheckedOutVehicles(
-                sortedVehicles.filter(
-                    (vehicle) => vehicle.checkedOut && !vehicle.disabled
-                )
-            );
+                setAvailableVehicles(
+                    sortedVehicles.filter(
+                        (vehicle) => !vehicle.checkedOut && !vehicle.disabled
+                    )
+                );
+                setCheckedOutVehicles(
+                    sortedVehicles.filter(
+                        (vehicle) => vehicle.checkedOut && !vehicle.disabled
+                    )
+                );
 
-            tripLogic(sortedVehicles);
+                tripLogic(sortedVehicles);
+                setTimeout(
+                    () => setNumRefreshes((prev) => prev + 1),
+                    refreshSeconds * 1000
+                );
+            }
         });
-    }, []);
+    }, [numRefreshes]);
 
     function tripLogic(vehicleArr) {
         let megaTripsArray = [];

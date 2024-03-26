@@ -59,6 +59,11 @@ export default function DashboardPage() {
                     () => setNumRefreshes((prev) => prev + 1),
                     refreshSeconds * 1000
                 );
+
+                if (numRefreshes >= 999) {
+                    // can't have any overflow, can we?
+                    setNumRefreshes(0);
+                }
             }
         });
     }, [numRefreshes]);
@@ -221,7 +226,7 @@ export default function DashboardPage() {
                             }
                         >
                             <div className="col">
-                                <div className="card">
+                                <div className="card h-100">
                                     <div className="card-body d-flex flex-column justify-content-between">
                                         <h5 className="card-title">
                                             <svg
@@ -265,7 +270,7 @@ export default function DashboardPage() {
                                 </div>
                             </div>
                             <div className="col">
-                                <div className="card">
+                                <div className="card h-100">
                                     <div className="card-body d-flex flex-column justify-content-between">
                                         <h5 className="card-title">
                                             <svg
@@ -314,7 +319,7 @@ export default function DashboardPage() {
                                 </div>
                             </div>
                             <div className="col">
-                                <div className="card">
+                                <div className="card h-100">
                                     <div className="card-body d-flex flex-column justify-content-between">
                                         <h5 className="card-title">
                                             <svg
@@ -358,7 +363,7 @@ export default function DashboardPage() {
                                 </div>
                             </div>
                             <div className="col">
-                                <div className="card">
+                                <div className="card h-100">
                                     {/* <img
                                         className="card-img-top"
                                         src={mostPopularVehicleObj.pictureUrl}
@@ -405,7 +410,7 @@ export default function DashboardPage() {
                                 </div>
                             </div>
                             <div className="col">
-                                <div className="card">
+                                <div className="card h-100">
                                     <div className="card-body d-flex flex-column justify-content-between">
                                         <h5 className="card-title">
                                             <svg
@@ -420,19 +425,19 @@ export default function DashboardPage() {
                                             </svg>
                                             Favorite Destination
                                         </h5>
-                                        <div>
-                                            <p className="card-text">
-                                                <b>{mostPopularDestination}</b>
-                                            </p>
-                                            <p className="card-text">
-                                                <b>
-                                                    {popularDestinationTrips.toLocaleString()}
-                                                </b>{" "}
-                                                total trip
-                                                {popularDestinationTrips !==
-                                                    1 && "s"}
-                                            </p>
-                                        </div>
+                                        {/* <div> */}
+                                        <p className="card-text">
+                                            <b>{mostPopularDestination}</b>
+                                        </p>
+                                        <p className="card-text">
+                                            <b>
+                                                {popularDestinationTrips.toLocaleString()}
+                                            </b>{" "}
+                                            total trip
+                                            {popularDestinationTrips !== 1 &&
+                                                "s"}
+                                        </p>
+                                        {/* </div> */}
                                     </div>
                                 </div>
                             </div>

@@ -37,7 +37,7 @@ if (process.env.CREATE_DEFAULT_ADMIN) {
     createDefaultAdmin();
 }
 
-userRouter.post("/login", async (req, res) => {
+userRouter.post("/", async (req, res) => {
     try {
         const { username, password } = req.body;
         if (!username || !password) {

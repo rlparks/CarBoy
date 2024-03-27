@@ -18,8 +18,9 @@ const conn_str = "mongodb://" + mongoUser + ":" + mongoPass + "@" + mongoUrl;
 mongoose
     .connect(conn_str, { dbName: "carlog" })
     .then(() => {
-        app.listen(port, () => console.log(`Server running on port ${port}`));
         console.log("MongoDB Connection Succeeded");
+
+        app.listen(port, () => console.log(`Server running on port ${port}`));
 
         // for checking if server alive
         app.get("/api", (req, res) =>

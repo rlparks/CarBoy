@@ -36,6 +36,15 @@ export default function App() {
 
     const [loading, setLoading] = useState(true);
 
+    const [userCache, setUserCache] = useState({});
+
+    function addUserToCache(userId, user) {
+        setUserCache((prevUserCache) => {
+            prevUserCache[userId] = user;
+            return prevUserCache;
+        });
+    }
+
     useEffect(() => {
         axios
             .get(SERVER_URL + "api/")
@@ -90,7 +99,12 @@ export default function App() {
     useEffect(() => {
         try {
             if (userData.user) {
-                getUser(userData.user.id, userData.token).then((userObj) => {
+                getUser(
+                    userData.user.id,
+                    userData.token,
+                    userCache,
+                    addUserToCache
+                ).then((userObj) => {
                     if (!userObj.fullName) {
                         userObj.fullName = userObj.username;
                     }
@@ -109,7 +123,9 @@ export default function App() {
     }, [userData]);
 
     return (
-        <UserContext.Provider value={{ userData, setUserData, user }}>
+        <UserContext.Provider
+            value={{ userData, setUserData, user, userCache, addUserToCache }}
+        >
             {serverRunning ? (
                 !loading && <NormalBrowserRouter />
             ) : (

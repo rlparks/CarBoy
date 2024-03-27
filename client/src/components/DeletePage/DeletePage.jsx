@@ -23,23 +23,25 @@ export default function DeletePage({ mode }) {
     const [error, setError] = useState("");
     const [identifier, setIdentifier] = useState("");
     const [item, setItem] = useState({});
-    const { userData } = useContext(UserContext);
+    const { userData, userCache, addUserToCache } = useContext(UserContext);
 
     useEffect(() => {
         if (itemId) {
             document.title =
                 "CarBoy · Delete " + mode[0].toUpperCase() + mode.slice(1);
             if (mode === "user") {
-                getUser(itemId, userData.token).then((user) => {
-                    if (user) {
-                        if (!user.fullName) {
-                            user.fullName = user.username;
-                        }
+                getUser(itemId, userData.token, userCache, addUserToCache).then(
+                    (user) => {
+                        if (user) {
+                            if (!user.fullName) {
+                                user.fullName = user.username;
+                            }
 
-                        setIdentifier(user.fullName);
+                            setIdentifier(user.fullName);
+                        }
+                        setItem(user);
                     }
-                    setItem(user);
-                });
+                );
             } else if (mode === "vehicle") {
                 getVehicleDetails(itemId, userData.token).then((vehicle) => {
                     setItem(vehicle);

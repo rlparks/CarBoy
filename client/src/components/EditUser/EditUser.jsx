@@ -20,7 +20,7 @@ export default function EditUser({ mode }) {
     const [newPassword, setNewPassword] = useState("");
     const [newConfirmPassword, setNewConfirmPassword] = useState("");
     const [image, setImage] = useState();
-    const { userData } = useContext(UserContext);
+    const { userData, userCache, addUserToCache } = useContext(UserContext);
 
     const params = useParams();
     useEffect(() => {
@@ -32,21 +32,23 @@ export default function EditUser({ mode }) {
             userId = userData.user.id;
         }
 
-        getUser(userId, userData.token).then((user) => {
-            if (user) {
-                document.title = "CarBoy · Edit User · " + user.username;
-                if (!user.fullName) {
-                    user.fullName = "";
+        getUser(userId, userData.token, userCache, addUserToCache).then(
+            (user) => {
+                if (user) {
+                    document.title = "CarBoy · Edit User · " + user.username;
+                    if (!user.fullName) {
+                        user.fullName = "";
+                    }
+                    // avoid uncontrolled state when user doesn't have this field
+                    if (!user.hasOwnProperty("disabled")) {
+                        user.disabled = false;
+                    }
+                    setUser(user);
+                } else {
+                    setUserExists(false);
                 }
-                // avoid uncontrolled state when user doesn't have this field
-                if (!user.hasOwnProperty("disabled")) {
-                    user.disabled = false;
-                }
-                setUser(user);
-            } else {
-                setUserExists(false);
             }
-        });
+        );
     }, []);
 
     function usernameChangeHandler(event) {

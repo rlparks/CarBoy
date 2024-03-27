@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 import {
     downloadCSVFileFromJSON,
     filterTripsByYYYYdashMMdashDD,
-    getDateTimeFormat,
-    getUser,
     getVehicleDetails,
     makeHumanReadable,
 } from "../../assets/helpers";
@@ -29,7 +27,7 @@ export default function TripsPage() {
     });
     const [trips, setTrips] = useState([]);
     const [filteredTrips, setFilteredTrips] = useState("");
-    const { userData } = useContext(UserContext);
+    const { userData, userCache, addUserToCache } = useContext(UserContext);
 
     const [startFilter, setStartFilter] = useState("");
     const [endFilter, setEndFilter] = useState("");
@@ -89,7 +87,12 @@ export default function TripsPage() {
     }
 
     async function exportTrips(tripsArray) {
-        await makeHumanReadable(tripsArray, userData.token);
+        await makeHumanReadable(
+            tripsArray,
+            userData.token,
+            userCache,
+            addUserToCache
+        );
 
         const tripsString = JSON.stringify(tripsArray);
         const now = new Date(Date.now()).toISOString();

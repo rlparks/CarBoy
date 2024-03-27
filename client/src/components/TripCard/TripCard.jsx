@@ -7,7 +7,7 @@ export default function TripCard({ trip }) {
         fullName: "Error retrieving user",
     });
     const [employeeIn, setEmployeeIn] = useState("");
-    const { userData } = useContext(UserContext);
+    const { userData, userCache, addUserToCache } = useContext(UserContext);
 
     useState(() => {
         if (trip.employee[0] != null) {
@@ -15,13 +15,21 @@ export default function TripCard({ trip }) {
                 ? trip.employee[0] !== trip.employee[1]
                 : false;
 
-            getUser(trip.employee[0], userData.token).then((empOut) => {
+            getUser(
+                trip.employee[0],
+                userData.token,
+                userCache,
+                addUserToCache
+            ).then((empOut) => {
                 setEmployeeOut(empOut);
 
                 if (differentOutIn) {
-                    getUser(trip.employee[1], userData.token).then((empIn) =>
-                        setEmployeeIn(empIn)
-                    );
+                    getUser(
+                        trip.employee[1],
+                        userData.token,
+                        userCache,
+                        addUserToCache
+                    ).then((empIn) => setEmployeeIn(empIn));
                 } else {
                     setEmployeeIn(empOut);
                 }

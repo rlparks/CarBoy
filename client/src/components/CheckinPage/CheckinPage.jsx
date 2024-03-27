@@ -11,7 +11,7 @@ import ErrorPage from "../ErrorPage/ErrorPage";
 
 export default function CheckinPage() {
     const params = useParams();
-    const { userData } = useContext(UserContext);
+    const { userData, userCache, addUserToCache } = useContext(UserContext);
     const vehicleNumber = params.vehicleNumber;
     const [vehicle, setVehicle] = useState({});
     const [currentTrip, setCurrentTrip] = useState({});
@@ -83,7 +83,12 @@ export default function CheckinPage() {
         if (currentTrip) {
             // console.log(currentTrip);
             if (currentTrip.employee && currentTrip.employee[0]) {
-                getUser(currentTrip.employee[0], userData.token)
+                getUser(
+                    currentTrip.employee[0],
+                    userData.token,
+                    userCache,
+                    addUserToCache
+                )
                     .then((employeeObj) => {
                         setCurrentTripEmployeeUser(employeeObj);
                     })

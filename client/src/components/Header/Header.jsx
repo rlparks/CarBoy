@@ -2,7 +2,6 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Title from "../Title/Title";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/UserContext";
-import { getUser } from "../../assets/helpers";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";

@@ -15,7 +15,19 @@ export async function getVehicleDetails(vehicleNumber, token) {
     }
 }
 
-export async function getUser(userId, token) {
+// userCache is an object that stores all known users
+// {<userId1>: {userObj1}, <userId2>: {userObj2}}
+export async function getUser(userId, token, userCache = {}, addUserToCache) {
+    // console.log("getUser: ", userCache);
+    const userFromCache = userCache[userId];
+
+    // if we know user already, no need to continue with API call
+    if (userFromCache) {
+        // console.log("Cache hit!");
+        return userFromCache;
+    }
+
+    // if this is reached, the user is not in the cache
     try {
         const userDetails = await axios.get(
             SERVER_URL + "api/users/" + userId,
@@ -29,10 +41,18 @@ export async function getUser(userId, token) {
                 fullName: "Unknown User",
             };
         }
+
+        // save to cache
+        if (addUserToCache) {
+            addUserToCache(userId, userDetails.data);
+        } else {
+            console.log("No addUserToCache");
+        }
+
         return userDetails.data;
     } catch (err) {
         // console.log(userId);
-        // console.log(err);
+        console.log(err);
         return null;
     }
 }
@@ -144,7 +164,12 @@ export function sortUsers(a, b) {
 }
 
 // mutates array
-export async function makeHumanReadable(tripsArray, token) {
+export async function makeHumanReadable(
+    tripsArray,
+    token,
+    userCache,
+    addUserToCache
+) {
     for (let trip of tripsArray) {
         delete trip._id;
         trip.startTime = getDateTimeFormat().format(new Date(trip.startTime));
@@ -162,10 +187,20 @@ export async function makeHumanReadable(tripsArray, token) {
             ? trip.employee[0] !== trip.employee[1]
             : false;
 
-        trip.employee[0] = await getUser(trip.employee[0], token);
+        trip.employee[0] = await getUser(
+            trip.employee[0],
+            token,
+            userCache,
+            addUserToCache
+        );
 
         if (differentOutIn) {
-            trip.employee[1] = await getUser(trip.employee[1], token);
+            trip.employee[1] = await getUser(
+                trip.employee[1],
+                token,
+                userCache,
+                addUserToCache
+            );
         } else if (trip.employee[1]) {
             trip.employee[1] = trip.employee[0];
         }

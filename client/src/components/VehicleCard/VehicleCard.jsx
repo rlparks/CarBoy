@@ -4,12 +4,18 @@ import { useContext, useState } from "react";
 import { getUser } from "../../assets/helpers";
 
 export default function VehicleCard({ vehicle, isAdmin, mode }) {
-    const { userData } = useContext(UserContext);
+    const { userData, userCache, addUserToCache } = useContext(UserContext);
     const [currentUser, setCurrentUser] = useState({ fullName: "" });
 
     useState(() => {
         if (userData.user && vehicle.currentUserId != null) {
-            getUser(vehicle.currentUserId, userData.token)
+            // console.log(userCache);
+            getUser(
+                vehicle.currentUserId,
+                userData.token,
+                userCache,
+                addUserToCache
+            )
                 .then((user) => {
                     // console.log(user);
                     setCurrentUser(user);

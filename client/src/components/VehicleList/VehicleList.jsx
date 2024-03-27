@@ -8,7 +8,6 @@ import {
     makeHumanReadable,
     readJSONFromFile,
     sortVehicles,
-    getUser,
 } from "../../assets/helpers";
 import UserContext from "../../context/UserContext";
 import VehicleSubList from "../VehicleSubList/VehicleSubList";
@@ -22,7 +21,7 @@ export default function VehicleList({ isAdmin, mode }) {
     const [disabledVehicles, setDisabledVehicles] = useState([]);
     const [departments, setDepartments] = useState([]);
     const [error, setError] = useState("");
-    const { userData } = useContext(UserContext);
+    const { userData, userCache, addUserToCache } = useContext(UserContext);
     const [megaExportText, setMegaExportText] = useState("Export CSV");
 
     const refreshVehicles = async () => {
@@ -115,17 +114,12 @@ export default function VehicleList({ isAdmin, mode }) {
             megaTripsArray = megaTripsArray.concat(vehicle.trips);
         }
         const tempTrips = structuredClone(megaTripsArray);
-        // not needed since was moved to makeHumanReadable with proxy trips
-        // for (let trip of tempTrips) {
-        //     trip.employee[0] = await getUser(trip.employee[0], userData.token);
-        //     if (trip.employee[1]) {
-        //         trip.employee[1] = await getUser(
-        //             trip.employee[1],
-        //             userData.token
-        //         );
-        //     }
-        // }
-        await makeHumanReadable(tempTrips, userData.token);
+        await makeHumanReadable(
+            tempTrips,
+            userData.token,
+            userCache,
+            addUserToCache
+        );
 
         setMegaExportText("Export CSV");
         const now = new Date(Date.now()).toISOString();
@@ -194,6 +188,8 @@ export default function VehicleList({ isAdmin, mode }) {
                             >
                                 {checkedOutVehicles.map((vehicle) => (
                                     <div className="col" key={vehicle._id}>
+                                        {/* this will probably cause a bunch of GET requests on initial
+                                        load, even if it's all the same user due to cache not updating in time */}
                                         <VehicleCard
                                             isAdmin={isAdmin}
                                             vehicle={vehicle}

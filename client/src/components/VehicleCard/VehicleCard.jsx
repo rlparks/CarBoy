@@ -6,6 +6,7 @@ import { getUser } from "../../assets/helpers";
 export default function VehicleCard({ vehicle, isAdmin, mode }) {
     const { userData, userCache, addUserToCache } = useContext(UserContext);
     const [currentUser, setCurrentUser] = useState({ fullName: "" });
+    const [currentDestination, setCurrentDestination] = useState("");
 
     useState(() => {
         if (userData.user && vehicle.currentUserId != null) {
@@ -24,6 +25,9 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
                     console.log(err);
                     setCurrentUser({ fullName: "Unknown User" });
                 });
+
+            const currentTrip = vehicle.trips[vehicle.trips.length - 1];
+            setCurrentDestination(currentTrip.destination);
         }
     }, [userData]);
 
@@ -60,6 +64,14 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
                 </Link>
             )}
 
+            {/* display current destination if vehicle is checked out */}
+            {userData.user && vehicle.checkedOut && currentDestination && (
+                <div className="card-footer text-body-secondary text-truncate">
+                    {currentDestination}
+                </div>
+            )}
+
+            {/* display current employee responsible if vehicle is checked out */}
             {userData.user &&
                 vehicle.checkedOut &&
                 currentUser &&

@@ -161,14 +161,14 @@ router.put(
             // can't have that!
 
             const admins = await User.find({ admin: true });
-            console.log(admins);
+            // console.log(admins);
             if (
                 admins.length === 1 &&
                 admins[0]._id.toString() === req.body._id
             ) {
                 // trying to revoke last admin
                 res.status(400).json({
-                    error: "Error: Cannot revoke admin status of final admin",
+                    error: "Error: Cannot revoke admin status of final admin.",
                 });
                 return;
             }

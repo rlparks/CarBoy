@@ -118,11 +118,9 @@ router.put("/", auth, upload.single("image"), resizeImage, async (req, res) => {
             }
 
             if (req.body.newPassword.length < 6) {
-                return res
-                    .status(400)
-                    .json({
-                        error: "Password should be at least 6 characters",
-                    });
+                return res.status(400).json({
+                    error: "Password should be at least 6 characters",
+                });
             }
             const passwordHash = await bcryptjs.hash(req.body.newPassword, 8);
             userObj.password = passwordHash;
@@ -154,17 +152,19 @@ router.put(
             req.body.password = passwordHash;
         }
 
-        // console.log(req.body);
-        if (!req.body.admin) {
+        // console.log(typeof req.body.admin);
+        // for some reason, using multipart/form-data
+        // converts HTML form checkbox values to string
+        if (req.body.admin === "false") {
             // edit user submitted with admin == false
             // potential of un-admining the last one
             // can't have that!
 
             const admins = await User.find({ admin: true });
+            console.log(admins);
             if (
                 admins.length === 1 &&
-                admins[0]._id.toString() === req.body._id &&
-                !req.body.admin
+                admins[0]._id.toString() === req.body._id
             ) {
                 // trying to revoke last admin
                 res.status(400).json({

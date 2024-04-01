@@ -9,6 +9,7 @@ import Title from "../Title/Title";
 
 export default function DashboardPage() {
     const [vehicles, setVehicles] = useState([]);
+    const [nonDisabledVehicles, setNonDisabledVehicles] = useState([]);
     const [availableVehicles, setAvailableVehicles] = useState([]);
     const [checkedOutVehicles, setCheckedOutVehicles] = useState([]);
     const numColumns = 5;
@@ -42,6 +43,10 @@ export default function DashboardPage() {
             const sortedVehicles = result.data.sort(sortVehicles);
             if (vehicles !== sortedVehicles) {
                 setVehicles(sortedVehicles);
+
+                setNonDisabledVehicles(
+                    sortedVehicles.filter((vehicle) => !vehicle.disabled)
+                );
 
                 setAvailableVehicles(
                     sortedVehicles.filter(
@@ -244,10 +249,11 @@ export default function DashboardPage() {
                                         <div>
                                             <p className="card-text">
                                                 <b>
-                                                    {vehicles.length.toLocaleString()}
+                                                    {nonDisabledVehicles.length.toLocaleString()}
                                                 </b>{" "}
                                                 total vehicle
-                                                {vehicles.length !== 1 && "s"}
+                                                {nonDisabledVehicles.length !==
+                                                    1 && "s"}
                                             </p>
                                             <p className="card-text">
                                                 <b>

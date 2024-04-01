@@ -17,6 +17,8 @@ export default function CheckoutPage() {
     const [destination, setDestination] = useState("");
     const [name, setName] = useState("");
 
+    const [preexistingError, setPreexistingError] = useState("");
+
     function destinationChangeHander(event) {
         setDestination(event.target.value);
     }
@@ -44,6 +46,12 @@ export default function CheckoutPage() {
 
     useEffect(() => {
         getVehicleDetails(vehicleNumber, userData.token).then((vehicle) => {
+            if (vehicle.disabled) {
+                setPreexistingError("Error: Vehicle is disabled.");
+            } else if (vehicle.checkedOut) {
+                setPreexistingError("Error: Vehicle is already checked out.");
+            }
+
             setVehicle(vehicle);
             document.title = "CarBoy · Check Out · " + vehicle.vehicleNumber;
         });
@@ -93,9 +101,9 @@ export default function CheckoutPage() {
                             />
                         </div>
                         <div className="col">
-                            {vehicle.checkedOut ? (
-                                <p className="text-center">
-                                    Error: Vehicle is already checked out.
+                            {preexistingError ? (
+                                <p className="text-center text-danger">
+                                    {preexistingError}
                                 </p>
                             ) : (
                                 <form onSubmit={submitHandler}>

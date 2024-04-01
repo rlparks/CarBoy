@@ -5,10 +5,15 @@ const router = express.Router();
 const Vehicle = require("../../models/Vehicle").model;
 
 router.post("/:vehicleNumber", auth, (req, res) => {
-    console.log("CHECK IN: " + req.params.vehicleNumber);
     // console.log(req.body);
     Vehicle.findOne({ vehicleNumber: req.params.vehicleNumber })
         .then((vehicle) => {
+            if (vehicle.disabled) {
+                return res
+                    .status(400)
+                    .json({ error: "Error: Vehicle is disabled." });
+            }
+
             if (!vehicle.checkedOut) {
                 // checkin POST sent to already checked in vehicle
                 res.status(400).json({
@@ -42,6 +47,7 @@ router.post("/:vehicleNumber", auth, (req, res) => {
                 // console.log(tripsArray);
                 vehicle.trips = tripsArray;
 
+                console.log("CHECK IN: " + req.params.vehicleNumber);
                 vehicle
                     .save()
                     .then((item) =>

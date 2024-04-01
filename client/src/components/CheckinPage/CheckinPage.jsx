@@ -22,6 +22,7 @@ export default function CheckinPage() {
         username: null,
     });
     const navigate = useNavigate();
+    const [preexistingError, setPreexistingError] = useState("");
 
     const [endMileage, setEndMileage] = useState("");
     function endingMileageChangeHandler(event) {
@@ -66,8 +67,15 @@ export default function CheckinPage() {
 
     useEffect(() => {
         getVehicleDetails(vehicleNumber, userData.token).then((vehicle) => {
-            setVehicle(vehicle);
             if (vehicle) {
+                if (vehicle.disabled) {
+                    setPreexistingError("Error: Vehicle is disabled.");
+                } else if (!vehicle.checkedOut) {
+                    setPreexistingError(
+                        "Error: Vehicle is already checked in."
+                    );
+                }
+
                 if (vehicle.trips) {
                     setCurrentTrip(vehicle.trips[vehicle.trips.length - 1]);
                     document.title =
@@ -75,6 +83,8 @@ export default function CheckinPage() {
                 } else {
                     alert("Error: vehicle has no trips.");
                 }
+
+                setVehicle(vehicle);
             }
         });
     }, []);
@@ -117,9 +127,9 @@ export default function CheckinPage() {
                             />
                         </div>
                         <div className="col">
-                            {!vehicle.checkedOut ? (
-                                <p className="text-center">
-                                    Error: Vehicle is already checked in.
+                            {preexistingError ? (
+                                <p className="text-center text-danger">
+                                    {preexistingError}
                                 </p>
                             ) : (
                                 <CheckinForm />
@@ -134,8 +144,11 @@ export default function CheckinPage() {
     );
 
     function CheckinForm() {
-        let startTime = new Date(currentTrip.startTime);
-        startTime = getDateTimeFormat().format(startTime);
+        let startTime = "";
+        if (currentTrip.startTime) {
+            startTime = new Date(currentTrip.startTime);
+            startTime = getDateTimeFormat().format(startTime);
+        }
 
         return (
             <form onSubmit={submitHandler}>

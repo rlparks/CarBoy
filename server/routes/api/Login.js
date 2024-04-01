@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
 const isAdmin = require("../../middleware/isAdmin");
+const rateLimit = require("../../middleware/rateLimit");
 
 if (process.env.CREATE_DEFAULT_ADMIN) {
     async function createDefaultAdmin() {
@@ -37,7 +38,8 @@ if (process.env.CREATE_DEFAULT_ADMIN) {
     createDefaultAdmin();
 }
 
-userRouter.post("/", async (req, res) => {
+userRouter.post("/", rateLimit, async (req, res) => {
+    console.log(req.headers["x-forwarded-for"]);
     try {
         const { username, password } = req.body;
         if (!username || !password) {
@@ -49,18 +51,18 @@ userRouter.post("/", async (req, res) => {
         // return same error message as to not give any info
         if (!user) {
             console.log("LOGIN FAILURE (NO USER): " + username);
-            return res.status(400).json({ error: "Invalid credentials." });
+            return res.status(400).json({ error: "Invalid credentials" });
         }
 
         const passwordsMatch = await bcryptjs.compare(password, user.password);
         if (!passwordsMatch) {
             console.log("LOGIN FAILURE (INVALID PASSWORD): " + username);
-            return res.status(400).json({ error: "Invalid credentials." });
+            return res.status(400).json({ error: "Invalid credentials" });
         }
 
         if (user.disabled) {
             console.log("LOGIN FAILURE (ACCOUNT DISABLED): " + username);
-            return res.status(400).json({ error: "Invalid credentials." });
+            return res.status(400).json({ error: "Invalid credentials" });
         }
 
         // TODO

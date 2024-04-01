@@ -8,7 +8,9 @@ app.use(cors());
 app.use(express.json({ extended: false }));
 mongoose.set("sanitizeFilter", true); // protects against bobby
 
-// TODO
+// for rate limiting based on IP
+app.set("trust proxy", 1);
+
 const mongoUser = process.env.MONGO_USER;
 const mongoPass = process.env.MONGO_PASS;
 const mongoUrl = process.env.MONGO_URL;

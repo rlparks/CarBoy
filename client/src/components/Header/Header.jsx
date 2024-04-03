@@ -39,7 +39,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
         }
     });
 
-    if (link.includes("/dashboard")) {
+    if (link.includes("/dashboard") && userData.user) {
         return (
             <div className="d-flex justify-content-center mt-3 mb-1">
                 <Navbar.Brand

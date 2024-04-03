@@ -353,9 +353,8 @@ export default function DashboardPage() {
                                                     {monthMileage.toLocaleString()}
                                                 </b>{" "}
                                                 mile
-                                                {monthTripCount !== 1 &&
-                                                    "s"}{" "}
-                                                this month
+                                                {monthMileage !== 1 && "s"} this
+                                                month
                                             </p>
                                             <p className="card-text">
                                                 <b>

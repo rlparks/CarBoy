@@ -16,7 +16,7 @@
         "@types/react": "^18.2.43",
         "@types/react-dom": "^18.2.17",
         "@vitejs/plugin-react": "^4.2.1",
-        "axios": "^1.6.5",
+        "axios": "^1.6.8",
         "eslint": "^8.55.0",
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0",
@@ -27,6 +27,7 @@
         "react-bootstrap": "^2.10.1",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.21.2",
-        "vite": "^5.0.8"
-    }
+        "vite": "^5.2.8"
+    },
+    "packageManager": "yarn@4.1.1"
 }

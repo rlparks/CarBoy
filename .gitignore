@@ -4,6 +4,7 @@ dist
 dist-ssr
 *.local
 
+
 data
 images
 
@@ -23,3 +24,11 @@ build.sh
 cb-client-img
 cb-server-img
 client/public/SERVER_URL.js
+
+*/.yarn/*
+!*/.yarn/cache
+!*/.yarn/patches
+!*/.yarn/plugins
+!*/.yarn/releases
+!*/.yarn/sdks
+!*/.yarn/versions

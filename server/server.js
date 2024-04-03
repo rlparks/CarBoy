@@ -9,7 +9,9 @@ app.use(express.json({ extended: false }));
 mongoose.set("sanitizeFilter", true); // protects against bobby
 
 // for rate limiting based on IP
-app.set("trust proxy", 1);
+const numProxies = process.env.TRUSTED_PROXIES || 1;
+// console.log(numProxies);
+app.set("trust proxy", Number(numProxies));
 
 const mongoUser = process.env.MONGO_USER;
 const mongoPass = process.env.MONGO_PASS;

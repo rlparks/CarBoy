@@ -39,8 +39,10 @@ if (process.env.CREATE_DEFAULT_ADMIN) {
 }
 
 userRouter.post("/", rateLimit, async (req, res) => {
-    console.log(req.headers["x-forwarded-for"]);
     try {
+        // const xff = req.headers["x-forwarded-for"];
+        // console.log(xff);
+        const reqIP = req.ip;
         const { username, password } = req.body;
         if (!username || !password) {
             return res
@@ -50,24 +52,35 @@ userRouter.post("/", rateLimit, async (req, res) => {
         const user = await User.findOne({ username });
         // return same error message as to not give any info
         if (!user) {
-            console.log("LOGIN FAILURE (NO USER): " + username);
+            console.log(
+                "LOGIN FAILURE - " + reqIP + " - (NO USER): " + username
+            );
             return res.status(400).json({ error: "Invalid credentials" });
         }
 
         const passwordsMatch = await bcryptjs.compare(password, user.password);
         if (!passwordsMatch) {
-            console.log("LOGIN FAILURE (INVALID PASSWORD): " + username);
+            console.log(
+                "LOGIN FAILURE - " +
+                    reqIP +
+                    " - (INVALID PASSWORD): " +
+                    username
+            );
             return res.status(400).json({ error: "Invalid credentials" });
         }
 
         if (user.disabled) {
-            console.log("LOGIN FAILURE (ACCOUNT DISABLED): " + username);
+            console.log(
+                "LOGIN FAILURE - " +
+                    reqIP +
+                    " - (ACCOUNT DISABLED): " +
+                    username
+            );
             return res.status(400).json({ error: "Invalid credentials" });
         }
 
-        // TODO
         const token = jwt.sign({ id: user._id }, process.env.JWT_PRIVATE_KEY);
-        console.log("LOGIN SUCCESS: " + username);
+        console.log("LOGIN SUCCESS - " + reqIP + ": " + username);
         res.json({
             token,
             user: { id: user._id, username: user.username },
@@ -83,7 +96,6 @@ userRouter.get("/tokenIsValid", async (req, res) => {
         const token = req.header("x-auth-token");
         if (!token) return res.json(false);
 
-        // TODO
         const verified = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
         if (!verified) return res.json(false);
 

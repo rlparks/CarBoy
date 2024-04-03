@@ -20,6 +20,9 @@ services:
             CREATE_DEFAULT_ADMIN: true
             JWT_PRIVATE_KEY: securePrivateKey
             CARBOY_PUBLIC_URL: http://localhost/
+            # how many proxies CarBoy is behind
+            # 1 if default (CarBoy's nginx)
+            TRUSTED_PROXIES: 1
         volumes:
             - ./images:/app/images
         depends_on:

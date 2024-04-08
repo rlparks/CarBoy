@@ -250,3 +250,11 @@ export function filterTripsByYYYYdashMMdashDD(trips, startFilter, endFilter) {
         return startFilterDate <= startDate && endFilterDate >= endDate;
     });
 }
+
+// compare function for sort
+// places newest trips on bottom
+export function sortTripsByStartTime(tripA, tripB) {
+    const tripATime = new Date(tripA.startTime).getTime();
+    const tripBTime = new Date(tripB.startTime).getTime();
+    return tripATime - tripBTime;
+}

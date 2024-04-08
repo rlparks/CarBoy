@@ -21,6 +21,7 @@ import DestinationsPage from "./components/DestinationsPage/DestinationsPage";
 import AddDestination from "./components/AddDestination/AddDestination";
 import EditDestination from "./components/EditDestination/EditDestination";
 import DashboardPage from "./components/DashboardPage/DashboardPage";
+import TripsTodayPage from "./components/TripsTodayPage/TripsTodayPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -82,7 +83,10 @@ export default function App() {
                         });
                     }
                 } catch (err) {
-                    localStorage.clear();
+                    console.log("Login error in App.jsx");
+                    console.log(err);
+
+                    localStorage.setItem("auth-token", "");
                     setUserData({
                         token: undefined,
                         user: undefined,
@@ -218,6 +222,16 @@ export default function App() {
                             element={
                                 userData.user ? (
                                     <TripsPage />
+                                ) : (
+                                    <ErrorPage type={401} />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/trips/today"
+                            element={
+                                userData.user ? (
+                                    <TripsTodayPage />
                                 ) : (
                                     <ErrorPage type={401} />
                                 )

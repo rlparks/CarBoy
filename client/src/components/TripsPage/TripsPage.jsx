@@ -9,10 +9,9 @@ import {
 import TripCard from "../TripCard/TripCard";
 import UserContext from "../../context/UserContext";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import TripsList from "../TripsList/TripsList";
 
 export default function TripsPage() {
-    const numColumns = 1;
-
     const params = useParams();
     const vehicleNumber = params.vehicleNumber;
     const [vehicle, setVehicle] = useState({
@@ -254,19 +253,9 @@ export default function TripsPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                className={
-                                    "row row-cols-1 row-cols-lg-" +
-                                    numColumns +
-                                    " g-4 card-deck"
-                                }
-                            >
-                                {filteredTrips.map((trip) => (
-                                    <div className="col" key={trip._id}>
-                                        <TripCard trip={trip} />
-                                    </div>
-                                ))}
-                            </div>
+
+                            <TripsList trips={filteredTrips} />
+
                             {endIndex < trips.length &&
                                 !(endFilter && startFilter) && (
                                     <div className="d-flex justify-content-center m-3">

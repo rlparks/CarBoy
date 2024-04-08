@@ -6,6 +6,7 @@ import {
 } from "../../assets/helpers";
 import VehicleCard from "../VehicleCard/VehicleCard";
 import Title from "../Title/Title";
+import { Link } from "react-router-dom";
 
 export default function DashboardPage() {
     const [vehicles, setVehicles] = useState([]);
@@ -39,27 +40,36 @@ export default function DashboardPage() {
         document.title = "CarBoy · Dashboard";
 
         // console.log("GET DATA");
-        axios.get(SERVER_URL + "api/vehicles/").then((result) => {
-            const sortedVehicles = result.data.sort(sortVehicles);
-            if (vehicles !== sortedVehicles) {
-                setVehicles(sortedVehicles);
+        axios
+            .get(SERVER_URL + "api/vehicles/")
+            .then((result) => {
+                const sortedVehicles = result.data.sort(sortVehicles);
+                if (vehicles !== sortedVehicles) {
+                    setVehicles(sortedVehicles);
 
-                setNonDisabledVehicles(
-                    sortedVehicles.filter((vehicle) => !vehicle.disabled)
-                );
+                    setNonDisabledVehicles(
+                        sortedVehicles.filter((vehicle) => !vehicle.disabled)
+                    );
 
-                setAvailableVehicles(
-                    sortedVehicles.filter(
-                        (vehicle) => !vehicle.checkedOut && !vehicle.disabled
-                    )
-                );
-                setCheckedOutVehicles(
-                    sortedVehicles.filter(
-                        (vehicle) => vehicle.checkedOut && !vehicle.disabled
-                    )
-                );
+                    setAvailableVehicles(
+                        sortedVehicles.filter(
+                            (vehicle) =>
+                                !vehicle.checkedOut && !vehicle.disabled
+                        )
+                    );
+                    setCheckedOutVehicles(
+                        sortedVehicles.filter(
+                            (vehicle) => vehicle.checkedOut && !vehicle.disabled
+                        )
+                    );
 
-                tripLogic(sortedVehicles);
+                    tripLogic(sortedVehicles);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
                 setTimeout(
                     () => setNumRefreshes((prev) => prev + 1),
                     refreshSeconds * 1000
@@ -69,8 +79,7 @@ export default function DashboardPage() {
                     // can't have any overflow, can we?
                     setNumRefreshes(0);
                 }
-            }
-        });
+            });
     }, [numRefreshes]);
 
     function tripLogic(vehicleArr) {
@@ -312,14 +321,20 @@ export default function DashboardPage() {
                                                     "s"}{" "}
                                                 this month
                                             </p>
-                                            <p className="card-text">
-                                                <b>
-                                                    {dayTripCount.toLocaleString()}
-                                                </b>{" "}
-                                                trip
-                                                {dayTripCount !== 1 && "s"}{" "}
-                                                today
-                                            </p>
+                                            <Link
+                                                className="text-reset text-decoration-none"
+                                                to="/trips/today"
+                                            >
+                                                <p className="card-text">
+                                                    <b>
+                                                        {dayTripCount.toLocaleString()}
+                                                    </b>{" "}
+                                                    trip
+                                                    {dayTripCount !== 1 &&
+                                                        "s"}{" "}
+                                                    today
+                                                </p>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

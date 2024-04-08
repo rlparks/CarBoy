@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { getDateTimeFormat, getUser } from "../../assets/helpers";
 import UserContext from "../../context/UserContext";
 
-export default function TripCard({ trip }) {
+export default function TripCard({ trip, showVehicleNumber }) {
     const [employeeOut, setEmployeeOut] = useState({
         fullName: "Error retrieving user",
     });
@@ -73,6 +73,11 @@ export default function TripCard({ trip }) {
             </div>
 
             <ul className="list-group list-group-flush">
+                {showVehicleNumber && (
+                    <li className="list-group-item">
+                        {"Vehicle: " + trip.vehicleNumber}
+                    </li>
+                )}
                 <li className="list-group-item">
                     {"Destination: " + trip.destination}
                 </li>

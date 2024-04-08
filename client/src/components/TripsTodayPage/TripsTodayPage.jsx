@@ -62,7 +62,7 @@ export default function TripsTodayPage() {
             Boolean(trip.endTime)
         );
 
-        console.log(groups);
+        // console.log(groups);
 
         setUnfinishedTripsToday(groups.false);
         setFinishedTripsToday(groups.true);

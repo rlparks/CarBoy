@@ -25,11 +25,9 @@ export default function DashboardPage() {
     const [monthMileage, setMonthMileage] = useState("");
     const [dayMileage, setDayMileage] = useState("");
 
-    const [mostPopularVehicleNumber, setMostPopularVehicleNumber] =
-        useState("");
-    const [popularVehicleTrips, setPopularVehicleTrips] = useState("");
-    const [mostPopularVehicleObj, setMostPopularVehicleObj] = useState({});
+    const [favoriteVehicles, setFavoriteVehicles] = useState([]);
 
+    const [favoriteDestinations, setFavoriteDestinations] = useState([]);
     const [mostPopularDestination, setMostPopularDestination] = useState("");
     const [popularDestinationTrips, setPopularDestinationTrips] = useState("");
 
@@ -44,7 +42,9 @@ export default function DashboardPage() {
             .get(SERVER_URL + "api/vehicles/")
             .then((result) => {
                 const sortedVehicles = result.data.sort(sortVehicles);
-                if (vehicles !== sortedVehicles) {
+                if (
+                    JSON.stringify(vehicles) !== JSON.stringify(sortedVehicles)
+                ) {
                     setVehicles(sortedVehicles);
 
                     setNonDisabledVehicles(
@@ -144,23 +144,15 @@ export default function DashboardPage() {
         }
         setTotalMileage(mileageAllTimeTemp);
 
-        // my first ever usage of this kind of for loop
-        let maxOccurences = -1;
-        let maxVehicleNumber = null;
-        for (const vehicleKey in vehicleOccurences) {
-            if (vehicleOccurences[vehicleKey] > maxOccurences) {
-                maxOccurences = vehicleOccurences[vehicleKey];
-                maxVehicleNumber = vehicleKey;
-            }
-        }
-        setMostPopularVehicleNumber(maxVehicleNumber);
-        setMostPopularVehicleObj(
-            findVehicleObjInVehicleArrayFromVehicleNumber(
-                vehicleArr,
-                maxVehicleNumber
-            )
+        const vehicleOccurencesArray = Object.entries(vehicleOccurences).sort(
+            (a, b) => b[1] - a[1]
         );
-        setPopularVehicleTrips(maxOccurences);
+        setFavoriteVehicles(vehicleOccurencesArray);
+
+        const destinationOccurencesArray = Object.entries(
+            destinationOccurences
+        ).sort((a, b) => b[1] - a[1]);
+        setFavoriteDestinations(destinationOccurencesArray);
 
         let maxDestinationCount = -1;
         let maxDestinationName = null;
@@ -256,7 +248,7 @@ export default function DashboardPage() {
                                             Vehicles
                                         </h5>
                                         <div>
-                                            <p className="card-text">
+                                            <p className="card-text text-truncate">
                                                 <b>
                                                     {nonDisabledVehicles.length.toLocaleString()}
                                                 </b>{" "}
@@ -264,7 +256,7 @@ export default function DashboardPage() {
                                                 {nonDisabledVehicles.length !==
                                                     1 && "s"}
                                             </p>
-                                            <p className="card-text">
+                                            <p className="card-text text-truncate">
                                                 <b>
                                                     {availableVehicles.length.toLocaleString()}
                                                 </b>{" "}
@@ -272,7 +264,7 @@ export default function DashboardPage() {
                                                 {availableVehicles.length !==
                                                     1 && "s"}
                                             </p>
-                                            <p className="card-text">
+                                            <p className="card-text text-truncate">
                                                 <b>
                                                     {checkedOutVehicles.length.toLocaleString()}
                                                 </b>{" "}
@@ -404,27 +396,45 @@ export default function DashboardPage() {
                                             >
                                                 <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z" />
                                             </svg>
-                                            Favorite Vehicle
+                                            Favorite Vehicles
                                         </h5>
                                         <div>
-                                            <p className="card-text">
-                                                <b>
-                                                    {mostPopularVehicleNumber}
-                                                </b>
-                                            </p>
-                                            <p className="card-text">
-                                                {mostPopularVehicleObj.year}{" "}
-                                                {mostPopularVehicleObj.make}{" "}
-                                                {mostPopularVehicleObj.model}
-                                            </p>
-                                            <p className="card-text">
-                                                <b>
-                                                    {popularVehicleTrips.toLocaleString()}
-                                                </b>{" "}
-                                                total trip
-                                                {popularVehicleTrips !== 1 &&
-                                                    "s"}
-                                            </p>
+                                            {favoriteVehicles.length > 0 && (
+                                                <p className="card-text text-truncate">
+                                                    <b>
+                                                        {favoriteVehicles[0][0]}
+                                                    </b>
+                                                    {" · "}
+                                                    {favoriteVehicles[0][1].toLocaleString()}
+                                                    {" total trip"}
+                                                    {favoriteVehicles[0][1] !==
+                                                        1 && "s "}
+                                                </p>
+                                            )}
+                                            {favoriteVehicles.length > 1 && (
+                                                <p className="card-text text-truncate">
+                                                    <b>
+                                                        {favoriteVehicles[1][0]}
+                                                    </b>
+                                                    {" · "}
+                                                    {favoriteVehicles[1][1].toLocaleString()}
+                                                    {" total trip"}
+                                                    {favoriteVehicles[1][1] !==
+                                                        1 && "s "}
+                                                </p>
+                                            )}
+                                            {favoriteVehicles.length > 2 && (
+                                                <p className="card-text text-truncate">
+                                                    <b>
+                                                        {favoriteVehicles[2][0]}
+                                                    </b>
+                                                    {" · "}
+                                                    {favoriteVehicles[2][1].toLocaleString()}
+                                                    {" total trip"}
+                                                    {favoriteVehicles[2][1] !==
+                                                        1 && "s "}
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -443,21 +453,58 @@ export default function DashboardPage() {
                                             >
                                                 <path d="M7.293.707A1 1 0 0 0 7 1.414V4H2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h5v6h2v-6h3.532a1 1 0 0 0 .768-.36l1.933-2.32a.5.5 0 0 0 0-.64L13.3 4.36a1 1 0 0 0-.768-.36H9V1.414A1 1 0 0 0 7.293.707" />
                                             </svg>
-                                            Favorite Destination
+                                            Favorite Destinations
                                         </h5>
-                                        {/* <div> */}
-                                        <p className="card-text">
-                                            <b>{mostPopularDestination}</b>
-                                        </p>
-                                        <p className="card-text">
-                                            <b>
-                                                {popularDestinationTrips.toLocaleString()}
-                                            </b>{" "}
-                                            total trip
-                                            {popularDestinationTrips !== 1 &&
-                                                "s"}
-                                        </p>
-                                        {/* </div> */}
+                                        <div>
+                                            {favoriteDestinations.length >
+                                                0 && (
+                                                <p className="card-text text-truncate">
+                                                    {favoriteDestinations[0][1].toLocaleString()}
+                                                    {" trip"}
+                                                    {favoriteDestinations[0][1] !==
+                                                        1 && "s "}
+
+                                                    {" · "}
+                                                    <b>
+                                                        {
+                                                            favoriteDestinations[0][0]
+                                                        }
+                                                    </b>
+                                                </p>
+                                            )}
+                                            {favoriteDestinations.length >
+                                                1 && (
+                                                <p className="card-text text-truncate">
+                                                    {favoriteDestinations[1][1].toLocaleString()}
+                                                    {" trip"}
+                                                    {favoriteDestinations[1][1] !==
+                                                        1 && "s "}
+
+                                                    {" · "}
+                                                    <b>
+                                                        {
+                                                            favoriteDestinations[1][0]
+                                                        }
+                                                    </b>
+                                                </p>
+                                            )}
+                                            {favoriteDestinations.length >
+                                                2 && (
+                                                <p className="card-text text-truncate">
+                                                    {favoriteDestinations[2][1].toLocaleString()}
+                                                    {" trip"}
+                                                    {favoriteDestinations[2][1] !==
+                                                        1 && "s "}
+
+                                                    {" · "}
+                                                    <b>
+                                                        {
+                                                            favoriteDestinations[2][0]
+                                                        }
+                                                    </b>
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -469,20 +516,20 @@ export default function DashboardPage() {
     );
 
     // avoids a GET for this vehicle
-    function findVehicleObjInVehicleArrayFromVehicleNumber(
-        vehicleArray,
-        vehicleNumber
-    ) {
-        for (const vehicle of vehicleArray) {
-            // console.log(
-            //     typeof vehicle.vehicleNumber + ", " + typeof vehicleNumber
-            // );
-            // the above comment tells a story
-            if (vehicle.vehicleNumber === Number(vehicleNumber)) {
-                return vehicle;
-            }
-        }
+    // function findVehicleObjInVehicleArrayFromVehicleNumber(
+    //     vehicleArray,
+    //     vehicleNumber
+    // ) {
+    //     for (const vehicle of vehicleArray) {
+    //         // console.log(
+    //         //     typeof vehicle.vehicleNumber + ", " + typeof vehicleNumber
+    //         // );
+    //         // the above comment tells a story
+    //         if (vehicle.vehicleNumber === Number(vehicleNumber)) {
+    //             return vehicle;
+    //         }
+    //     }
 
-        return {};
-    }
+    //     return {};
+    // }
 }

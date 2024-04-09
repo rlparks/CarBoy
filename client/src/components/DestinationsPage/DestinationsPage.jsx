@@ -60,38 +60,8 @@ export default function DestinationsPage({ isAdmin, mode }) {
 
     return (
         <div>
-            <div className="d-flex justify-content-center mb-3">
-                <div className="w-75">
-                    <div>
-                        <h2 className="text-center mb-3">Destinations</h2>
-
-                        {destinations.length > 0 ? (
-                            <div
-                                className={
-                                    "row row-cols-1 row-cols-lg-" +
-                                    numColumns +
-                                    " g-4 card-deck"
-                                }
-                            >
-                                {destinations.map((destination) => (
-                                    <div className="col" key={destination._id}>
-                                        <DestinationCard
-                                            destination={destination}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-center">
-                                No destinations are currently available.
-                            </p>
-                        )}
-                    </div>
-                </div>
-            </div>
-
             <div>
-                <div className="d-flex justify-content-center mb-3">
+                <div className="d-flex justify-content-center mt-3 mb-2">
                     <Link className="btn btn-primary me-1" to="/adddestination">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -141,6 +111,35 @@ export default function DestinationsPage({ isAdmin, mode }) {
                     </button>
                 </div>
                 {error && <p className="text-center text-danger">{error}</p>}
+            </div>
+            <div className="d-flex justify-content-center mb-3">
+                <div className="w-75">
+                    <div>
+                        <h2 className="text-center mb-3">Destinations</h2>
+
+                        {destinations.length > 0 ? (
+                            <div
+                                className={
+                                    "row row-cols-1 row-cols-lg-" +
+                                    numColumns +
+                                    " g-4 card-deck"
+                                }
+                            >
+                                {destinations.map((destination) => (
+                                    <div className="col" key={destination._id}>
+                                        <DestinationCard
+                                            destination={destination}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-center">
+                                No destinations are currently available.
+                            </p>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

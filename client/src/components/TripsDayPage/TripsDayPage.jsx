@@ -6,22 +6,47 @@ import {
     sortTripsByStartTime,
 } from "../../assets/helpers";
 
-export default function TripsTodayPage() {
+export default function TripsDayPage() {
     const [vehicles, setVehicles] = useState([]);
     const [status, setStatus] = useState("Loading...");
 
+    const [megaTripsArray, setMegaTripsArray] = useState([]);
     const [unfinishedTripsToday, setUnfinishedTripsToday] = useState([]);
     const [finishedTripsToday, setFinishedTripsToday] = useState([]);
 
+    const [date, setDate] = useState("");
+
     useEffect(() => {
-        document.title = "CarBoy · Trips Today ";
+        document.title = "CarBoy · Trips by Day ";
         setStatus("Loading...");
         axios
             .get(SERVER_URL + "api/vehicles/")
             .then((result) => {
                 if (result.data !== vehicles) {
                     setVehicles(result.data);
-                    findTripsToday(result.data);
+
+                    let tempTripsArray = [];
+
+                    for (const vehicle of result.data) {
+                        tempTripsArray = tempTripsArray.concat(vehicle.trips);
+                    }
+                    setMegaTripsArray(tempTripsArray);
+
+                    const now = new Date(Date.now());
+                    const currentYear = now
+                        .getFullYear()
+                        .toString()
+                        .padStart(4, "0");
+                    const currentMonth = (now.getMonth() + 1)
+                        .toString()
+                        .padStart(2, "0");
+                    const currentDay = now
+                        .getDate()
+                        .toString()
+                        .padStart(2, "0");
+                    const currentDayFormatted =
+                        currentYear + "-" + currentMonth + "-" + currentDay;
+                    setDate(currentDayFormatted);
                 }
             })
             .catch((err) => {
@@ -30,24 +55,11 @@ export default function TripsTodayPage() {
             });
     }, []);
 
-    function findTripsToday(vehicleArr) {
-        let megaTripsArray = [];
-
-        for (const vehicle of vehicleArr) {
-            megaTripsArray = megaTripsArray.concat(vehicle.trips);
-        }
-
-        const now = new Date(Date.now());
-        const currentYear = now.getFullYear();
-        const currentMonth = now.getMonth() + 1;
-        const currentDay = now.getDate();
-        const currentDayFormatted =
-            currentYear + "-" + currentMonth + "-" + currentDay;
-
+    useEffect(() => {
         const tripsThisDay = filterTripsByYYYYdashMMdashDD(
             megaTripsArray,
-            currentDayFormatted,
-            currentDayFormatted
+            date,
+            date
         );
 
         const sortedTrips = tripsThisDay.toSorted(sortTripsByStartTime);
@@ -55,24 +67,32 @@ export default function TripsTodayPage() {
         if (sortedTrips.length > 0) {
             setStatus("");
         } else {
-            setStatus("No trips have been taken today.");
+            setStatus("No trips have been taken on this day.");
         }
 
         const groups = Object.groupBy(sortedTrips, (trip) =>
             Boolean(trip.endTime)
         );
 
-        // console.log(groups);
-
         setUnfinishedTripsToday(groups.false);
         setFinishedTripsToday(groups.true);
-    }
+    }, [date]);
 
     return (
         <div>
             <div className="d-flex justify-content-center mb-3">
-                <div className="">
-                    <h2 className="text-center mb-1">{"Trips Today"}</h2>
+                <div className="w-100">
+                    <h2 className="text-center mb-1">{"Trips by Day"}</h2>
+                    <div className="d-flex justify-content-center mt-3 mb-2">
+                        <div className="input-group" style={{ width: "200px" }}>
+                            <input
+                                className="form-control"
+                                type="date"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                            />
+                        </div>
+                    </div>
                     {status ? (
                         <p className="text-center">{status}</p>
                     ) : (

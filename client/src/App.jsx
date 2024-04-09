@@ -21,7 +21,7 @@ import DestinationsPage from "./components/DestinationsPage/DestinationsPage";
 import AddDestination from "./components/AddDestination/AddDestination";
 import EditDestination from "./components/EditDestination/EditDestination";
 import DashboardPage from "./components/DashboardPage/DashboardPage";
-import TripsTodayPage from "./components/TripsTodayPage/TripsTodayPage";
+import TripsDayPage from "./components/TripsDayPage/TripsDayPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -228,10 +228,10 @@ export default function App() {
                             }
                         />
                         <Route
-                            path="/trips/today"
+                            path="/trips/day"
                             element={
                                 userData.user ? (
-                                    <TripsTodayPage />
+                                    <TripsDayPage />
                                 ) : (
                                     <ErrorPage type={401} />
                                 )

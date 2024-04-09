@@ -315,7 +315,7 @@ export default function DashboardPage() {
                                             </p>
                                             <Link
                                                 className="text-reset text-decoration-none"
-                                                to="/trips/today"
+                                                to="/trips/day"
                                             >
                                                 <p className="card-text">
                                                     <b>

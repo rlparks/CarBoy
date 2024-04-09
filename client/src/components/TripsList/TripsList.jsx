@@ -9,7 +9,9 @@ export default function TripsList({ trips, sort, showVehicleNumbers }) {
         // where the newest trips are the last element
         //
         // wacky assignment so as to not mutate the original array
-        trips = trips.toSorted(sortTripsByStartTime).toReversed();
+        if (trips && trips.length > 0) {
+            trips = trips.toSorted(sortTripsByStartTime).toReversed();
+        }
     }
 
     return (

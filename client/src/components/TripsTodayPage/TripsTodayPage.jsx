@@ -73,7 +73,6 @@ export default function TripsTodayPage() {
             <div className="d-flex justify-content-center mb-3">
                 <div className="">
                     <h2 className="text-center mb-1">{"Trips Today"}</h2>
-                    {/* <div className="d-flex justify-content-center"> */}
                     {status ? (
                         <p className="text-center">{status}</p>
                     ) : (
@@ -83,11 +82,19 @@ export default function TripsTodayPage() {
                                     <h3 className="text-center">In Progress</h3>
                                     <div className="w-100 d-flex justify-content-center">
                                         <div className="w-75">
-                                            <TripsList
-                                                showVehicleNumbers={true}
-                                                trips={unfinishedTripsToday}
-                                                sort={true}
-                                            />
+                                            {unfinishedTripsToday &&
+                                            unfinishedTripsToday.length > 0 ? (
+                                                <TripsList
+                                                    showVehicleNumbers={true}
+                                                    trips={unfinishedTripsToday}
+                                                    sort={true}
+                                                />
+                                            ) : (
+                                                <p className="text-center">
+                                                    There are no in progress
+                                                    trips on this day.
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -95,18 +102,25 @@ export default function TripsTodayPage() {
                                     <h3 className="text-center">Completed</h3>
                                     <div className="d-flex justify-content-center">
                                         <div className="w-75">
-                                            <TripsList
-                                                showVehicleNumbers={true}
-                                                trips={finishedTripsToday}
-                                                sort={true}
-                                            />
+                                            {finishedTripsToday &&
+                                            finishedTripsToday.length > 0 ? (
+                                                <TripsList
+                                                    showVehicleNumbers={true}
+                                                    trips={finishedTripsToday}
+                                                    sort={true}
+                                                />
+                                            ) : (
+                                                <p className="text-center">
+                                                    There are no completed trips
+                                                    on this day.
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     )}
-                    {/* </div> */}
                 </div>
             </div>
         </div>

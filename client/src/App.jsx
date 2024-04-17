@@ -22,6 +22,7 @@ import AddDestination from "./components/AddDestination/AddDestination";
 import EditDestination from "./components/EditDestination/EditDestination";
 import DashboardPage from "./components/DashboardPage/DashboardPage";
 import TripsDayPage from "./components/TripsDayPage/TripsDayPage";
+import SAMLRedirectPage from "./components/SAMLRedirectPage/SAMLRedirectPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -34,6 +35,8 @@ export default function App() {
         username: null,
     });
     const [serverRunning, setServerRunning] = useState(false);
+    const [samlEnabled, setSamlEnabled] = useState(false);
+    const [samlPageValid, setSamlPageValid] = useState(false);
 
     const [loading, setLoading] = useState(true);
 
@@ -51,6 +54,11 @@ export default function App() {
             .get(SERVER_URL + "api/")
             .then((response) => {
                 setServerRunning(true);
+                setSamlEnabled(response.data.saml);
+
+                setSamlPageValid(
+                    response.data.saml && !localStorage.getItem("auth-token")
+                );
             })
             .catch((err) => setServerRunning(false));
     }, []);
@@ -128,7 +136,14 @@ export default function App() {
 
     return (
         <UserContext.Provider
-            value={{ userData, setUserData, user, userCache, addUserToCache }}
+            value={{
+                userData,
+                setUserData,
+                user,
+                userCache,
+                addUserToCache,
+                samlEnabled,
+            }}
         >
             {serverRunning ? (
                 !loading && <NormalBrowserRouter />
@@ -255,6 +270,16 @@ export default function App() {
                                     <Navigate to="/" />
                                 ) : (
                                     <LoginPage />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/login/saml"
+                            element={
+                                samlPageValid ? (
+                                    <SAMLRedirectPage />
+                                ) : (
+                                    <ErrorPage type={404} />
                                 )
                             }
                         />

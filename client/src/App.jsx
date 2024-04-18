@@ -35,7 +35,7 @@ export default function App() {
         username: null,
     });
     const [serverRunning, setServerRunning] = useState(false);
-    const [samlEnabled, setSamlEnabled] = useState(false);
+    const [samlInfo, setSamlInfo] = useState({});
     const [samlPageValid, setSamlPageValid] = useState(false);
 
     const [loading, setLoading] = useState(true);
@@ -54,11 +54,6 @@ export default function App() {
             .get(SERVER_URL + "api/")
             .then((response) => {
                 setServerRunning(true);
-                setSamlEnabled(response.data.saml);
-
-                setSamlPageValid(
-                    response.data.saml && !localStorage.getItem("auth-token")
-                );
             })
             .catch((err) => setServerRunning(false));
     }, []);
@@ -77,6 +72,14 @@ export default function App() {
                         SERVER_URL + "api/login/tokenIsValid",
                         { headers: { "x-auth-token": token } }
                     );
+
+                    const samlInfo = await axios.get(
+                        SERVER_URL + "api/saml/info"
+                    );
+
+                    setSamlInfo(samlInfo.data);
+
+                    setSamlPageValid(samlInfo.data.enabled);
 
                     if (tokenResponse.data) {
                         const userRes = await axios.get(
@@ -142,7 +145,7 @@ export default function App() {
                 user,
                 userCache,
                 addUserToCache,
-                samlEnabled,
+                samlInfo,
             }}
         >
             {serverRunning ? (

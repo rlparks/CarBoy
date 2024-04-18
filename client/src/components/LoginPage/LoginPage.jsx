@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import PasswordInput from "../PasswordInput/PasswordInput";
 
 export default function LoginPage() {
-    const { setUserData, samlEnabled } = useContext(UserContext);
+    const { setUserData, samlInfo } = useContext(UserContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
@@ -79,7 +79,7 @@ export default function LoginPage() {
                     </div>
                     <div className="d-flex justify-content-between">
                         <button className="btn btn-primary">Submit</button>
-                        {samlEnabled && (
+                        {samlInfo.enabled && (
                             <div className="btn-group">
                                 <Link
                                     className="btn btn-outline-primary"

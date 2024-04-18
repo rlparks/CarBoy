@@ -19,9 +19,6 @@ const mongoUrl = process.env.MONGO_URL;
 const conn_str = "mongodb://" + mongoUser + ":" + mongoPass + "@" + mongoUrl;
 // const conn_str = "mongodb://root:example@localhost:27017/";
 
-// TODO
-const saml = process.env.SAML_ENABLED || true;
-
 mongoose
     .connect(conn_str, { dbName: "carlog" })
     .then(() => {
@@ -31,7 +28,7 @@ mongoose
 
         // for checking if server alive
         app.get("/api", (req, res) =>
-            res.status(200).json({ message: "Server is running!", saml: saml })
+            res.status(200).json({ message: "Server is running!" })
         );
 
         // image server
@@ -42,6 +39,9 @@ mongoose
 
         const logins = require("./routes/api/Login");
         app.use("/api/login", logins);
+
+        const samls = require("./routes/api/SAML");
+        app.use("/api/saml", samls);
 
         const users = require("./routes/api/User");
         app.use("/api/users", users);

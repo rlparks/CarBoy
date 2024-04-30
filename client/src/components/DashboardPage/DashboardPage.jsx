@@ -1,12 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import {
-    filterTripsByYYYYdashMMdashDD,
-    sortVehicles,
-} from "../../assets/helpers";
-import VehicleCard from "../VehicleCard/VehicleCard";
-import Title from "../Title/Title";
 import { Link } from "react-router-dom";
+import { filterTripsByYYYYdashMMdashDD, sortVehicles } from "../../assets/helpers";
+import VehicleCard from "../VehicleCard/VehicleCard";
 
 export default function DashboardPage() {
     const [vehicles, setVehicles] = useState([]);
@@ -16,20 +12,20 @@ export default function DashboardPage() {
     const numColumns = 5;
 
     const [totalTripCount, setTotalTripCount] = useState("");
-    const [yearTripCount, setYearTripCount] = useState("");
+    // const [yearTripCount, setYearTripCount] = useState("");
     const [monthTripCount, setMonthTripCount] = useState("");
     const [dayTripCount, setDayTripCount] = useState("");
 
     const [totalMileage, setTotalMileage] = useState("");
-    const [yearMileage, setYearMileage] = useState("");
+    // const [yearMileage, setYearMileage] = useState("");
     const [monthMileage, setMonthMileage] = useState("");
     const [dayMileage, setDayMileage] = useState("");
 
     const [favoriteVehicles, setFavoriteVehicles] = useState([]);
 
     const [favoriteDestinations, setFavoriteDestinations] = useState([]);
-    const [mostPopularDestination, setMostPopularDestination] = useState("");
-    const [popularDestinationTrips, setPopularDestinationTrips] = useState("");
+    // const [mostPopularDestination, setMostPopularDestination] = useState("");
+    // const [popularDestinationTrips, setPopularDestinationTrips] = useState("");
 
     const refreshSeconds = 5;
     const [numRefreshes, setNumRefreshes] = useState(0);
@@ -42,25 +38,16 @@ export default function DashboardPage() {
             .get(SERVER_URL + "api/vehicles/")
             .then((result) => {
                 const sortedVehicles = result.data.sort(sortVehicles);
-                if (
-                    JSON.stringify(vehicles) !== JSON.stringify(sortedVehicles)
-                ) {
+                if (JSON.stringify(vehicles) !== JSON.stringify(sortedVehicles)) {
                     setVehicles(sortedVehicles);
 
-                    setNonDisabledVehicles(
-                        sortedVehicles.filter((vehicle) => !vehicle.disabled)
-                    );
+                    setNonDisabledVehicles(sortedVehicles.filter((vehicle) => !vehicle.disabled));
 
                     setAvailableVehicles(
-                        sortedVehicles.filter(
-                            (vehicle) =>
-                                !vehicle.checkedOut && !vehicle.disabled
-                        )
+                        sortedVehicles.filter((vehicle) => !vehicle.checkedOut && !vehicle.disabled)
                     );
                     setCheckedOutVehicles(
-                        sortedVehicles.filter(
-                            (vehicle) => vehicle.checkedOut && !vehicle.disabled
-                        )
+                        sortedVehicles.filter((vehicle) => vehicle.checkedOut && !vehicle.disabled)
                     );
 
                     tripLogic(sortedVehicles);
@@ -70,10 +57,7 @@ export default function DashboardPage() {
                 console.log(err);
             })
             .finally(() => {
-                setTimeout(
-                    () => setNumRefreshes((prev) => prev + 1),
-                    refreshSeconds * 1000
-                );
+                setTimeout(() => setNumRefreshes((prev) => prev + 1), refreshSeconds * 1000);
 
                 if (numRefreshes >= 999) {
                     // can't have any overflow, can we?
@@ -94,15 +78,14 @@ export default function DashboardPage() {
         const currentYear = now.getFullYear();
         const currentMonth = now.getMonth() + 1;
         const currentDay = now.getDate();
-        const currentDayFormatted =
-            currentYear + "-" + currentMonth + "-" + currentDay;
+        const currentDayFormatted = currentYear + "-" + currentMonth + "-" + currentDay;
 
-        const tripsThisYear = filterTripsByYYYYdashMMdashDD(
-            megaTripsArray,
-            currentYear + "-01-01",
-            currentDayFormatted
-        );
-        setYearTripCount(tripsThisYear.length);
+        // const tripsThisYear = filterTripsByYYYYdashMMdashDD(
+        //     megaTripsArray,
+        //     currentYear + "-01-01",
+        //     currentDayFormatted
+        // );
+        // setYearTripCount(tripsThisYear.length);
 
         const tripsThisMonth = filterTripsByYYYYdashMMdashDD(
             megaTripsArray,
@@ -123,9 +106,7 @@ export default function DashboardPage() {
         let destinationOccurences = {};
         let vehicleOccurences = {};
         for (const trip of megaTripsArray) {
-            const tripDistance = trip.endMileage
-                ? trip.endMileage - trip.startMileage
-                : 0;
+            const tripDistance = trip.endMileage ? trip.endMileage - trip.startMileage : 0;
             mileageAllTimeTemp += tripDistance;
 
             // collect popularity of destinations
@@ -147,48 +128,46 @@ export default function DashboardPage() {
         const vehicleOccurencesArray = Object.entries(vehicleOccurences).sort(
             (a, b) => b[1] - a[1]
         );
+        console.log("Favorite Vehicles:");
+        console.table(vehicleOccurencesArray);
         setFavoriteVehicles(vehicleOccurencesArray);
 
-        const destinationOccurencesArray = Object.entries(
-            destinationOccurences
-        ).sort((a, b) => b[1] - a[1]);
+        const destinationOccurencesArray = Object.entries(destinationOccurences).sort(
+            (a, b) => b[1] - a[1]
+        );
+        console.log("Favorite Destinations:");
+        console.table(destinationOccurencesArray);
         setFavoriteDestinations(destinationOccurencesArray);
 
-        let maxDestinationCount = -1;
-        let maxDestinationName = null;
-        for (const destinationKey in destinationOccurences) {
-            if (destinationOccurences[destinationKey] > maxDestinationCount) {
-                maxDestinationCount = destinationOccurences[destinationKey];
-                maxDestinationName = destinationKey;
-            }
-        }
+        // let maxDestinationCount = -1;
+        // let maxDestinationName = null;
+        // for (const destinationKey in destinationOccurences) {
+        //     if (destinationOccurences[destinationKey] > maxDestinationCount) {
+        //         maxDestinationCount = destinationOccurences[destinationKey];
+        //         maxDestinationName = destinationKey;
+        //     }
+        // }
         // console.log(destinationOccurences);
-        setMostPopularDestination(maxDestinationName);
-        setPopularDestinationTrips(maxDestinationCount);
+        // setMostPopularDestination(maxDestinationName);
+        // setPopularDestinationTrips(maxDestinationCount);
 
-        let mileageYearTemp = 0;
-        for (const trip of tripsThisYear) {
-            const tripDistance = trip.endMileage
-                ? trip.endMileage - trip.startMileage
-                : 0;
-            mileageYearTemp += tripDistance;
-        }
-        setYearMileage(mileageYearTemp);
+        // let mileageYearTemp = 0;
+        // for (const trip of tripsThisYear) {
+        //     const tripDistance = trip.endMileage ? trip.endMileage - trip.startMileage : 0;
+        //     mileageYearTemp += tripDistance;
+        // }
+        // setYearMileage(mileageYearTemp);
 
         let mileageMonthTemp = 0;
         for (const trip of tripsThisMonth) {
-            const tripDistance = trip.endMileage
-                ? trip.endMileage - trip.startMileage
-                : 0;
+            const tripDistance = trip.endMileage ? trip.endMileage - trip.startMileage : 0;
             mileageMonthTemp += tripDistance;
         }
         setMonthMileage(mileageMonthTemp);
 
         let mileageDayTemp = 0;
         for (const trip of tripsThisDay) {
-            const tripDistance = trip.endMileage
-                ? trip.endMileage - trip.startMileage
-                : 0;
+            const tripDistance = trip.endMileage ? trip.endMileage - trip.startMileage : 0;
             mileageDayTemp += tripDistance;
         }
         setDayMileage(mileageDayTemp);
@@ -202,13 +181,7 @@ export default function DashboardPage() {
                     <div className="mb-1">
                         <h2 className="text-center mt-1 mb-3">In Use</h2>
                         {checkedOutVehicles.length > 0 ? (
-                            <div
-                                className={
-                                    "row row-cols-1 row-cols-lg-" +
-                                    numColumns +
-                                    " g-4"
-                                }
-                            >
+                            <div className={"row row-cols-1 row-cols-lg-" + numColumns + " g-4"}>
                                 {checkedOutVehicles.map((vehicle) => (
                                     <div className="col" key={vehicle._id}>
                                         <VehicleCard vehicle={vehicle} />
@@ -216,21 +189,13 @@ export default function DashboardPage() {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-center">
-                                No vehicles are currently checked out.
-                            </p>
+                            <p className="text-center">No vehicles are currently checked out.</p>
                         )}
                     </div>
                     <hr className="mx-4 my-4" />
                     <div>
                         {/* <h2 className="text-center mb-3">Statistics</h2> */}
-                        <div
-                            className={
-                                "row row-cols-1 row-cols-lg-" +
-                                numColumns +
-                                " g-4"
-                            }
-                        >
+                        <div className={"row row-cols-1 row-cols-lg-" + numColumns + " g-4"}>
                             <div className="col">
                                 <div className="card h-100">
                                     <div className="card-body d-flex flex-column justify-content-between">
@@ -249,28 +214,19 @@ export default function DashboardPage() {
                                         </h5>
                                         <div>
                                             <p className="card-text text-truncate">
-                                                <b>
-                                                    {nonDisabledVehicles.length.toLocaleString()}
-                                                </b>{" "}
+                                                <b>{nonDisabledVehicles.length.toLocaleString()}</b>{" "}
                                                 total vehicle
-                                                {nonDisabledVehicles.length !==
-                                                    1 && "s"}
+                                                {nonDisabledVehicles.length !== 1 && "s"}
                                             </p>
                                             <p className="card-text text-truncate">
-                                                <b>
-                                                    {availableVehicles.length.toLocaleString()}
-                                                </b>{" "}
+                                                <b>{availableVehicles.length.toLocaleString()}</b>{" "}
                                                 available vehicle
-                                                {availableVehicles.length !==
-                                                    1 && "s"}
+                                                {availableVehicles.length !== 1 && "s"}
                                             </p>
                                             <p className="card-text text-truncate">
-                                                <b>
-                                                    {checkedOutVehicles.length.toLocaleString()}
-                                                </b>{" "}
+                                                <b>{checkedOutVehicles.length.toLocaleString()}</b>{" "}
                                                 checked out vehicle
-                                                {checkedOutVehicles.length !==
-                                                    1 && "s"}
+                                                {checkedOutVehicles.length !== 1 && "s"}
                                             </p>
                                         </div>
                                     </div>
@@ -294,10 +250,7 @@ export default function DashboardPage() {
                                         </h5>
                                         <div>
                                             <p className="card-text">
-                                                <b>
-                                                    {totalTripCount.toLocaleString()}
-                                                </b>{" "}
-                                                total trip
+                                                <b>{totalTripCount.toLocaleString()}</b> total trip
                                                 {totalTripCount !== 1 && "s"}
                                             </p>
                                             {/* <p className="card-text">
@@ -305,26 +258,16 @@ export default function DashboardPage() {
                                             year
                                         </p> */}
                                             <p className="card-text">
-                                                <b>
-                                                    {monthTripCount.toLocaleString()}
-                                                </b>{" "}
-                                                trip
-                                                {monthTripCount !== 1 &&
-                                                    "s"}{" "}
-                                                this month
+                                                <b>{monthTripCount.toLocaleString()}</b> trip
+                                                {monthTripCount !== 1 && "s"} this month
                                             </p>
                                             <Link
                                                 className="text-reset text-decoration-none"
                                                 to="/trips/day"
                                             >
                                                 <p className="card-text">
-                                                    <b>
-                                                        {dayTripCount.toLocaleString()}
-                                                    </b>{" "}
-                                                    trip
-                                                    {dayTripCount !== 1 &&
-                                                        "s"}{" "}
-                                                    today
+                                                    <b>{dayTripCount.toLocaleString()}</b> trip
+                                                    {dayTripCount !== 1 && "s"} today
                                                 </p>
                                             </Link>
                                         </div>
@@ -349,25 +292,15 @@ export default function DashboardPage() {
                                         </h5>
                                         <div>
                                             <p className="card-text">
-                                                <b>
-                                                    {totalMileage.toLocaleString()}
-                                                </b>{" "}
-                                                total mile
+                                                <b>{totalMileage.toLocaleString()}</b> total mile
                                                 {totalMileage !== 1 && "s"}
                                             </p>
                                             <p className="card-text">
-                                                <b>
-                                                    {monthMileage.toLocaleString()}
-                                                </b>{" "}
-                                                mile
-                                                {monthMileage !== 1 && "s"} this
-                                                month
+                                                <b>{monthMileage.toLocaleString()}</b> mile
+                                                {monthMileage !== 1 && "s"} this month
                                             </p>
                                             <p className="card-text">
-                                                <b>
-                                                    {dayMileage.toLocaleString()}
-                                                </b>{" "}
-                                                mile
+                                                <b>{dayMileage.toLocaleString()}</b> mile
                                                 {dayMileage !== 1 && "s"} today
                                             </p>
                                         </div>
@@ -400,40 +333,46 @@ export default function DashboardPage() {
                                         </h5>
                                         <div>
                                             {favoriteVehicles.length > 0 && (
-                                                <p className="card-text text-truncate">
-                                                    <b>
-                                                        {favoriteVehicles[0][0]}
-                                                    </b>
-                                                    {" · "}
-                                                    {favoriteVehicles[0][1].toLocaleString()}
-                                                    {" total trip"}
-                                                    {favoriteVehicles[0][1] !==
-                                                        1 && "s "}
-                                                </p>
+                                                <Link
+                                                    className="text-reset text-decoration-none"
+                                                    to={"/trips/" + favoriteVehicles[0][0]}
+                                                >
+                                                    <p className="card-text text-truncate mb-3">
+                                                        <b>{favoriteVehicles[0][0]}</b>
+                                                        {" · "}
+                                                        {favoriteVehicles[0][1].toLocaleString()}
+                                                        {" total trip"}
+                                                        {favoriteVehicles[0][1] !== 1 && "s "}
+                                                    </p>
+                                                </Link>
                                             )}
                                             {favoriteVehicles.length > 1 && (
-                                                <p className="card-text text-truncate">
-                                                    <b>
-                                                        {favoriteVehicles[1][0]}
-                                                    </b>
-                                                    {" · "}
-                                                    {favoriteVehicles[1][1].toLocaleString()}
-                                                    {" total trip"}
-                                                    {favoriteVehicles[1][1] !==
-                                                        1 && "s "}
-                                                </p>
+                                                <Link
+                                                    className="text-reset text-decoration-none"
+                                                    to={"/trips/" + favoriteVehicles[1][0]}
+                                                >
+                                                    <p className="card-text text-truncate mb-3">
+                                                        <b>{favoriteVehicles[1][0]}</b>
+                                                        {" · "}
+                                                        {favoriteVehicles[1][1].toLocaleString()}
+                                                        {" total trip"}
+                                                        {favoriteVehicles[1][1] !== 1 && "s "}
+                                                    </p>
+                                                </Link>
                                             )}
                                             {favoriteVehicles.length > 2 && (
-                                                <p className="card-text text-truncate">
-                                                    <b>
-                                                        {favoriteVehicles[2][0]}
-                                                    </b>
-                                                    {" · "}
-                                                    {favoriteVehicles[2][1].toLocaleString()}
-                                                    {" total trip"}
-                                                    {favoriteVehicles[2][1] !==
-                                                        1 && "s "}
-                                                </p>
+                                                <Link
+                                                    className="text-reset text-decoration-none"
+                                                    to={"/trips/" + favoriteVehicles[2][0]}
+                                                >
+                                                    <p className="card-text text-truncate">
+                                                        <b>{favoriteVehicles[2][0]}</b>
+                                                        {" · "}
+                                                        {favoriteVehicles[2][1].toLocaleString()}
+                                                        {" total trip"}
+                                                        {favoriteVehicles[2][1] !== 1 && "s "}
+                                                    </p>
+                                                </Link>
                                             )}
                                         </div>
                                     </div>
@@ -456,52 +395,34 @@ export default function DashboardPage() {
                                             Top Destinations
                                         </h5>
                                         <div>
-                                            {favoriteDestinations.length >
-                                                0 && (
+                                            {favoriteDestinations.length > 0 && (
                                                 <p className="card-text text-truncate">
                                                     {favoriteDestinations[0][1].toLocaleString()}
                                                     {" trip"}
-                                                    {favoriteDestinations[0][1] !==
-                                                        1 && "s "}
+                                                    {favoriteDestinations[0][1] !== 1 && "s "}
 
                                                     {" · "}
-                                                    <b>
-                                                        {
-                                                            favoriteDestinations[0][0]
-                                                        }
-                                                    </b>
+                                                    <b>{favoriteDestinations[0][0]}</b>
                                                 </p>
                                             )}
-                                            {favoriteDestinations.length >
-                                                1 && (
+                                            {favoriteDestinations.length > 1 && (
                                                 <p className="card-text text-truncate">
                                                     {favoriteDestinations[1][1].toLocaleString()}
                                                     {" trip"}
-                                                    {favoriteDestinations[1][1] !==
-                                                        1 && "s "}
+                                                    {favoriteDestinations[1][1] !== 1 && "s "}
 
                                                     {" · "}
-                                                    <b>
-                                                        {
-                                                            favoriteDestinations[1][0]
-                                                        }
-                                                    </b>
+                                                    <b>{favoriteDestinations[1][0]}</b>
                                                 </p>
                                             )}
-                                            {favoriteDestinations.length >
-                                                2 && (
+                                            {favoriteDestinations.length > 2 && (
                                                 <p className="card-text text-truncate">
                                                     {favoriteDestinations[2][1].toLocaleString()}
                                                     {" trip"}
-                                                    {favoriteDestinations[2][1] !==
-                                                        1 && "s "}
+                                                    {favoriteDestinations[2][1] !== 1 && "s "}
 
                                                     {" · "}
-                                                    <b>
-                                                        {
-                                                            favoriteDestinations[2][0]
-                                                        }
-                                                    </b>
+                                                    <b>{favoriteDestinations[2][0]}</b>
                                                 </p>
                                             )}
                                         </div>

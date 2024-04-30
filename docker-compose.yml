@@ -11,15 +11,29 @@ services:
         image: rparks/cb-server
         restart: unless-stopped
         environment:
+            # Credentials for connecting to the Mongo
+            # database. Set MONGO_USER and MONGO_PASS
+            # to the same as the mongo service. Don't
+            # change MONGO_URL unless using an external
+            # instance.
             MONGO_URL: mongo:27017
             MONGO_USER: root
             MONGO_PASS: example
+
+            # If this is true, CarBoy will attempt to
+            # create an admin account with these details.
+            CREATE_DEFAULT_ADMIN: true
             DEFAULT_ADMIN_USERNAME: admin
             DEFAULT_ADMIN_PASSWORD: pass
             DEFAULT_ADMIN_FULLNAME: Default Admin
-            CREATE_DEFAULT_ADMIN: true
+
+            # Key used for signing account tokens.
             JWT_PRIVATE_KEY: securePrivateKey
+
+            # PUBLIC access point for CarBoy. Set this to
+            # the same value as in SERVER_URL.js
             CARBOY_PUBLIC_URL: http://localhost/
+
             # how many proxies CarBoy is behind
             # 1 if default (CarBoy's nginx)
             TRUSTED_PROXIES: 1

@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 app.use(cors());
-app.use(express.json({ extended: false }));
+app.use(express.json({ extended: false, limit: "20mb" }));
 mongoose.set("sanitizeFilter", true); // protects against bobby
 
 // for rate limiting based on IP
@@ -27,9 +27,7 @@ mongoose
         app.listen(port, () => console.log(`Server running on port ${port}`));
 
         // for checking if server alive
-        app.get("/api", (req, res) =>
-            res.status(200).json({ message: "Server is running!" })
-        );
+        app.get("/api", (req, res) => res.status(200).json({ message: "Server is running!" }));
 
         // image server
         app.use("/api/images", express.static("images"));

@@ -11,12 +11,7 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
     useState(() => {
         if (userData.user && vehicle.currentUserId != null) {
             // console.log(userCache);
-            getUser(
-                vehicle.currentUserId,
-                userData.token,
-                userCache,
-                addUserToCache
-            )
+            getUser(vehicle.currentUserId, userData.token, userCache, addUserToCache)
                 .then((user) => {
                     // console.log(user);
                     setCurrentUser(user);
@@ -47,22 +42,14 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
                     </p>
                 </div>
                 <div>
-                    {mode === "normal" && userData.user && (
-                        <VehicleButton vehicle={vehicle} />
-                    )}
+                    {mode === "normal" && userData.user && <VehicleButton vehicle={vehicle} />}
 
-                    {mode === "manage" && (
-                        <AdminButtons isAdmin={isAdmin} vehicle={vehicle} />
-                    )}
+                    {mode === "manage" && <AdminButtons isAdmin={isAdmin} vehicle={vehicle} />}
 
                     {mode === "trips" && <TripButtons vehicle={vehicle} />}
                 </div>
             </div>
-            {!userData.user && (
-                <Link to="/login" className="card-footer text-body-secondary">
-                    Login to use
-                </Link>
-            )}
+            {!userData.user && <div className="card-footer text-body-secondary">Login to use</div>}
 
             {/* display current destination if vehicle is checked out */}
             {userData.user && vehicle.checkedOut && currentDestination && (
@@ -72,16 +59,11 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
             )}
 
             {/* display current employee responsible if vehicle is checked out */}
-            {userData.user &&
-                vehicle.checkedOut &&
-                currentUser &&
-                currentUser.fullName && (
-                    <div className="card-footer text-body-secondary">
-                        {currentUser.fullName
-                            ? currentUser.fullName
-                            : "Invalid User"}
-                    </div>
-                )}
+            {userData.user && vehicle.checkedOut && currentUser && currentUser.fullName && (
+                <div className="card-footer text-body-secondary">
+                    {currentUser.fullName ? currentUser.fullName : "Invalid User"}
+                </div>
+            )}
         </div>
     );
 }
@@ -90,10 +72,7 @@ function VehicleButton({ vehicle }) {
     if (vehicle.checkedOut) {
         return (
             <div className="btn-group me-1">
-                <Link
-                    className="btn btn-primary"
-                    to={"/checkin/" + vehicle.vehicleNumber}
-                >
+                <Link className="btn btn-primary" to={"/checkin/" + vehicle.vehicleNumber}>
                     Check In
                 </Link>
             </div>
@@ -101,10 +80,7 @@ function VehicleButton({ vehicle }) {
     } else {
         return (
             <div className="btn-group me-1">
-                <Link
-                    className="btn btn-success"
-                    to={"/checkout/" + vehicle.vehicleNumber}
-                >
+                <Link className="btn btn-success" to={"/checkout/" + vehicle.vehicleNumber}>
                     Check Out
                 </Link>
             </div>
@@ -148,10 +124,7 @@ function TripButtons({ vehicle }) {
     return (
         <div>
             <div className="btn-group">
-                <Link
-                    className="btn btn-primary"
-                    to={"/trips/" + vehicle.vehicleNumber}
-                >
+                <Link className="btn btn-primary" to={"/trips/" + vehicle.vehicleNumber}>
                     {/* https://icons.getbootstrap.com/icons/sign-turn-right/ */}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

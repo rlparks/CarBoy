@@ -1,27 +1,28 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { getUser } from "./assets/helpers";
+import AddDestination from "./components/AddDestination/AddDestination";
 import AddUser from "./components/AddUser/AddUser";
 import AddVehicle from "./components/AddVehicle/AddVehicle";
 import CheckinPage from "./components/CheckinPage/CheckinPage";
 import CheckoutPage from "./components/CheckoutPage/CheckoutPage";
+import DashboardPage from "./components/DashboardPage/DashboardPage";
 import DeletePage from "./components/DeletePage/DeletePage";
+import DestinationsPage from "./components/DestinationsPage/DestinationsPage";
+import EditDestination from "./components/EditDestination/EditDestination";
 import EditUser from "./components/EditUser/EditUser";
 import EditVehicle from "./components/EditVehicle/EditVehicle";
 import ErrorPage from "./components/ErrorPage/ErrorPage";
 import Header from "./components/Header/Header";
-import LoginPage from "./components/LoginPage/LoginPage";
 import SuccessPage from "./components/SuccessPage/SuccessPage";
+import TripsDayPage from "./components/TripsDayPage/TripsDayPage";
 import TripsPage from "./components/TripsPage/TripsPage";
 import UsersPage from "./components/UsersPage/UsersPage";
 import VehicleList from "./components/VehicleList/VehicleList";
 import UserContext from "./context/UserContext";
-import { getUser } from "./assets/helpers";
-import DestinationsPage from "./components/DestinationsPage/DestinationsPage";
-import AddDestination from "./components/AddDestination/AddDestination";
-import EditDestination from "./components/EditDestination/EditDestination";
-import DashboardPage from "./components/DashboardPage/DashboardPage";
-import TripsDayPage from "./components/TripsDayPage/TripsDayPage";
+import LoginPage from "./components/LoginPage/LoginPage";
+import SSORedirectPage from "./components/SSORedirectPage/SSORedirectPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -46,6 +47,12 @@ export default function App() {
         });
     }
 
+    const [oidcInfo, setOidcInfo] = useState({
+        enabled: false,
+        defaultSSO: false,
+        loginRedirectUrl: "",
+    });
+
     useEffect(() => {
         axios
             .get(SERVER_URL + "api/")
@@ -65,18 +72,17 @@ export default function App() {
 
             if (serverRunning) {
                 try {
-                    const tokenResponse = await axios.get(
-                        SERVER_URL + "api/login/tokenIsValid",
-                        { headers: { "x-auth-token": token } }
-                    );
+                    const tokenResponse = await axios.get(SERVER_URL + "api/login/tokenIsValid", {
+                        headers: { "x-auth-token": token },
+                    });
+
+                    const oidcResponse = await axios.get(SERVER_URL + "api/oidc/info");
+                    setOidcInfo(oidcResponse.data);
 
                     if (tokenResponse.data) {
-                        const userRes = await axios.get(
-                            SERVER_URL + "api/login",
-                            {
-                                headers: { "x-auth-token": token },
-                            }
-                        );
+                        const userRes = await axios.get(SERVER_URL + "api/login", {
+                            headers: { "x-auth-token": token },
+                        });
                         setUserData({
                             token,
                             user: userRes.data,
@@ -103,17 +109,14 @@ export default function App() {
     useEffect(() => {
         try {
             if (userData.user) {
-                getUser(
-                    userData.user.id,
-                    userData.token,
-                    userCache,
-                    addUserToCache
-                ).then((userObj) => {
-                    if (!userObj.fullName) {
-                        userObj.fullName = userObj.username;
+                getUser(userData.user.id, userData.token, userCache, addUserToCache).then(
+                    (userObj) => {
+                        if (!userObj.fullName) {
+                            userObj.fullName = userObj.username;
+                        }
+                        setUser(userObj);
                     }
-                    setUser(userObj);
-                });
+                );
             } else {
                 setUser({
                     fullName: null,
@@ -125,16 +128,9 @@ export default function App() {
             console.log("ERROR IN SETUSER");
         }
     }, [userData]);
-
     return (
-        <UserContext.Provider
-            value={{ userData, setUserData, user, userCache, addUserToCache }}
-        >
-            {serverRunning ? (
-                !loading && <NormalBrowserRouter />
-            ) : (
-                <NoServerBrowserRouter />
-            )}
+        <UserContext.Provider value={{ userData, setUserData, user, userCache, addUserToCache }}>
+            {serverRunning ? !loading && <NormalBrowserRouter /> : <NoServerBrowserRouter />}
         </UserContext.Provider>
     );
 
@@ -153,24 +149,16 @@ export default function App() {
         {
             return (
                 <BrowserRouter>
-                    <Header setUserData={setUserData} isAdmin={user.admin} />
+                    <Header setUserData={setUserData} isAdmin={user.admin} oidcInfo={oidcInfo} />
                     <Routes>
                         <Route
                             path="/"
-                            element={
-                                <VehicleList
-                                    isAdmin={user.admin}
-                                    mode={"normal"}
-                                />
-                            }
+                            element={<VehicleList isAdmin={user.admin} mode={"normal"} />}
                         />
                         <Route
                             path="/addvehicle"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <AddVehicle />
                                 </RequireAdmin>
                             }
@@ -181,10 +169,7 @@ export default function App() {
                                 // not using RequireAdmin to avoid component refresh when navigating
                                 userData.user ? (
                                     user.admin ? (
-                                        <VehicleList
-                                            isAdmin={user.admin}
-                                            mode="manage"
-                                        />
+                                        <VehicleList isAdmin={user.admin} mode="manage" />
                                     ) : (
                                         <ErrorPage type={403} />
                                     )
@@ -196,10 +181,7 @@ export default function App() {
                         <Route
                             path="/managevehicles/delete/:vehicleNumber"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <DeletePage mode="vehicle" />
                                 </RequireAdmin>
                             }
@@ -208,10 +190,7 @@ export default function App() {
                             path="/trips"
                             element={
                                 userData.user ? (
-                                    <VehicleList
-                                        isAdmin={user.admin}
-                                        mode="trips"
-                                    />
+                                    <VehicleList isAdmin={user.admin} mode="trips" />
                                 ) : (
                                     <ErrorPage type={401} />
                                 )
@@ -219,31 +198,16 @@ export default function App() {
                         />
                         <Route
                             path="/trips/:vehicleNumber"
-                            element={
-                                userData.user ? (
-                                    <TripsPage />
-                                ) : (
-                                    <ErrorPage type={401} />
-                                )
-                            }
+                            element={userData.user ? <TripsPage /> : <ErrorPage type={401} />}
                         />
                         <Route
                             path="/trips/day"
-                            element={
-                                userData.user ? (
-                                    <TripsDayPage />
-                                ) : (
-                                    <ErrorPage type={401} />
-                                )
-                            }
+                            element={userData.user ? <TripsDayPage /> : <ErrorPage type={401} />}
                         />
                         <Route
                             path="/managevehicles/:vehicleNumber"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <EditVehicle />
                                 </RequireAdmin>
                             }
@@ -254,17 +218,24 @@ export default function App() {
                                 userData.user ? (
                                     <Navigate to="/" />
                                 ) : (
-                                    <LoginPage />
+                                    <LoginPage oidcInfo={oidcInfo} />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/login/sso"
+                            element={
+                                oidcInfo.enabled ? (
+                                    <SSORedirectPage redirectUrl={oidcInfo.loginRedirectUrl} />
+                                ) : (
+                                    <ErrorPage type={404} />
                                 )
                             }
                         />
                         <Route
                             path="/manageusers"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <UsersPage />
                                 </RequireAdmin>
                             }
@@ -272,10 +243,7 @@ export default function App() {
                         <Route
                             path="/manageusers/:userId"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <EditUser mode="admin" />
                                 </RequireAdmin>
                             }
@@ -283,20 +251,13 @@ export default function App() {
                         <Route
                             path="/manageself"
                             element={
-                                userData.user ? (
-                                    <EditUser mode="self" />
-                                ) : (
-                                    <ErrorPage type={401} />
-                                )
+                                userData.user ? <EditUser mode="self" /> : <ErrorPage type={401} />
                             }
                         />
                         <Route
                             path="/adduser"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <AddUser />
                                 </RequireAdmin>
                             }
@@ -304,41 +265,23 @@ export default function App() {
                         <Route
                             path="/manageusers/delete/:userId"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <DeletePage mode="user" />
                                 </RequireAdmin>
                             }
                         />
                         <Route
                             path="/checkout/:vehicleNumber"
-                            element={
-                                userData.user ? (
-                                    <CheckoutPage />
-                                ) : (
-                                    <ErrorPage type={401} />
-                                )
-                            }
+                            element={userData.user ? <CheckoutPage /> : <ErrorPage type={401} />}
                         />
                         <Route
                             path="/checkin/:vehicleNumber"
-                            element={
-                                userData.user ? (
-                                    <CheckinPage />
-                                ) : (
-                                    <ErrorPage type={401} />
-                                )
-                            }
+                            element={userData.user ? <CheckinPage /> : <ErrorPage type={401} />}
                         />
                         <Route
                             path="/adddestination"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <AddDestination />
                                 </RequireAdmin>
                             }
@@ -346,10 +289,7 @@ export default function App() {
                         <Route
                             path="/managedestinations"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <DestinationsPage />
                                 </RequireAdmin>
                             }
@@ -357,10 +297,7 @@ export default function App() {
                         <Route
                             path="/managedestinations/:destinationId"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <EditDestination />
                                 </RequireAdmin>
                             }
@@ -368,29 +305,17 @@ export default function App() {
                         <Route
                             path="/managedestinations/delete/:destinationId"
                             element={
-                                <RequireAdmin
-                                    userData={userData}
-                                    isAdmin={user.admin}
-                                >
+                                <RequireAdmin userData={userData} isAdmin={user.admin}>
                                     <DeletePage mode="destination" />
                                 </RequireAdmin>
                             }
                         />
                         <Route
                             path="/dashboard"
-                            element={
-                                userData.user ? (
-                                    <DashboardPage />
-                                ) : (
-                                    <ErrorPage type={401} />
-                                )
-                            }
+                            element={userData.user ? <DashboardPage /> : <ErrorPage type={401} />}
                         />
                         <Route path="/success" element={<SuccessPage />} />
-                        <Route
-                            path="/success/:redirectUrl"
-                            element={<SuccessPage />}
-                        />
+                        <Route path="/success/:redirectUrl" element={<SuccessPage />} />
                         <Route path="*" element={<ErrorPage type={404} />} />
                     </Routes>
                 </BrowserRouter>

@@ -49,6 +49,9 @@ mongoose
 
         const destinations = require("./routes/api/Destination");
         app.use("/api/destinations", destinations);
+
+        const oidcs = require("./routes/api/OIDC");
+        app.use("/api/oidc", oidcs);
     })
     .catch((err) => {
         console.log(`Error in DB Connection ${err}`);

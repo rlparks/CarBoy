@@ -37,6 +37,11 @@ services:
             # how many proxies CarBoy is behind
             # 1 if default (CarBoy's nginx)
             TRUSTED_PROXIES: 1
+
+            # SSO configuration
+            OIDC_ENABLED: false
+            DEFAULT_LOGIN_WITH_SSO: false
+            OIDC_LOGIN_REDIRECT_URL: undefined
         volumes:
             - ./images:/app/images
         depends_on:

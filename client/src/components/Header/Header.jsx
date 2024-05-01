@@ -7,9 +7,10 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 
-export default function Header({ setUserData, isAdmin, serverDown }) {
+export default function Header({ setUserData, isAdmin, serverDown, oidcInfo }) {
     const { userData, user } = useContext(UserContext);
     const navigate = useNavigate();
+    const [loginUrl, setLoginUrl] = useState("/login");
 
     function handleLogout() {
         localStorage.clear();
@@ -37,16 +38,15 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
         if (link !== url.pathname) {
             setLink(url.pathname);
         }
+        if (oidcInfo && oidcInfo.enabled && oidcInfo.defaultSSO && oidcInfo.loginRedirectUrl) {
+            setLoginUrl("/login/sso");
+        }
     });
 
     if (link.includes("/dashboard") && userData.user) {
         return (
             <div className="d-flex justify-content-center mt-3 mb-1">
-                <Navbar.Brand
-                    as={NavLink}
-                    to="/"
-                    onClick={() => handleClick("/")}
-                >
+                <Navbar.Brand as={NavLink} to="/" onClick={() => handleClick("/")}>
                     <Title />
                 </Navbar.Brand>
             </div>
@@ -54,17 +54,9 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
     }
 
     return (
-        <Navbar
-            expanded={expanded}
-            expand="lg"
-            className="bg-body-tertiary mb-1"
-        >
+        <Navbar expanded={expanded} expand="lg" className="bg-body-tertiary mb-1">
             <Container fluid>
-                <Navbar.Brand
-                    as={NavLink}
-                    to="/"
-                    onClick={() => handleClick("/")}
-                >
+                <Navbar.Brand as={NavLink} to="/" onClick={() => handleClick("/")}>
                     <Title />
                 </Navbar.Brand>
                 <Navbar.Toggle
@@ -87,9 +79,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                     as={NavLink}
                                     to="/trips"
                                     onClick={() => handleClick("/trips")}
-                                    className={
-                                        link.includes("/trips") && "active"
-                                    }
+                                    className={link.includes("/trips") && "active"}
                                 >
                                     Trips
                                 </Nav.Link>
@@ -108,26 +98,16 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                 <Nav.Link
                                     as={NavLink}
                                     to="/managevehicles"
-                                    onClick={() =>
-                                        handleClick("/managevehicles")
-                                    }
-                                    className={
-                                        link.includes("/managevehicles") &&
-                                        "active"
-                                    }
+                                    onClick={() => handleClick("/managevehicles")}
+                                    className={link.includes("/managevehicles") && "active"}
                                 >
                                     Manage Vehicles
                                 </Nav.Link>
                                 <Nav.Link
                                     as={NavLink}
                                     to="/managedestinations"
-                                    onClick={() =>
-                                        handleClick("/managedestinations")
-                                    }
-                                    className={
-                                        link.includes("/managedestinations") &&
-                                        "active"
-                                    }
+                                    onClick={() => handleClick("/managedestinations")}
+                                    className={link.includes("/managedestinations") && "active"}
                                 >
                                     Manage Destinations
                                 </Nav.Link>
@@ -135,10 +115,7 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                     as={NavLink}
                                     to="/manageusers"
                                     onClick={() => handleClick("/manageusers")}
-                                    className={
-                                        link.includes("/manageusers") &&
-                                        "active"
-                                    }
+                                    className={link.includes("/manageusers") && "active"}
                                 >
                                     Manage Users
                                 </Nav.Link>
@@ -152,19 +129,12 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                     <Nav.Link
                                         as={NavLink}
                                         to="/manageself"
-                                        onClick={() =>
-                                            handleClick("/manageself")
-                                        }
-                                        className={
-                                            link === "/manageself" && "active"
-                                        }
+                                        onClick={() => handleClick("/manageself")}
+                                        className={link === "/manageself" && "active"}
                                     >
                                         {user.fullName}
                                     </Nav.Link>
-                                    <button
-                                        className="btn btn-secondary"
-                                        onClick={handleLogout}
-                                    >
+                                    <button className="btn btn-secondary" onClick={handleLogout}>
                                         Logout
                                     </button>
                                 </div>
@@ -172,15 +142,11 @@ export default function Header({ setUserData, isAdmin, serverDown }) {
                                 <div className="d-flex">
                                     <Nav.Link
                                         as={NavLink}
-                                        to="/login"
+                                        to={loginUrl}
                                         onClick={() => handleClick("/login")}
-                                        className={
-                                            link.includes("/login") && "active"
-                                        }
+                                        className={link.includes("/login") && "active"}
                                     >
-                                        <Button variant="secondary">
-                                            Login
-                                        </Button>
+                                        <Button variant="secondary">Login</Button>
                                     </Nav.Link>
                                 </div>
                             )}

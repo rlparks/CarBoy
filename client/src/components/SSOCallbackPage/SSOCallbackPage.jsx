@@ -55,7 +55,7 @@ export default function SSOCallbackPage({ oidcInfo, setUserData }) {
     return (
         <div>
             {error && <p className="text-center text-danger">{error}</p>}
-            <p className="text-center">Logging in...</p>
+            {!error && <p className="text-center">Logging in...</p>}
         </div>
     );
 }

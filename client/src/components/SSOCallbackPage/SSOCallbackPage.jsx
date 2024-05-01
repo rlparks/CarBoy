@@ -27,7 +27,7 @@ export default function SSOCallbackPage({ oidcInfo, setUserData }) {
     }, [code]);
 
     async function loginWithCode() {
-        console.log(code);
+        // console.log(code);
         try {
             const loginResponse = await axios.post(
                 SERVER_URL + "api/oidc/login",

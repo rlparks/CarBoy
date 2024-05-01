@@ -1,8 +1,11 @@
 import axios from "axios";
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function SSOCallbackPage({ oidcInfo, setUserData }) {
+    const navigate = useNavigate();
+    const [error, setError] = useState(null);
+
     const params = useSearchParams()[0];
     const code = params.get("code");
     const urlState = params.get("state");
@@ -13,6 +16,7 @@ export default function SSOCallbackPage({ oidcInfo, setUserData }) {
         ?.split("=")[1];
 
     useEffect(() => {
+        document.title = "CarBoy · Logging in...";
         if (code) {
             if (urlState === cookieState) {
                 loginWithCode();
@@ -25,33 +29,33 @@ export default function SSOCallbackPage({ oidcInfo, setUserData }) {
     async function loginWithCode() {
         console.log(code);
         try {
-            await axios
-                .post(
-                    SERVER_URL + "api/oidc/login",
-                    {},
-                    {
-                        headers: {
-                            "X-CB-Code": code,
-                        },
-                    }
-                )
-                .then((res) => {
-                    if (res.data.token) {
-                        localStorage.setItem("auth-token", res.data.token);
-                        setUserData({
-                            token: res.data.token,
-                            user: res.data.user,
-                        });
-                    }
+            const loginResponse = await axios.post(
+                SERVER_URL + "api/oidc/login",
+                {},
+                {
+                    headers: {
+                        "X-CB-Code": code,
+                    },
+                }
+            );
+            if (loginResponse.data.token) {
+                localStorage.setItem("auth-token", loginResponse.data.token);
+                setUserData({
+                    token: loginResponse.data.token,
+                    user: loginResponse.data.user,
                 });
+                navigate("/");
+            }
         } catch (err) {
-            console.error(err);
+            // console.error(err);
+            setError(err.response.data.error);
         }
     }
 
     return (
         <div>
-            <p className="text-center">Loading...</p>
+            {error && <p className="text-center text-danger">{error}</p>}
+            <p className="text-center">Logging in...</p>
         </div>
     );
 }

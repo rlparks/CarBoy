@@ -237,7 +237,10 @@ export default function App() {
                             path="/login/sso/callback"
                             element={
                                 oidcInfo.enabled ? (
-                                    <SSOCallbackPage oidcInfo={oidcInfo} />
+                                    <SSOCallbackPage
+                                        oidcInfo={oidcInfo}
+                                        setUserData={setUserData}
+                                    />
                                 ) : (
                                     <ErrorPage type={404} />
                                 )

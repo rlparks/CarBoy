@@ -35,7 +35,7 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
         grant_type: "authorization_code",
         redirect_uri: redirectUri,
     });
-    console.log(body);
+    // console.log(body);
 
     const tokenResponse = await fetch(process.env.OIDC_TOKEN_ENDPOINT, {
         method: "POST",
@@ -58,7 +58,7 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
         },
     });
     const userInfoJson = await userInfoResponse.json();
-    console.log("User info response:");
+    // console.log("User info response:");
     // console.log(userInfoJson);
     // {
     //   sub: 'ff78c6ed-79ab-47d9-8a1f-3148b57bb7a6',
@@ -70,6 +70,7 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
     //   email: 'rpark@uga.edu'
     // }
 
+    // surely we can trust this username, right?
     const verifiedUsername = userInfoJson.preferred_username;
 
     const user = await User.findOne({ username: verifiedUsername });

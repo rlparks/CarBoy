@@ -46,6 +46,7 @@ services:
             OIDC_CLIENT_SECRET: undefined
             OIDC_TOKEN_ENDPOINT: undefined
             OIDC_USERINFO_ENDPOINT: undefined
+            OIDC_LOGOUT_ENDPOINT: undefined
         volumes:
             - ./images:/app/images
         depends_on:

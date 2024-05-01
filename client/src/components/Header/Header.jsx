@@ -14,11 +14,29 @@ export default function Header({ setUserData, isAdmin, serverDown, oidcInfo }) {
 
     function handleLogout() {
         localStorage.clear();
-        setUserData({
-            token: undefined,
-            user: undefined,
-        });
-        navigate("/");
+
+        const cookieIdToken = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("id_token"))
+            ?.split("=")[1];
+
+        if (oidcInfo && oidcInfo.enabled && oidcInfo.logoutRedirectUrl && cookieIdToken) {
+            const redirectUrl =
+                oidcInfo.logoutRedirectUrl +
+                `?redirect_uri=${SERVER_URL}&id_token_hint=${userData.user.oidcIdToken}`;
+
+            setUserData({
+                token: undefined,
+                user: undefined,
+            });
+            window.location.href = oidcInfo.logoutRedirectUrl;
+        } else {
+            setUserData({
+                token: undefined,
+                user: undefined,
+            });
+            navigate("/");
+        }
     }
 
     const [expanded, setExpanded] = useState(false);

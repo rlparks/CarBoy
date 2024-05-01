@@ -44,6 +44,9 @@ export default function SSOCallbackPage({ oidcInfo, setUserData }) {
                     token: loginResponse.data.token,
                     user: loginResponse.data.user,
                 });
+                const cookieStr = `id_token=${loginResponse.data.idToken}; path=/; max-age=${
+                    60 * 60 * 24 * 365
+                }; SameSite=strict;`;
                 navigate("/");
             }
         } catch (err) {

@@ -18,6 +18,7 @@ oidcRouter.get("/info", (req, res) => {
         enabled: oidcEnabled,
         defaultSSO: defaultLoginWithSSO,
         loginRedirectUrl: oidcRedirectUrl,
+        logoutRedirectUrl: process.env.OIDC_LOGOUT_ENDPOINT,
     };
 
     res.json(obj);
@@ -91,6 +92,7 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
         return res.json({
             token,
             user: { id: user._id, username: user.username },
+            idToken: tokenJson.id_token,
         });
     } catch (err) {
         console.log("LOGIN ERROR: " + err);

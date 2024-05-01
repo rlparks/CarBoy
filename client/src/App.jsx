@@ -23,6 +23,7 @@ import VehicleList from "./components/VehicleList/VehicleList";
 import UserContext from "./context/UserContext";
 import LoginPage from "./components/LoginPage/LoginPage";
 import SSORedirectPage from "./components/SSORedirectPage/SSORedirectPage";
+import SSOCallbackPage from "./components/SSOCallbackPage/SSOCallbackPage";
 
 export default function App() {
     const [userData, setUserData] = useState({
@@ -227,6 +228,16 @@ export default function App() {
                             element={
                                 oidcInfo.enabled ? (
                                     <SSORedirectPage redirectUrl={oidcInfo.loginRedirectUrl} />
+                                ) : (
+                                    <ErrorPage type={404} />
+                                )
+                            }
+                        />
+                        <Route
+                            path="/login/sso/callback"
+                            element={
+                                oidcInfo.enabled ? (
+                                    <SSOCallbackPage oidcInfo={oidcInfo} />
                                 ) : (
                                     <ErrorPage type={404} />
                                 )

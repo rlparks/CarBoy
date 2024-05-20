@@ -7,7 +7,6 @@ const User = require("../../models/User");
 const redirectUri = process.env.CARBOY_PUBLIC_URL + "login/sso/callback";
 
 oidcRouter.get("/info", (req, res) => {
-    // TODO
     const oidcEnabled = process.env.OIDC_ENABLED;
     const defaultLoginWithSSO = process.env.DEFAULT_LOGIN_WITH_SSO;
     const oidcRedirectUrl =
@@ -88,10 +87,12 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
     try {
         const token = jwt.sign({ id: user._id }, process.env.JWT_PRIVATE_KEY);
         console.log("SSO LOGIN SUCCESS - " + req.ip + ": " + user.username);
+
+        // idToken used for logout
         return res.json({
             token,
             user: { id: user._id, username: user.username },
-            // idToken: tokenJson.id_token,
+            idToken: tokenJson.id_token,
         });
     } catch (err) {
         console.log("LOGIN ERROR: " + err);

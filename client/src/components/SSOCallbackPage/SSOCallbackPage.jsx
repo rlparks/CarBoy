@@ -51,9 +51,13 @@ export default function SSOCallbackPage({ oidcInfo, setUserData }) {
                     token: loginResponse.data.token,
                     user: loginResponse.data.user,
                 });
+
+                // used for logout hint
                 // const cookieStr = `id_token=${loginResponse.data.idToken}; path=/; max-age=${
                 //     60 * 60 * 24 * 365
                 // }; SameSite=strict;`;
+                // document.cookie = cookieStr;
+                localStorage.setItem("cb-id-token", loginResponse.data.idToken);
 
                 navigate("/");
             }

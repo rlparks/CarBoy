@@ -226,7 +226,9 @@ export default function App() {
                         <Route
                             path="/login/sso"
                             element={
-                                oidcInfo.enabled ? (
+                                userData.user ? (
+                                    <Navigate to="/" />
+                                ) : oidcInfo.enabled ? (
                                     <SSORedirectPage redirectUrl={oidcInfo.loginRedirectUrl} />
                                 ) : (
                                     <ErrorPage type={404} />

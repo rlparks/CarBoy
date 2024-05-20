@@ -13,23 +13,25 @@ export default function Header({ setUserData, isAdmin, serverDown, oidcInfo }) {
     const [loginUrl, setLoginUrl] = useState("/login");
 
     function handleLogout() {
+        // const cookieIdToken = document.cookie
+        //     .split("; ")
+        //     .find((row) => row.startsWith("id_token"))
+        //     ?.split("=")[1];
+        const logoutIdToken = localStorage.getItem("cb-id-token");
+
         localStorage.clear();
 
-        const cookieIdToken = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("id_token"))
-            ?.split("=")[1];
-
-        if (oidcInfo && oidcInfo.enabled && oidcInfo.logoutRedirectUrl && cookieIdToken) {
+        if (oidcInfo && oidcInfo.enabled && oidcInfo.logoutRedirectUrl && logoutIdToken) {
+            document.cookie = `id_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=strict;`;
             const redirectUrl =
                 oidcInfo.logoutRedirectUrl +
-                `?redirect_uri=${SERVER_URL}&id_token_hint=${userData.user.oidcIdToken}`;
+                `?post_logout_redirect_uri=${SERVER_URL}&id_token_hint=${logoutIdToken}`;
 
             setUserData({
                 token: undefined,
                 user: undefined,
             });
-            window.location.href = oidcInfo.logoutRedirectUrl;
+            window.location.href = redirectUrl;
         } else {
             setUserData({
                 token: undefined,

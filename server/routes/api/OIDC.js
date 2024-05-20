@@ -26,7 +26,6 @@ oidcRouter.get("/info", (req, res) => {
 
 oidcRouter.post("/login", rateLimit, async (req, res) => {
     const clientSecret = process.env.OIDC_CLIENT_SECRET;
-    // TODO
     const authCode = req.headers["x-cb-code"];
     // console.log(req.headers);
     const body = new URLSearchParams({
@@ -78,12 +77,12 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
     // return same error message as to not give any info
     if (!user) {
         console.log("SSO LOGIN FAILURE - " + req.ip + " - (NO USER): " + verifiedUsername);
-        return res.status(400).json({ error: "Invalid credentials" });
+        return res.status(400).json({ error: "Login failure. Please try again." });
     }
 
     if (user.disabled) {
         console.log("SSO LOGIN FAILURE - " + req.ip + " - (ACCOUNT DISABLED): " + user.username);
-        return res.status(400).json({ error: "Invalid credentials" });
+        return res.status(400).json({ error: "Login failure. Please try again." });
     }
 
     try {
@@ -92,7 +91,7 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
         return res.json({
             token,
             user: { id: user._id, username: user.username },
-            idToken: tokenJson.id_token,
+            // idToken: tokenJson.id_token,
         });
     } catch (err) {
         console.log("LOGIN ERROR: " + err);

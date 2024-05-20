@@ -14,7 +14,7 @@ export default function SSOCallbackPage({ oidcInfo, setUserData }) {
         .split("; ")
         .find((row) => row.startsWith("cb_oidc_state"))
         ?.split("=")[1];
-    document.cookie = `cb_oidc_state=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=strict;`;
+    document.cookie = `cb_oidc_state=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=strict; Secure;`;
 
     useEffect(() => {
         document.title = "CarBoy · Logging in...";

@@ -73,15 +73,14 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
     const verifiedUsername = userInfoJson.preferred_username;
 
     const user = await User.findOne({ username: verifiedUsername });
-    // return same error message as to not give any info
     if (!user) {
         console.log("SSO LOGIN FAILURE - " + req.ip + " - (NO USER): " + verifiedUsername);
-        return res.status(400).json({ error: "Login failure. Please try again." });
+        return res.status(403).json({ error: "Login failure. Account does not exist in CarBoy." });
     }
 
     if (user.disabled) {
         console.log("SSO LOGIN FAILURE - " + req.ip + " - (ACCOUNT DISABLED): " + user.username);
-        return res.status(400).json({ error: "Login failure. Please try again." });
+        return res.status(400).json({ error: "Invalid credentials" });
     }
 
     try {

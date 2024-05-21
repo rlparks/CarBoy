@@ -41,12 +41,9 @@ services:
             # SSO configuration
             OIDC_ENABLED: false
             DEFAULT_LOGIN_WITH_SSO: false
+            OIDC_DISCOVERY_ENDPOINT: undefined
             OIDC_CLIENT_ID: undefined
-            OIDC_AUTH_ENDPOINT: undefined
             OIDC_CLIENT_SECRET: undefined
-            OIDC_TOKEN_ENDPOINT: undefined
-            OIDC_USERINFO_ENDPOINT: undefined
-            OIDC_LOGOUT_ENDPOINT: undefined
         volumes:
             - ./images:/app/images
         depends_on:

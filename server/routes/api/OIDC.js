@@ -6,18 +6,34 @@ const User = require("../../models/User");
 
 const redirectUri = process.env.CARBOY_PUBLIC_URL + "login/sso/callback";
 
+let OIDC_AUTH_ENDPOINT = undefined;
+let OIDC_TOKEN_ENDPOINT = undefined;
+let OIDC_USERINFO_ENDPOINT = undefined;
+let OIDC_LOGOUT_ENDPOINT = undefined;
+if (process.env.OIDC_ENABLED) {
+    // hopefully no requests come in before the server can fetch this :)
+    fetch(process.env.OIDC_DISCOVERY_ENDPOINT).then((response) => {
+        response.json().then((data) => {
+            OIDC_AUTH_ENDPOINT = data.authorization_endpoint;
+            OIDC_TOKEN_ENDPOINT = data.token_endpoint;
+            OIDC_USERINFO_ENDPOINT = data.userinfo_endpoint;
+            OIDC_LOGOUT_ENDPOINT = data.end_session_endpoint;
+        });
+    });
+}
+
 oidcRouter.get("/info", (req, res) => {
     const oidcEnabled = process.env.OIDC_ENABLED;
     const defaultLoginWithSSO = process.env.DEFAULT_LOGIN_WITH_SSO;
     const oidcRedirectUrl =
-        process.env.OIDC_AUTH_ENDPOINT +
+        OIDC_AUTH_ENDPOINT +
         `?scope=openid&response_type=code&redirect_uri=${redirectUri}&client_id=${process.env.OIDC_CLIENT_ID}`;
 
     const obj = {
         enabled: oidcEnabled,
         defaultSSO: defaultLoginWithSSO,
         loginRedirectUrl: oidcRedirectUrl,
-        logoutRedirectUrl: process.env.OIDC_LOGOUT_ENDPOINT,
+        logoutRedirectUrl: OIDC_LOGOUT_ENDPOINT,
     };
 
     res.json(obj);
@@ -36,7 +52,7 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
     });
     // console.log(body);
 
-    const tokenResponse = await fetch(process.env.OIDC_TOKEN_ENDPOINT, {
+    const tokenResponse = await fetch(OIDC_TOKEN_ENDPOINT, {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -51,7 +67,7 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
         return res.status(400).json({ error: "Token response error" });
     }
 
-    const userInfoResponse = await fetch(process.env.OIDC_USERINFO_ENDPOINT, {
+    const userInfoResponse = await fetch(OIDC_USERINFO_ENDPOINT, {
         headers: {
             Authorization: `Bearer ${tokenJson.access_token}`,
         },
@@ -75,12 +91,15 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
     const user = await User.findOne({ username: verifiedUsername });
     if (!user) {
         console.log("SSO LOGIN FAILURE - " + req.ip + " - (NO USER): " + verifiedUsername);
-        return res.status(403).json({ error: "Login failure. Account does not exist in CarBoy." });
+        return res.status(403).json({
+            error: "Login failure. Account does not exist in CarBoy.",
+            idToken: tokenJson.id_token,
+        });
     }
 
     if (user.disabled) {
         console.log("SSO LOGIN FAILURE - " + req.ip + " - (ACCOUNT DISABLED): " + user.username);
-        return res.status(400).json({ error: "Invalid credentials" });
+        return res.status(400).json({ error: "Invalid credentials", idToken: tokenJson.id_token });
     }
 
     try {

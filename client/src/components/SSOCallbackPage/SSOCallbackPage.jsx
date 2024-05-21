@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 export default function SSOCallbackPage({ oidcInfo, setUserData }) {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
+    const [logoutIdToken, setLogoutIdToken] = useState("");
 
     const params = useSearchParams()[0];
     const code = params.get("code");
@@ -64,13 +65,29 @@ export default function SSOCallbackPage({ oidcInfo, setUserData }) {
         } catch (err) {
             // console.error(err);
             setError(err.response.data.error);
+            setLogoutIdToken(err.response.data.idToken);
         }
     }
 
     return (
         <div>
-            {error && <p className="text-center text-danger">{error}</p>}
             {!error && <p className="text-center">Logging in...</p>}
+            {error && (
+                <div>
+                    <p className="text-center text-danger">{error}</p>
+                    <div className="d-flex justify-content-center w-100">
+                        <a
+                            href={
+                                oidcInfo.logoutRedirectUrl +
+                                `?post_logout_redirect_uri=${SERVER_URL}&id_token_hint=${logoutIdToken}`
+                            }
+                            className="btn btn-primary"
+                        >
+                            SSO Logout
+                        </a>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

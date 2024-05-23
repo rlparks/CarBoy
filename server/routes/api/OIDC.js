@@ -10,16 +10,20 @@ let OIDC_AUTH_ENDPOINT = undefined;
 let OIDC_TOKEN_ENDPOINT = undefined;
 let OIDC_USERINFO_ENDPOINT = undefined;
 let OIDC_LOGOUT_ENDPOINT = undefined;
-if (process.env.OIDC_ENABLED) {
+if (process.env.OIDC_ENABLED === "true") {
     // hopefully no requests come in before the server can fetch this :)
-    fetch(process.env.OIDC_DISCOVERY_ENDPOINT).then((response) => {
-        response.json().then((data) => {
-            OIDC_AUTH_ENDPOINT = data.authorization_endpoint;
-            OIDC_TOKEN_ENDPOINT = data.token_endpoint;
-            OIDC_USERINFO_ENDPOINT = data.userinfo_endpoint;
-            OIDC_LOGOUT_ENDPOINT = data.end_session_endpoint;
+    try {
+        fetch(process.env.OIDC_DISCOVERY_ENDPOINT).then((response) => {
+            response.json().then((data) => {
+                OIDC_AUTH_ENDPOINT = data.authorization_endpoint;
+                OIDC_TOKEN_ENDPOINT = data.token_endpoint;
+                OIDC_USERINFO_ENDPOINT = data.userinfo_endpoint;
+                OIDC_LOGOUT_ENDPOINT = data.end_session_endpoint;
+            });
         });
-    });
+    } catch (err) {
+        console.log("OIDC fetch error: ", err);
+    }
 }
 
 oidcRouter.get("/info", (req, res) => {

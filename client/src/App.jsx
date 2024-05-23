@@ -78,7 +78,12 @@ export default function App() {
                     });
 
                     const oidcResponse = await axios.get(SERVER_URL + "api/oidc/info");
-                    setOidcInfo(oidcResponse.data);
+                    setOidcInfo({
+                        enabled: oidcResponse.data.enabled === "true",
+                        defaultSSO: oidcResponse.data.defaultSSO === "true",
+                        loginRedirectUrl: oidcResponse.data.loginRedirectUrl,
+                        logoutRedirectUrl: oidcResponse.data.logoutRedirectUrl,
+                    });
 
                     if (tokenResponse.data) {
                         const userRes = await axios.get(SERVER_URL + "api/login", {

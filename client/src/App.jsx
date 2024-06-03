@@ -79,8 +79,8 @@ export default function App() {
 
                     const oidcResponse = await axios.get(SERVER_URL + "api/oidc/info");
                     setOidcInfo({
-                        enabled: oidcResponse.data.enabled === "true",
-                        defaultSSO: oidcResponse.data.defaultSSO === "true",
+                        enabled: oidcResponse.data.enabled,
+                        defaultSSO: oidcResponse.data.defaultSSO,
                         loginRedirectUrl: oidcResponse.data.loginRedirectUrl,
                         logoutRedirectUrl: oidcResponse.data.logoutRedirectUrl,
                     });

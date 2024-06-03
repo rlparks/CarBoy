@@ -6,29 +6,35 @@ const User = require("../../models/User");
 
 const redirectUri = process.env.CARBOY_PUBLIC_URL + "login/sso/callback";
 
+let oidcEnabled = process.env.OIDC_ENABLED === "true";
 let OIDC_AUTH_ENDPOINT = undefined;
 let OIDC_TOKEN_ENDPOINT = undefined;
 let OIDC_USERINFO_ENDPOINT = undefined;
 let OIDC_LOGOUT_ENDPOINT = undefined;
-if (process.env.OIDC_ENABLED === "true") {
-    // hopefully no requests come in before the server can fetch this :)
-    try {
-        fetch(process.env.OIDC_DISCOVERY_ENDPOINT).then((response) => {
-            response.json().then((data) => {
-                OIDC_AUTH_ENDPOINT = data.authorization_endpoint;
-                OIDC_TOKEN_ENDPOINT = data.token_endpoint;
-                OIDC_USERINFO_ENDPOINT = data.userinfo_endpoint;
-                OIDC_LOGOUT_ENDPOINT = data.end_session_endpoint;
+
+function refreshOidcInfo() {
+    if (oidcEnabled) {
+        // hopefully no requests come in before the server can fetch this :)
+        fetch(process.env.OIDC_DISCOVERY_ENDPOINT)
+            .then((response) => {
+                response.json().then((data) => {
+                    OIDC_AUTH_ENDPOINT = data.authorization_endpoint;
+                    OIDC_TOKEN_ENDPOINT = data.token_endpoint;
+                    OIDC_USERINFO_ENDPOINT = data.userinfo_endpoint;
+                    OIDC_LOGOUT_ENDPOINT = data.end_session_endpoint;
+                });
+            })
+            .catch((err) => {
+                oidcEnabled = false;
+                console.log("OIDC fetch error. Is the SSO server online?\n", err);
             });
-        });
-    } catch (err) {
-        console.log("OIDC fetch error: ", err);
     }
 }
 
+refreshOidcInfo();
+
 oidcRouter.get("/info", (req, res) => {
-    const oidcEnabled = process.env.OIDC_ENABLED;
-    const defaultLoginWithSSO = process.env.DEFAULT_LOGIN_WITH_SSO;
+    const defaultLoginWithSSO = process.env.DEFAULT_LOGIN_WITH_SSO === "true";
     const oidcRedirectUrl =
         OIDC_AUTH_ENDPOINT +
         `?scope=openid&response_type=code&redirect_uri=${redirectUri}&client_id=${process.env.OIDC_CLIENT_ID}`;

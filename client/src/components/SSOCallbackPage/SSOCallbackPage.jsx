@@ -79,7 +79,9 @@ export default function SSOCallbackPage({ oidcInfo, setUserData }) {
                         <a
                             href={
                                 oidcInfo.logoutRedirectUrl +
-                                `?post_logout_redirect_uri=${SERVER_URL}&id_token_hint=${logoutIdToken}`
+                                `?${new URLSearchParams(
+                                    `post_logout_redirect_uri=${SERVER_URL}&id_token_hint=${logoutIdToken}`
+                                ).toString()}`
                             }
                             className="btn btn-primary"
                         >

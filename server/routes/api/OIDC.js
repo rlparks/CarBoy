@@ -37,7 +37,9 @@ oidcRouter.get("/info", (req, res) => {
     const defaultLoginWithSSO = process.env.DEFAULT_LOGIN_WITH_SSO === "true";
     const oidcRedirectUrl =
         OIDC_AUTH_ENDPOINT +
-        `?scope=openid&response_type=code&redirect_uri=${redirectUri}&client_id=${process.env.OIDC_CLIENT_ID}`;
+        `?${new URLSearchParams(
+            `scope=openid&response_type=code&redirect_uri=${redirectUri}&client_id=${process.env.OIDC_CLIENT_ID}`
+        ).toString()}`;
 
     const obj = {
         enabled: oidcEnabled,

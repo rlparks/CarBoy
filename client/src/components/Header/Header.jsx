@@ -25,7 +25,9 @@ export default function Header({ setUserData, isAdmin, serverDown, oidcInfo }) {
             // document.cookie = `id_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=strict;`;
             const redirectUrl =
                 oidcInfo.logoutRedirectUrl +
-                `?post_logout_redirect_uri=${SERVER_URL}&id_token_hint=${logoutIdToken}`;
+                `?${new URLSearchParams(
+                    `post_logout_redirect_uri=${SERVER_URL}&id_token_hint=${logoutIdToken}`
+                ).toString()}`;
 
             setUserData({
                 token: undefined,

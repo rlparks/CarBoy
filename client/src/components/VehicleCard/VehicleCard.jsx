@@ -3,7 +3,7 @@ import UserContext from "../../context/UserContext";
 import { useContext, useState } from "react";
 import { getUser } from "../../assets/helpers";
 
-export default function VehicleCard({ vehicle, isAdmin, mode }) {
+export default function VehicleCard({ vehicle, isAdmin, mode, defaultSSO }) {
     const { userData, userCache, addUserToCache } = useContext(UserContext);
     const [currentUser, setCurrentUser] = useState({ fullName: "" });
     const [currentDestination, setCurrentDestination] = useState("");
@@ -50,7 +50,10 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
                 </div>
             </div>
             {!userData.user && (
-                <Link to="/login" className="card-footer text-body-secondary text-decoration-none">
+                <Link
+                    to={defaultSSO ? "/login/sso" : "/login"}
+                    className="card-footer text-body-secondary text-decoration-none"
+                >
                     Login to use
                 </Link>
             )}

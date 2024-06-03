@@ -12,7 +12,7 @@ import {
 import UserContext from "../../context/UserContext";
 import VehicleSubList from "../VehicleSubList/VehicleSubList";
 
-export default function VehicleList({ isAdmin, mode }) {
+export default function VehicleList({ isAdmin, mode, defaultSSO }) {
     const numColumns = 5;
 
     const [vehicles, setVehicles] = useState([]);
@@ -50,14 +50,10 @@ export default function VehicleList({ isAdmin, mode }) {
 
     useEffect(() => {
         setAvailableVehicles(
-            vehicles.filter(
-                (vehicle) => !vehicle.checkedOut && !vehicle.disabled
-            )
+            vehicles.filter((vehicle) => !vehicle.checkedOut && !vehicle.disabled)
         );
         setCheckedOutVehicles(
-            vehicles.filter(
-                (vehicle) => vehicle.checkedOut && !vehicle.disabled
-            )
+            vehicles.filter((vehicle) => vehicle.checkedOut && !vehicle.disabled)
         );
         setDisabledVehicles(vehicles.filter((vehicle) => vehicle.disabled));
     }, [vehicles]);
@@ -114,12 +110,7 @@ export default function VehicleList({ isAdmin, mode }) {
             megaTripsArray = megaTripsArray.concat(vehicle.trips);
         }
         const tempTrips = structuredClone(megaTripsArray);
-        await makeHumanReadable(
-            tempTrips,
-            userData.token,
-            userCache,
-            addUserToCache
-        );
+        await makeHumanReadable(tempTrips, userData.token, userCache, addUserToCache);
 
         setMegaExportText("Export CSV");
         const now = new Date(Date.now()).toISOString();
@@ -145,10 +136,7 @@ export default function VehicleList({ isAdmin, mode }) {
                         </svg>
                         Trips by Day
                     </Link>
-                    <button
-                        className="btn btn-primary me-1"
-                        onClick={megaExportTripsHandler}
-                    >
+                    <button className="btn btn-primary me-1" onClick={megaExportTripsHandler}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -181,10 +169,7 @@ export default function VehicleList({ isAdmin, mode }) {
                             </svg>
                             Add Vehicle
                         </Link>
-                        <button
-                            className="btn btn-secondary me-1"
-                            onClick={exportVehiclesHandler}
-                        >
+                        <button className="btn btn-secondary me-1" onClick={exportVehiclesHandler}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -198,10 +183,7 @@ export default function VehicleList({ isAdmin, mode }) {
                             </svg>
                             Export
                         </button>
-                        <button
-                            className="btn btn-secondary me-1"
-                            onClick={importVehiclesHandler}
-                        >
+                        <button className="btn btn-secondary me-1" onClick={importVehiclesHandler}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -216,9 +198,7 @@ export default function VehicleList({ isAdmin, mode }) {
                             Import
                         </button>
                     </div>
-                    {error && (
-                        <p className="text-center text-danger">{error}</p>
-                    )}
+                    {error && <p className="text-center text-danger">{error}</p>}
                 </div>
             )}
 
@@ -230,8 +210,7 @@ export default function VehicleList({ isAdmin, mode }) {
                         {availableVehicles.length > 0 ? (
                             departments.map((department) => {
                                 const deptArray = availableVehicles.filter(
-                                    (vehicle) =>
-                                        vehicle.department === department
+                                    (vehicle) => vehicle.department === department
                                 );
 
                                 return (
@@ -242,6 +221,7 @@ export default function VehicleList({ isAdmin, mode }) {
                                         numColumns={numColumns}
                                         isAdmin={isAdmin}
                                         mode={mode}
+                                        defaultSSO={defaultSSO}
                                     />
                                 );
                             })
@@ -263,22 +243,14 @@ export default function VehicleList({ isAdmin, mode }) {
                             //         </div>
                             //     ))}
                             // </div>
-                            <p className="text-center">
-                                No vehicles are currently available.
-                            </p>
+                            <p className="text-center">No vehicles are currently available.</p>
                         )}
                     </div>
 
                     <div>
                         <h1 className="text-center m-3">In Use</h1>
                         {checkedOutVehicles.length > 0 ? (
-                            <div
-                                className={
-                                    "row row-cols-1 row-cols-lg-" +
-                                    numColumns +
-                                    " g-4"
-                                }
-                            >
+                            <div className={"row row-cols-1 row-cols-lg-" + numColumns + " g-4"}>
                                 {checkedOutVehicles.map((vehicle) => (
                                     <div className="col" key={vehicle._id}>
                                         {/* this will probably cause a bunch of GET requests on initial
@@ -287,40 +259,32 @@ export default function VehicleList({ isAdmin, mode }) {
                                             isAdmin={isAdmin}
                                             vehicle={vehicle}
                                             mode={mode}
+                                            defaultSSO={defaultSSO}
                                         />
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-center">
-                                No vehicles are currently checked out.
-                            </p>
+                            <p className="text-center">No vehicles are currently checked out.</p>
                         )}
                     </div>
 
-                    {(mode === "manage" || mode === "trips") &&
-                        disabledVehicles.length > 0 && (
-                            <div>
-                                <h1 className="text-center m-3">Disabled</h1>
-                                <div
-                                    className={
-                                        "row row-cols-1 row-cols-lg-" +
-                                        numColumns +
-                                        " g-4"
-                                    }
-                                >
-                                    {disabledVehicles.map((vehicle) => (
-                                        <div className="col" key={vehicle._id}>
-                                            <VehicleCard
-                                                isAdmin={isAdmin}
-                                                vehicle={vehicle}
-                                                mode={mode}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
+                    {(mode === "manage" || mode === "trips") && disabledVehicles.length > 0 && (
+                        <div>
+                            <h1 className="text-center m-3">Disabled</h1>
+                            <div className={"row row-cols-1 row-cols-lg-" + numColumns + " g-4"}>
+                                {disabledVehicles.map((vehicle) => (
+                                    <div className="col" key={vehicle._id}>
+                                        <VehicleCard
+                                            isAdmin={isAdmin}
+                                            vehicle={vehicle}
+                                            mode={mode}
+                                        />
+                                    </div>
+                                ))}
                             </div>
-                        )}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

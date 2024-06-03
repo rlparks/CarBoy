@@ -159,7 +159,13 @@ export default function App() {
                     <Routes>
                         <Route
                             path="/"
-                            element={<VehicleList isAdmin={user.admin} mode={"normal"} />}
+                            element={
+                                <VehicleList
+                                    isAdmin={user.admin}
+                                    mode={"normal"}
+                                    defaultSSO={oidcInfo.enabled && oidcInfo.defaultSSO}
+                                />
+                            }
                         />
                         <Route
                             path="/addvehicle"

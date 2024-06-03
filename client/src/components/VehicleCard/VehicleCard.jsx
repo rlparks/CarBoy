@@ -49,7 +49,11 @@ export default function VehicleCard({ vehicle, isAdmin, mode }) {
                     {mode === "trips" && <TripButtons vehicle={vehicle} />}
                 </div>
             </div>
-            {!userData.user && <div className="card-footer text-body-secondary">Login to use</div>}
+            {!userData.user && (
+                <Link to="/login" className="card-footer text-body-secondary text-decoration-none">
+                    Login to use
+                </Link>
+            )}
 
             {/* display current destination if vehicle is checked out */}
             {userData.user && vehicle.checkedOut && currentDestination && (

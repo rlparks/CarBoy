@@ -71,8 +71,9 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
         },
         body,
     });
-    // console.log("Token response:");
     const tokenJson = await tokenResponse.json();
+
+    // console.log("Token response:", tokenJson);
 
     if (!tokenResponse.ok) {
         console.error("Token response error:", tokenResponse);
@@ -85,8 +86,7 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
         },
     });
     const userInfoJson = await userInfoResponse.json();
-    // console.log("User info response:");
-    // console.log(userInfoJson);
+    // console.log("User info response:", userInfoJson);
     // {
     //   sub: 'ff78c6ed-79ab-47d9-8a1f-3148b57bb7a6',
     //   email_verified: false,
@@ -97,8 +97,19 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
     //   email: 'rpark@uga.edu'
     // }
 
+    // CAS
+    // User info response: {
+    //  dn: 'CN=ltest017,OU=MyID,DC=devmsmyid,DC=uga,DC=edu',
+    //  CN: 'ltest017',
+    //  sub: 'ltest017',
+    //  service: 'https://carboydev.ugaesdit.com/login/sso/callback',
+    //  auth_time: 1717509804,
+    //  id: 'ltest017',
+    //  client_id: 'TbobtfJX8Egf95A7qTXy9'
+    // }
+
     // surely we can trust this username, right?
-    const verifiedUsername = userInfoJson.preferred_username;
+    const verifiedUsername = userInfoJson.preferred_username || userInfoJson.id;
 
     const user = await User.findOne({ username: verifiedUsername });
     if (!user) {

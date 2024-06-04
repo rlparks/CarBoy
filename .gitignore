@@ -32,3 +32,4 @@ client/public/SERVER_URL.js
 !*/.yarn/releases
 !*/.yarn/sdks
 !*/.yarn/versions
+build-latest.sh

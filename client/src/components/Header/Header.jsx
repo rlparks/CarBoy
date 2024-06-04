@@ -11,13 +11,13 @@ export default function Header({ setUserData, isAdmin, serverDown, oidcInfo }) {
     const { userData, user } = useContext(UserContext);
     const navigate = useNavigate();
     const [loginUrl, setLoginUrl] = useState("/login");
+    const [logoutIdToken, setLogoutIdToken] = useState(localStorage.getItem("cb-id-token"));
 
     function handleLogout() {
         // const cookieIdToken = document.cookie
         //     .split("; ")
         //     .find((row) => row.startsWith("id_token"))
         //     ?.split("=")[1];
-        const logoutIdToken = localStorage.getItem("cb-id-token");
 
         localStorage.clear();
 
@@ -148,14 +148,18 @@ export default function Header({ setUserData, isAdmin, serverDown, oidcInfo }) {
                         <Nav>
                             {userData.user ? (
                                 <div className="d-flex">
-                                    <Nav.Link
-                                        as={NavLink}
-                                        to="/manageself"
-                                        onClick={() => handleClick("/manageself")}
-                                        className={link === "/manageself" && "active"}
-                                    >
-                                        {user.fullName}
-                                    </Nav.Link>
+                                    {logoutIdToken ? (
+                                        <p className="nav-link mb-0">{user.fullName}</p>
+                                    ) : (
+                                        <Nav.Link
+                                            as={NavLink}
+                                            to="/manageself"
+                                            onClick={() => handleClick("/manageself")}
+                                            className={link === "/manageself" && "active"}
+                                        >
+                                            {user.fullName}
+                                        </Nav.Link>
+                                    )}
                                     <button className="btn btn-secondary" onClick={handleLogout}>
                                         Logout
                                     </button>

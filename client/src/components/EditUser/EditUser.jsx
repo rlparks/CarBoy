@@ -30,25 +30,32 @@ export default function EditUser({ mode }) {
         } else if (mode === "self") {
             // editing own profile
             userId = userData.user.id;
+
+            // hide the UI for managing self if SSO token detected
+            // will not prevent a manual POST, but this is probably
+            // good enough to prevent confusion
+            const isSsoLogin = Boolean(localStorage.getItem("cb-id-token"));
+
+            if (isSsoLogin) {
+                navigate("/");
+            }
         }
 
-        getUser(userId, userData.token, userCache, addUserToCache).then(
-            (user) => {
-                if (user) {
-                    document.title = "CarBoy · Edit User · " + user.username;
-                    if (!user.fullName) {
-                        user.fullName = "";
-                    }
-                    // avoid uncontrolled state when user doesn't have this field
-                    if (!user.hasOwnProperty("disabled")) {
-                        user.disabled = false;
-                    }
-                    setUser(user);
-                } else {
-                    setUserExists(false);
+        getUser(userId, userData.token, userCache, addUserToCache).then((user) => {
+            if (user) {
+                document.title = "CarBoy · Edit User · " + user.username;
+                if (!user.fullName) {
+                    user.fullName = "";
                 }
+                // avoid uncontrolled state when user doesn't have this field
+                if (!user.hasOwnProperty("disabled")) {
+                    user.disabled = false;
+                }
+                setUser(user);
+            } else {
+                setUserExists(false);
             }
-        );
+        });
     }, []);
 
     function usernameChangeHandler(event) {
@@ -188,10 +195,7 @@ export default function EditUser({ mode }) {
                     </div>
                     {mode === "self" && (
                         <div className="mb-3">
-                            <label
-                                id="confirmPasswordLabel"
-                                className="form-label"
-                            >
+                            <label id="confirmPasswordLabel" className="form-label">
                                 Confirm Password
                             </label>
                             {/* <input
@@ -242,9 +246,7 @@ export default function EditUser({ mode }) {
                                         type="checkbox"
                                         className="form-check-input"
                                     />
-                                    <label className="form-check-label">
-                                        Admin
-                                    </label>
+                                    <label className="form-check-label">Admin</label>
                                 </div>
                             </div>
                             <div className="mb-3">
@@ -255,9 +257,7 @@ export default function EditUser({ mode }) {
                                         type="checkbox"
                                         className="form-check-input"
                                     />
-                                    <label className="form-check-label">
-                                        Disabled
-                                    </label>
+                                    <label className="form-check-label">Disabled</label>
                                 </div>
                             </div>
                         </div>

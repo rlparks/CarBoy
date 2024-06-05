@@ -45,37 +45,23 @@ userRouter.post("/", rateLimit, async (req, res) => {
         const reqIP = req.ip;
         const { username, password } = req.body;
         if (!username || !password) {
-            return res
-                .status(400)
-                .json({ error: "Please fill out all fields" });
+            return res.status(400).json({ error: "Please fill out all fields" });
         }
         const user = await User.findOne({ username });
         // return same error message as to not give any info
         if (!user) {
-            console.log(
-                "LOGIN FAILURE - " + reqIP + " - (NO USER): " + username
-            );
+            console.log("LOGIN FAILURE - " + reqIP + " - (NO USER): " + username);
             return res.status(400).json({ error: "Invalid credentials" });
         }
 
         const passwordsMatch = await bcryptjs.compare(password, user.password);
         if (!passwordsMatch) {
-            console.log(
-                "LOGIN FAILURE - " +
-                    reqIP +
-                    " - (INVALID PASSWORD): " +
-                    username
-            );
+            console.log("LOGIN FAILURE - " + reqIP + " - (INVALID PASSWORD): " + username);
             return res.status(400).json({ error: "Invalid credentials" });
         }
 
         if (user.disabled) {
-            console.log(
-                "LOGIN FAILURE - " +
-                    reqIP +
-                    " - (ACCOUNT DISABLED): " +
-                    username
-            );
+            console.log("LOGIN FAILURE - " + reqIP + " - (ACCOUNT DISABLED): " + username);
             return res.status(400).json({ error: "Invalid credentials" });
         }
 
@@ -104,7 +90,7 @@ userRouter.get("/tokenIsValid", async (req, res) => {
 
         return res.json(true);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: "Error validating token" });
     }
 });
 

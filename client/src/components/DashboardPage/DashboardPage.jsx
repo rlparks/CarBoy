@@ -51,6 +51,11 @@ export default function DashboardPage() {
                     );
 
                     tripLogic(sortedVehicles);
+                } else if (numRefreshes % 10 === 0) {
+                    // do logic every 10 refreshes anyway
+                    // to avoid showing old calculated data
+                    // (like number of trips being yesterday)
+                    tripLogic(sortedVehicles);
                 }
             })
             .catch((err) => {

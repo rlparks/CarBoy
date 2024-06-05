@@ -73,16 +73,16 @@ export default function App() {
 
             if (serverRunning) {
                 try {
-                    const tokenResponse = await axios.get(SERVER_URL + "api/login/tokenIsValid", {
-                        headers: { "x-auth-token": token },
-                    });
-
                     const oidcResponse = await axios.get(SERVER_URL + "api/oidc/info");
                     setOidcInfo({
                         enabled: oidcResponse.data.enabled,
                         defaultSSO: oidcResponse.data.defaultSSO,
                         loginRedirectUrl: oidcResponse.data.loginRedirectUrl,
                         logoutRedirectUrl: oidcResponse.data.logoutRedirectUrl,
+                    });
+
+                    const tokenResponse = await axios.get(SERVER_URL + "api/login/tokenIsValid", {
+                        headers: { "x-auth-token": token },
                     });
 
                     if (tokenResponse.data) {
@@ -95,8 +95,8 @@ export default function App() {
                         });
                     }
                 } catch (err) {
-                    console.log("Login error in App.jsx");
-                    console.log(err);
+                    // console.log("Login error in App.jsx");
+                    // console.log(err);
 
                     localStorage.setItem("auth-token", "");
                     setUserData({

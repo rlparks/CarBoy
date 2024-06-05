@@ -65,6 +65,16 @@ export default function Header({ setUserData, isAdmin, serverDown, oidcInfo }) {
         }
     });
 
+    useEffect(() => {
+        if (url.pathname === "/") {
+            // slightly hide client_id after SSO logout
+            const query = new URLSearchParams(url.search);
+            if (query.has("client_id")) {
+                navigate("/", { replace: true });
+            }
+        }
+    }, []);
+
     if (link.includes("/dashboard") && userData.user) {
         return (
             <div className="d-flex justify-content-center mt-3 mb-1">

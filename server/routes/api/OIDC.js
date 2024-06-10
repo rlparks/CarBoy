@@ -109,7 +109,7 @@ oidcRouter.post("/login", rateLimit, async (req, res) => {
     // }
 
     // surely we can trust this username, right?
-    const verifiedUsername = userInfoJson.preferred_username || userInfoJson.id;
+    const verifiedUsername = userInfoJson.preferred_username || userInfoJson.CN;
 
     const user = await User.findOne({ username: verifiedUsername });
     if (!user) {

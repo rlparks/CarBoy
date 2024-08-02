@@ -3,9 +3,11 @@ FROM node:alpine
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-RUN yarn install
+
+RUN corepack enable
 
 COPY . .
+RUN yarn install
 RUN yarn build
 
 # clean up image

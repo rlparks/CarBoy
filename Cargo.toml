@@ -1,0 +1,26 @@
+[package]
+name = "carboy"
+version = "0.0.2"
+edition = "2021"
+
+[[bin]]
+name = "carboy"
+path = "src/main.rs"
+
+[dependencies]
+actix-web = "4"
+actix-session = { version = "0.9", features = ["cookie-session"] }
+sqlx = { version = "0.7", features = ["postgres", "runtime-tokio-native-tls", "macros"] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tera = "1"  # for svelte-like templating (close enough)
+dotenv = "0.15"
+argon2 = "0.5"
+uuid = { version = "1", features = ["v4"] }
+reqwest = { version = "0.11", features = ["json"] }
+sharp = "0.1"  # port of sharp image processing
+tailwindcss = "0.1"  # TODO: check if this exists
+openid = "0.14"
+papaparse = "*"  # TODO: find rust equivalent
+svelte = "*"  # TODO: ???

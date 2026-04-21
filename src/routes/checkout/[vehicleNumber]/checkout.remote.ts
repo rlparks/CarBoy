@@ -1,4 +1,5 @@
 import { form, getRequestEvent, query } from "$app/server";
+import UniqueConstraintViolation from "$lib/server/db/error/UniqueConstraintViolation";
 import { getDepartmentById } from "$lib/server/db/queries/department";
 import { getDestinationByName as getDestDb } from "$lib/server/db/queries/destination";
 import { checkoutVehicle, getTrips } from "$lib/server/db/queries/trip";
@@ -42,6 +43,9 @@ export const checkout = form(
 		try {
 			await checkoutVehicle(event.locals.account!.id, vehicle.id, destinationIds, note);
 		} catch (err) {
+			if (err instanceof UniqueConstraintViolation && err.constraintViolated === "vehicle_id") {
+				return invalid("Vehicle is already checked out.");
+			}
 			console.error(err);
 			return error(500, "Something went wrong while creating the trip");
 		}

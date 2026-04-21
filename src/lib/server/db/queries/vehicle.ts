@@ -45,13 +45,11 @@ export async function getVehiclesByOrganizationId(
                     INNER JOIN trip t ON td.trip_id = t.id
                     WHERE t.vehicle_id = v.id AND t.end_time IS NULL
                 ) AS destinations,
-                COALESCE((
-                    SELECT t.end_time IS NULL
+                EXISTS (
+                    SELECT 1
                     FROM trip t
-                    WHERE t.vehicle_id = v.id
-                    ORDER BY t.start_time DESC
-                    LIMIT 1
-                ), false) AS is_checked_out,
+                    WHERE t.vehicle_id = v.id AND t.end_time IS NULL
+                ) AS is_checked_out,
                 o.id AS organization_id,
                 (
                     SELECT count(*)
@@ -140,13 +138,11 @@ export async function getVehicleByNumber(number: string) {
                     INNER JOIN trip t ON td.trip_id = t.id
                     WHERE t.vehicle_id = v.id AND t.end_time IS NULL
                 ) AS destinations,
-                COALESCE((
-                    SELECT t.end_time IS NULL
+                EXISTS (
+                    SELECT 1
                     FROM trip t
-                    WHERE t.vehicle_id = v.id
-                    ORDER BY t.created_at DESC
-                    LIMIT 1
-                ), false) AS is_checked_out,
+                    WHERE t.vehicle_id = v.id AND t.end_time IS NULL
+                ) AS is_checked_out,
                 o.id AS organization_id
             FROM
                 vehicle v

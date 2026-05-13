@@ -1,0 +1,21 @@
+name: Build and Push Container
+
+on:
+  push:
+    branches:
+      - "main"
+      - "develop"
+
+jobs:
+  docker:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build and push
+        env:
+          DOCKER_BUILDKIT: "0"
+        run: |
+          echo "${{ secrets.CI_TOKEN }}" | docker login git.esd.uga.edu -u ${{ github.actor }} --password-stdin
+          docker build -t git.esd.uga.edu/uga_esd/carboy:${{ github.ref_name }} .
+          docker push git.esd.uga.edu/uga_esd/carboy:${{ github.ref_name }}

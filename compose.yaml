@@ -1,7 +1,7 @@
 services:
   carboy:
     container_name: carboy
-    image: ghcr.io/rlparks/carboy:main
+    image: git.esd.uga.edu/uga_esd/carboy:main
     ports:
       - 3000:3000
     restart: unless-stopped
